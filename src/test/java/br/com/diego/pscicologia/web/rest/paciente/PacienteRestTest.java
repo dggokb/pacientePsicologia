@@ -64,12 +64,11 @@ class PacienteRestTest {
     }
 
     @Test
-    public void deveSerOPossivelConsultarUmPaciente() throws Exception {
+    void deveSerOPossivelConsultarUmPaciente() throws Exception {
         PacienteDTO dto = new PacienteDTO();
         dto.id = "1";
-        dto.endereco = "Av Nataranara";
-        String jsonString = asJsonString(dto);
-        Mockito.when(consultaPaciente.buscar("1")).thenReturn(dto);
+        String retornoEsperadoEmJson = asJsonString(dto);
+        Mockito.when(consultaPaciente.buscar(dto.id)).thenReturn(dto);
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .get(PATH + "/1")
@@ -77,11 +76,11 @@ class PacienteRestTest {
                 .accept(MediaType.APPLICATION_JSON));
 
         retornoEsperado.andExpect(status().isOk());
-        retornoEsperado.andExpect(content().json(jsonString));
+        retornoEsperado.andExpect(content().json(retornoEsperadoEmJson));
     }
 
     @Test
-    void deveSerPossivelAdicionarUmPaciente2() throws Exception {
+    void deveSerPossivelAdicionarUmPacienteTestandoDeOutraManeira() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         ArgumentCaptor<AdicionarPaciente> captor = ArgumentCaptor.forClass(AdicionarPaciente.class);
@@ -105,6 +104,4 @@ class PacienteRestTest {
             throw new RuntimeException(e);
         }
     }
-
-
 }
