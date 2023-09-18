@@ -1,5 +1,6 @@
 package br.com.diego.pscicologia.web.rest.paciente;
 
+import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPaciente;
@@ -29,9 +30,7 @@ public class PacienteRest {
     @GetMapping("/{id}")
     public ResponseEntity<String> buscar(@PathVariable String id) throws Exception {
         PacienteDTO dto = consultaPaciente.buscar(id);
-        String json = new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .writeValueAsString(dto);
+        String json = SerializadorDeObjetoJson.serializar(dto);
 
         return ResponseEntity.ok(json);
     }

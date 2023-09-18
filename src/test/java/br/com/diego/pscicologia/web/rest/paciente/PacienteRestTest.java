@@ -1,5 +1,6 @@
 package br.com.diego.pscicologia.web.rest.paciente;
 
+import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPaciente;
@@ -56,7 +57,7 @@ class PacienteRestTest {
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .post(PATH)
-                .content(asJsonString(httpDTO))
+                .content(SerializadorDeObjetoJson.serializar(httpDTO))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -67,11 +68,11 @@ class PacienteRestTest {
     void deveSerOPossivelConsultarUmPaciente() throws Exception {
         PacienteDTO dto = new PacienteDTO();
         dto.id = "1";
-        String retornoEsperadoEmJson = asJsonString(dto);
+        String retornoEsperadoEmJson = SerializadorDeObjetoJson.serializar(dto);
         Mockito.when(consultaPaciente.buscar(dto.id)).thenReturn(dto);
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
-                .get(PATH + "/1")
+                .get(PATH + "/" + dto.id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
