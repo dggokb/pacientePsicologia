@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AdicionaPacienteConcreto implements AdicionaPaciente {
 
-    private PacienteRepositorio pacienteRepositorio;
+    private final PacienteRepositorio pacienteRepositorio;
 
     @Autowired
     public AdicionaPacienteConcreto(PacienteRepositorio pacienteRepositorio) {

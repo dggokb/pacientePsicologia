@@ -2,6 +2,8 @@ package br.com.diego.pscicologia.web.rest.paciente;
 
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
+import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPaciente;
+import br.com.diego.pscicologia.servico.paciente.consulta.PacienteDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -21,10 +24,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PacienteRest.class)
 class PacienteRestTest {
+
+    private static String PATH = "/paciente";
 
     @Autowired
     private PacienteRest pacienteRest;
@@ -34,6 +40,9 @@ class PacienteRestTest {
 
     @MockBean
     private AdicionaPaciente adicionaPaciente;
+
+    @MockBean
+    private ConsultaPaciente consultaPaciente;
 
     @Test
     void deveSerPossivelAdicionarUmPaciente() throws Exception {
@@ -45,12 +54,30 @@ class PacienteRestTest {
         ArgumentCaptor<AdicionarPaciente> captor = ArgumentCaptor.forClass(AdicionarPaciente.class);
         Mockito.when(adicionaPaciente.adicionar(captor.capture())).thenReturn(UUID.randomUUID().toString());
 
-        mvc.perform(MockMvcRequestBuilders
-                        .post("/paciente")
-                        .content(asJsonString(httpDTO))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
+                .post(PATH)
+                .content(asJsonString(httpDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        retornoEsperado.andExpect(status().isOk());
+    }
+
+    @Test
+    public void deveSerOPossivelConsultarUmPaciente() throws Exception {
+        PacienteDTO dto = new PacienteDTO();
+        dto.id = "1";
+        dto.endereco = "Av Nataranara";
+        String jsonString = asJsonString(dto);
+        Mockito.when(consultaPaciente.buscar("1")).thenReturn(dto);
+
+        ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
+                .get(PATH + "/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        retornoEsperado.andExpect(status().isOk());
+        retornoEsperado.andExpect(content().json(jsonString));
     }
 
     @Test
