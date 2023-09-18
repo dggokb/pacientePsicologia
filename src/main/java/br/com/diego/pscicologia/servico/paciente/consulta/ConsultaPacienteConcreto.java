@@ -23,21 +23,21 @@ public class ConsultaPacienteConcreto implements ConsultaPaciente {
     @Transactional(readOnly = true)
     @Override
     public PacienteDTO buscar(String id) throws Exception {
-        validarIdentificador(id);
+        validarSePossuiIdentificador(id);
         Optional<Paciente> pacienteObtido = pacienteRepositorio.findById(id);
-        validarPaciente(pacienteObtido);
+        validarSePacienteFoiEncontrado(pacienteObtido);
 
         return criarDTO(pacienteObtido.get());
     }
 
-    private void validarIdentificador(String id) throws Exception {
+    private void validarSePossuiIdentificador(String id) throws Exception {
         if (Objects.isNull(id)){
             throw  new Exception("É necessário informar o paciente para consulta.");
         }
     }
 
-    private static void validarPaciente(Optional<Paciente> pacienteObtido) throws Exception {
-        if (!pacienteObtido.isPresent()) {
+    private static void validarSePacienteFoiEncontrado(Optional<Paciente> pacienteObtido) throws Exception {
+        if (pacienteObtido.isEmpty()) {
             throw new Exception("Não foi possível contrar o paciente.");
         }
     }
