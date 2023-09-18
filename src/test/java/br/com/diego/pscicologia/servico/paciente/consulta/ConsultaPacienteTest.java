@@ -40,6 +40,16 @@ public class ConsultaPacienteTest {
     }
 
     @Test
+    void naoDeveSerPossivelConsultarUmPacienteSeNaoInformar() throws Exception {
+        String mensagemEsperada = "É necessário informar o paciente para consulta.";
+        String id = null;
+
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPaciente.buscar(id));
+
+        Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
+    }
+
+    @Test
     void naoDeveSerPossivelConsultarUmPacienteSeNaoForEncontradoOPaciente() throws Exception {
         String mensagemEsperada = "Não foi possível contrar o paciente.";
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.empty());

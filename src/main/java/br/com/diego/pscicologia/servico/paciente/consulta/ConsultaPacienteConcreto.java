@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -22,10 +23,17 @@ public class ConsultaPacienteConcreto implements ConsultaPaciente {
     @Transactional(readOnly = true)
     @Override
     public PacienteDTO buscar(String id) throws Exception {
+        validarIdentificador(id);
         Optional<Paciente> pacienteObtido = pacienteRepositorio.findById(id);
         validarPaciente(pacienteObtido);
 
         return criarDTO(pacienteObtido.get());
+    }
+
+    private void validarIdentificador(String id) throws Exception {
+        if (Objects.isNull(id)){
+            throw  new Exception("É necessário informar o paciente para consulta.");
+        }
     }
 
     private static void validarPaciente(Optional<Paciente> pacienteObtido) throws Exception {
