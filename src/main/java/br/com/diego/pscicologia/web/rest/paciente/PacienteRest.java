@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
         consumes = MediaType.APPLICATION_JSON_VALUE)
 public class PacienteRest {
 
-    private final AdicionaPaciente adicionaPaciente;
     private final ConsultaPaciente consultaPaciente;
+    private final AdicionaPaciente adicionaPaciente;
 
     @Autowired
-    public PacienteRest(AdicionaPaciente adicionaPaciente, ConsultaPaciente consultaPaciente) {
-        this.adicionaPaciente = adicionaPaciente;
+    public PacienteRest(ConsultaPaciente consultaPaciente, AdicionaPaciente adicionaPaciente) {
         this.consultaPaciente = consultaPaciente;
+        this.adicionaPaciente = adicionaPaciente;
     }
 
     @GetMapping("/{id}")
@@ -38,13 +38,13 @@ public class PacienteRest {
 
     @PostMapping()
     public ResponseEntity<String> adicionar(@RequestBody AdicionaPacienteHttpDTO httpDTO) {
-        AdicionarPaciente comando = criarComandoParaDicionar(httpDTO);
+        AdicionarPaciente comando = criarComandoParaAdicionar(httpDTO);
         String retorno = adicionaPaciente.adicionar(comando);
 
         return ResponseEntity.ok(retorno);
     }
 
-    private static AdicionarPaciente criarComandoParaDicionar(AdicionaPacienteHttpDTO httpDTO) {
+    private static AdicionarPaciente criarComandoParaAdicionar(AdicionaPacienteHttpDTO httpDTO) {
         return new AdicionarPaciente(httpDTO.nome, httpDTO.endereco, httpDTO.quantidaDeDiasNoMes, httpDTO.valorPorSessao);
     }
 }
