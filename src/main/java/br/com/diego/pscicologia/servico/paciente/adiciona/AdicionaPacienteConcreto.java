@@ -16,6 +16,7 @@ public class AdicionaPacienteConcreto implements AdicionaPaciente {
         this.pacienteRepositorio = pacienteRepositorio;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public String adicionar(AdicionarPaciente comando) {
         Paciente paciente = new Paciente(comando.getNome(),
