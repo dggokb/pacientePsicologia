@@ -3,6 +3,8 @@ package br.com.diego.pscicologia.servico.paciente;
 import br.com.diego.pscicologia.builder.PacienteBuilder;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
+import br.com.diego.pscicologia.servico.paciente.inativa.InativaPaciente;
+import br.com.diego.pscicologia.servico.paciente.inativa.InativaPacienteConcreto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package br.com.diego.pscicologia.servico.paciente;
+package br.com.diego.pscicologia.servico.paciente.inativa;
 
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
