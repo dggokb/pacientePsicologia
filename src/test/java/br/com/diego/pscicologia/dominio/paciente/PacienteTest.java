@@ -1,5 +1,6 @@
 package br.com.diego.pscicologia.dominio.paciente;
 
+import br.com.diego.pscicologia.builder.PacienteBuilder;
 import br.com.diego.pscicologia.comum.Moeda;
 import br.com.diego.pscicologia.comum.Quantidade;
 import org.assertj.core.api.Assertions;
@@ -31,7 +32,7 @@ public class PacienteTest {
     }
 
     @ParameterizedTest
-    @MethodSource("dadosNecessariosParaValidar")
+    @MethodSource("dadosNecessariosParaValidarCriacao")
     void naoDeveSerPossivelCriarUmPacienteSemOsDadosNecessarios(String nome,
                                                                 String endereco,
                                                                 Quantidade quantidaDeDiasNoMes,
@@ -41,10 +42,33 @@ public class PacienteTest {
         Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
-
     }
 
-    private static Stream<Arguments> dadosNecessariosParaValidar() {
+    @Test
+    void deveSerPossivelAlterarOsDadosDeUmPaciente() {
+        Paciente paciente = new PacienteBuilder().criar();
+        String novoEnderecoEsperado = "Novo endereço.";
+        Moeda novoValorPorSessaoEsperado = Moeda.criar(300);
+
+        paciente.alterar(novoEnderecoEsperado, novoValorPorSessaoEsperado);
+
+        Assertions.assertThat(paciente.getEndereco()).isEqualTo(novoEnderecoEsperado);
+        Assertions.assertThat(paciente.getValorPorSessao()).isEqualTo(novoValorPorSessaoEsperado);
+    }
+
+    @ParameterizedTest
+    @MethodSource("dadosNecessariosParaValidarAlteracao")
+    void naoDeveSerPossivelAlterarUmPacienteSemOsDadosNecessarios(String endereco,
+                                                                  Moeda valorPorSessao,
+                                                                  String mensagemEsperada) {
+        Paciente paciente = new PacienteBuilder().criar();
+
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> paciente.alterar(endereco, valorPorSessao));
+
+        Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
+    }
+
+    private static Stream<Arguments> dadosNecessariosParaValidarCriacao() {
         String nome = "Teste";
         String endereco = "Endereço teste";
         Quantidade quantidaDeDiasNoMes = Quantidade.ZERO;
@@ -55,6 +79,16 @@ public class PacienteTest {
                 Arguments.of(nome, null, quantidaDeDiasNoMes, valorPorSessao, "Não é possível criar um paciênte sem informar o endereço."),
                 Arguments.of(nome, endereco, null, valorPorSessao, "Não é possível criar um paciênte sem quantidade de dias no mes."),
                 Arguments.of(nome, endereco, quantidaDeDiasNoMes, null, "Não é possível criar um paciênte sem informar o valor por sessão.")
+        );
+    }
+
+    private static Stream<Arguments> dadosNecessariosParaValidarAlteracao() {
+        String endereco = "Endereço teste";
+        Moeda valorPorSessao = Moeda.ZERO;
+
+        return Stream.of(
+                Arguments.of(null, valorPorSessao, "Não é possível alterar um paciênte sem informar o endereço."),
+                Arguments.of(endereco, null, "Não é possível alterar um paciênte sem informar o valor por sessão.")
         );
     }
 }

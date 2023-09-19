@@ -6,7 +6,6 @@ import br.com.diego.pscicologia.comum.Moeda;
 import br.com.diego.pscicologia.comum.Quantidade;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 public class Paciente extends Entidade {
 
@@ -28,6 +27,12 @@ public class Paciente extends Entidade {
         this.valorPorSessao = valorPorSessao;
     }
 
+    public void alterar(String endereco, Moeda valorPorSessao) {
+        validarCamposObrigatorios(endereco, valorPorSessao);
+        this.endereco = endereco;
+        this.valorPorSessao = valorPorSessao;
+    }
+
     private void validarCamposObrigatorios(String nome,
                                            String endereco,
                                            Quantidade quantidaDeDiasNoMes,
@@ -37,6 +42,15 @@ public class Paciente extends Entidade {
                 .quandoNulo(endereco, "Não é possível criar um paciênte sem informar o endereço.")
                 .quandoNulo(quantidaDeDiasNoMes, "Não é possível criar um paciênte sem quantidade de dias no mes.")
                 .quandoNulo(valorPorSessao, "Não é possível criar um paciênte sem informar o valor por sessão.")
+                .entaoDispara();
+    }
+
+    private void validarCamposObrigatorios(String endereco,
+
+                                           Moeda valorPorSessao) {
+        new ExcecaoDeCampoObrigatorio()
+                .quandoNulo(endereco, "Não é possível alterar um paciênte sem informar o endereço.")
+                .quandoNulo(valorPorSessao, "Não é possível alterar um paciênte sem informar o valor por sessão.")
                 .entaoDispara();
     }
 
