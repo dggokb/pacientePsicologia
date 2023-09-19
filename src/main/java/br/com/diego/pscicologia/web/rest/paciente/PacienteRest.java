@@ -1,14 +1,15 @@
 package br.com.diego.pscicologia.web.rest.paciente;
 
 import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
-import br.com.diego.pscicologia.servico.paciente.inativa.InativaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlteraPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlterarPaciente;
+import br.com.diego.pscicologia.servico.paciente.ativa.AtivaPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPacientes;
 import br.com.diego.pscicologia.servico.paciente.consulta.PacienteDTO;
+import br.com.diego.pscicologia.servico.paciente.inativa.InativaPaciente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ public class PacienteRest {
     private final ConsultaPacientes consultaPacientes;
     private final AdicionaPaciente adicionaPaciente;
     private final AlteraPaciente alteraPaciente;
+    private final AtivaPaciente ativaPaciente;
     private final InativaPaciente inativaPaciente;
 
     @Autowired
@@ -33,11 +35,13 @@ public class PacienteRest {
                         ConsultaPacientes consultaPacientes,
                         AdicionaPaciente adicionaPaciente,
                         AlteraPaciente alteraPaciente,
+                        AtivaPaciente ativaPaciente,
                         InativaPaciente inativaPaciente) {
         this.consultaPaciente = consultaPaciente;
         this.consultaPacientes = consultaPacientes;
         this.adicionaPaciente = adicionaPaciente;
         this.alteraPaciente = alteraPaciente;
+        this.ativaPaciente = ativaPaciente;
         this.inativaPaciente = inativaPaciente;
     }
 
@@ -69,6 +73,13 @@ public class PacienteRest {
     public ResponseEntity alterar(@RequestBody AlteraPacienteHttpDTO httpDTO) throws Exception {
         AlterarPaciente comando = criarComandoParaAlterar(httpDTO);
         alteraPaciente.alterar(comando);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("ativar/{id}")
+    public ResponseEntity ativar(@PathVariable String id) throws Exception {
+        ativaPaciente.ativar(id);
 
         return ResponseEntity.ok().build();
     }

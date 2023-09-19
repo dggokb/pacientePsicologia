@@ -1,6 +1,7 @@
 package br.com.diego.pscicologia.web.rest.paciente;
 
 import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
+import br.com.diego.pscicologia.servico.paciente.ativa.AtivaPaciente;
 import br.com.diego.pscicologia.servico.paciente.inativa.InativaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
@@ -55,6 +56,9 @@ class PacienteRestTest {
 
     @MockBean
     private AlteraPaciente alteraPaciente;
+
+    @MockBean
+    private AtivaPaciente ativaPaciente;
 
     @MockBean
     private InativaPaciente inativaPaciente;
@@ -138,6 +142,19 @@ class PacienteRestTest {
         Assertions.assertThat(comandoCapturado.getId()).isEqualTo(httpDTO.id);
         Assertions.assertThat(comandoCapturado.getEndereco()).isEqualTo(httpDTO.endereco);
         Assertions.assertThat(comandoCapturado.getValorPorSessao().valor()).isEqualTo(httpDTO.valorPorSessao);
+    }
+
+    @Test
+    void deveSerPossivelAtivarUmPaciente() throws Exception {
+        String id = UUID.randomUUID().toString();
+        Mockito.doNothing().when(ativaPaciente).ativar(id);
+
+        ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
+                .put(PATH + "/ativar/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        retornoEsperado.andExpect(status().isOk());
     }
 
     @Test
