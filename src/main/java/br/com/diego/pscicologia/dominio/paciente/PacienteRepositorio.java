@@ -10,4 +10,7 @@ import java.util.List;
 public interface PacienteRepositorio extends MongoRepository<Paciente, String> {
     @Query("{inativo :false}")
     public List<Paciente> buscarAtivos();
+
+    @Query("{inativo :true}")
+    public List<Paciente> buscarInativos();
 }
