@@ -6,6 +6,7 @@ import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlteraPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlterarPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPaciente;
+import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPacientes;
 import br.com.diego.pscicologia.servico.paciente.consulta.PacienteDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
@@ -25,6 +26,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -42,10 +45,13 @@ class PacienteRestTest {
     private MockMvc mvc;
 
     @MockBean
-    private AdicionaPaciente adicionaPaciente;
+    private ConsultaPaciente consultaPaciente;
 
     @MockBean
-    private ConsultaPaciente consultaPaciente;
+    private ConsultaPacientes consultaPacientes;
+
+    @MockBean
+    private AdicionaPaciente adicionaPaciente;
 
     @MockBean
     private AlteraPaciente alteraPaciente;
@@ -83,6 +89,25 @@ class PacienteRestTest {
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .get(PATH + "/" + dto.id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        retornoEsperado.andExpect(status().isOk());
+        retornoEsperado.andExpect(content().json(retornoEsperadoEmJson));
+    }
+
+    @Test
+    void deveSerOPossivelConsultarTodosPacientes() throws Exception {
+        PacienteDTO primeiroDTO = new PacienteDTO();
+        primeiroDTO.id = "1";
+        PacienteDTO segundoDTO = new PacienteDTO();
+        primeiroDTO.id = "2";
+        List<PacienteDTO> dtos = Arrays.asList(primeiroDTO, segundoDTO);
+        String retornoEsperadoEmJson = SerializadorDeObjetoJson.serializar(dtos);
+        Mockito.when(consultaPacientes.buscarTodos()).thenReturn(dtos);
+
+        ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
+                .get(PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 

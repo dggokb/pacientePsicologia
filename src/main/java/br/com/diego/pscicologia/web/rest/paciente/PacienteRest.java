@@ -6,27 +6,33 @@ import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlteraPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlterarPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPaciente;
+import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPacientes;
 import br.com.diego.pscicologia.servico.paciente.consulta.PacienteDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping(value = "/paciente",
+@RequestMapping(value = "paciente",
         produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE)
 public class PacienteRest {
 
     private final ConsultaPaciente consultaPaciente;
+    private final ConsultaPacientes consultaPacientes;
     private final AdicionaPaciente adicionaPaciente;
     private final AlteraPaciente alteraPaciente;
 
     @Autowired
     public PacienteRest(ConsultaPaciente consultaPaciente,
+                        ConsultaPacientes consultaPacientes,
                         AdicionaPaciente adicionaPaciente,
                         AlteraPaciente alteraPaciente) {
         this.consultaPaciente = consultaPaciente;
+        this.consultaPacientes = consultaPacientes;
         this.adicionaPaciente = adicionaPaciente;
         this.alteraPaciente = alteraPaciente;
     }
@@ -35,6 +41,14 @@ public class PacienteRest {
     public ResponseEntity<String> buscar(@PathVariable String id) throws Exception {
         PacienteDTO dto = consultaPaciente.buscar(id);
         String json = SerializadorDeObjetoJson.serializar(dto);
+
+        return ResponseEntity.ok(json);
+    }
+
+    @GetMapping()
+    public ResponseEntity<String> buscarTodos() throws Exception {
+        List<PacienteDTO> dtos = consultaPacientes.buscarTodos();
+        String json = SerializadorDeObjetoJson.serializar(dtos);
 
         return ResponseEntity.ok(json);
     }
