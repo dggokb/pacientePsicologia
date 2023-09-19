@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @DataMongoTest
-public class PacienteRepositorioMongoDbTest {
+public class PacienteRepositorioTest {
 
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
