@@ -43,6 +43,7 @@ public class ConsultaPacientesConcreto implements ConsultaPacientes {
             dto.valorPorSessao = paciente.getValorPorSessao().valor();
             dto.quantidaDeDiasNoMes = paciente.getQuantidaDeDiasNoMes().valor().intValue();
             dto.dataDeInicio = paciente.getDataDeInicio();
+            dto.inativo = paciente.getInativo();
 
             return dto;
         }).collect(Collectors.toList());
