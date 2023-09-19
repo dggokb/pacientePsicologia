@@ -112,6 +112,10 @@ public class Quantidade {
         return this.getValor();
     }
 
+    public Integer quantidade() {
+        return this.getValor().intValue();
+    }
+
     public BigDecimal valorArredondado() {
         return this.getValor().setScale(this.escala, this.modoDeArredondamento);
     }
