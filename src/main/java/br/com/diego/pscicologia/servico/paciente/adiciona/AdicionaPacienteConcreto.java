@@ -22,7 +22,6 @@ public class AdicionaPacienteConcreto implements AdicionaPaciente {
                 comando.getEndereco(),
                 comando.getQuantidaDeDiasNoMes(),
                 comando.getValorPorSessao());
-
         pacienteRepositorio.insert(paciente);
 
         return paciente.getId();
