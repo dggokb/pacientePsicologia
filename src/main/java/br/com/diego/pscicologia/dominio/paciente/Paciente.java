@@ -1,9 +1,6 @@
 package br.com.diego.pscicologia.dominio.paciente;
 
-import br.com.diego.pscicologia.comum.Entidade;
-import br.com.diego.pscicologia.comum.ExcecaoDeCampoObrigatorio;
-import br.com.diego.pscicologia.comum.Moeda;
-import br.com.diego.pscicologia.comum.Quantidade;
+import br.com.diego.pscicologia.comum.*;
 
 import java.time.LocalDate;
 
@@ -54,6 +51,20 @@ public class Paciente extends Entidade {
                 .quandoNulo(endereco, "Não é possível alterar um paciênte sem informar o endereço.")
                 .quandoNulo(valorPorSessao, "Não é possível alterar um paciênte sem informar o valor por sessão.")
                 .entaoDispara();
+    }
+
+    public void inativar() {
+        if (this.getInativo().equals(Boolean.TRUE)) {
+            throw new ExcecaoDeRegraDeNegocio("O paciente já está inativo.");
+        }
+        this.inativo = true;
+    }
+
+    public void ativar() {
+        if (this.getInativo().equals(Boolean.FALSE)) {
+            throw new ExcecaoDeRegraDeNegocio("O paciente já está ativo.");
+        }
+        this.inativo = false;
     }
 
     public String getNome() {

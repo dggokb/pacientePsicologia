@@ -69,6 +69,44 @@ public class PacienteTest {
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
 
+    @Test
+    void deveSerPossivelInativarUmPaciente() {
+        Paciente pacienteAtivo = new PacienteBuilder().ativo().criar();
+
+        pacienteAtivo.inativar();
+
+        Assertions.assertThat(pacienteAtivo.getInativo()).isTrue();
+    }
+
+    @Test
+    void naoDeveSerPossivelInativarUmPacienteQueJahEstaInativo() {
+        String mensagemEsperda = "O paciente já está inativo.";
+        Paciente pacienteInativo = new PacienteBuilder().inativo().criar();
+
+        Throwable excecaoLancada = Assertions.catchThrowable(pacienteInativo::inativar);
+
+        Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperda);
+    }
+
+    @Test
+    void deveSerPossivelAtivarUmPaciente() {
+        Paciente pacienteInativo = new PacienteBuilder().inativo().criar();
+
+        pacienteInativo.ativar();
+
+        Assertions.assertThat(pacienteInativo.getInativo()).isFalse();
+    }
+
+    @Test
+    void naoDeveSerPossivelAtivarUmPacienteQueJahEstaAtivo() {
+        String mensagemEsperda = "O paciente já está ativo.";
+        Paciente pacienteAtivo = new PacienteBuilder().ativo().criar();
+
+        Throwable excecaoLancada = Assertions.catchThrowable(pacienteAtivo::ativar);
+
+        Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperda);
+    }
+
     private static Stream<Arguments> dadosNecessariosParaValidarCriacao() {
         String nome = "Teste";
         String endereco = "Endereço teste";

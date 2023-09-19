@@ -5,7 +5,6 @@ import br.com.diego.pscicologia.comum.Quantidade;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 public class PacienteBuilder {
 
@@ -14,6 +13,7 @@ public class PacienteBuilder {
     private LocalDate dataDeInicio;
     private Quantidade quantidaDeDiasNoMes;
     private Moeda valorPorSessao;
+    private Boolean inativo;
 
     public PacienteBuilder() {
         this.nome = "Diego Guedes";
@@ -21,10 +21,15 @@ public class PacienteBuilder {
         this.dataDeInicio = LocalDate.now();
         this.quantidaDeDiasNoMes = Quantidade.criar(2);
         this.valorPorSessao = Moeda.criar(23);
+        this.inativo = false;
     }
 
     public Paciente criar() {
-        return new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao);
+        Paciente paciente = new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao);
+        if (this.inativo.equals(Boolean.TRUE)) {
+            paciente.inativar();
+        }
+        return paciente;
     }
 
     public PacienteBuilder comNome(String nome) {
@@ -49,6 +54,16 @@ public class PacienteBuilder {
 
     public PacienteBuilder comValorPorSessao(Moeda valorPorSessao) {
         this.valorPorSessao = valorPorSessao;
+        return this;
+    }
+
+    public PacienteBuilder ativo() {
+        this.inativo = false;
+        return this;
+    }
+
+    public PacienteBuilder inativo() {
+        this.inativo = true;
         return this;
     }
 }
