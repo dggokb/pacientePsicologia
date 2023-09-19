@@ -29,6 +29,7 @@ public class PacienteTest {
         Assertions.assertThat(paciente.getDataDeInicio()).isEqualTo(dataDeInicioEsperado);
         Assertions.assertThat(paciente.getQuantidaDeDiasNoMes()).isEqualTo(quantidaDeDiasNoMesEsperado);
         Assertions.assertThat(paciente.getValorPorSessao()).isEqualTo(valorPorSessaoEsperado);
+        Assertions.assertThat(paciente.getInativo()).isFalse();
     }
 
     @ParameterizedTest

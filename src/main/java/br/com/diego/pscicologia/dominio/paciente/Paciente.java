@@ -14,6 +14,7 @@ public class Paciente extends Entidade {
     private LocalDate dataDeInicio;
     private Quantidade quantidaDeDiasNoMes;
     private Moeda valorPorSessao;
+    private Boolean inativo;
 
     public Paciente(String nome,
                     String endereco,
@@ -25,6 +26,7 @@ public class Paciente extends Entidade {
         this.dataDeInicio = LocalDate.now();
         this.quantidaDeDiasNoMes = quantidaDeDiasNoMes;
         this.valorPorSessao = valorPorSessao;
+        this.inativo = false;
     }
 
     public void alterar(String endereco, Moeda valorPorSessao) {
@@ -72,5 +74,9 @@ public class Paciente extends Entidade {
 
     public Moeda getValorPorSessao() {
         return valorPorSessao;
+    }
+
+    public Boolean getInativo() {
+        return inativo;
     }
 }
