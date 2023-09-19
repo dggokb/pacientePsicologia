@@ -4,6 +4,7 @@ import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ public class AlteraPacienteConcreto implements AlteraPaciente {
         this.pacienteRepositorio = pacienteRepositorio;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void alterar(AlterarPaciente comando) throws Exception {
         Optional<Paciente> pacienteObtido = pacienteRepositorio.findById(comando.getId());
