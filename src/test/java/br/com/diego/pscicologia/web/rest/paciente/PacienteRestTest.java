@@ -3,6 +3,8 @@ package br.com.diego.pscicologia.web.rest.paciente;
 import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
+import br.com.diego.pscicologia.servico.paciente.altera.AlteraPaciente;
+import br.com.diego.pscicologia.servico.paciente.altera.AlterarPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.PacienteDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,6 +47,9 @@ class PacienteRestTest {
     @MockBean
     private ConsultaPaciente consultaPaciente;
 
+    @MockBean
+    private AlteraPaciente alteraPaciente;
+
     @Test
     void deveSerPossivelAdicionarUmPaciente() throws Exception {
         AdicionaPacienteHttpDTO httpDTO = new AdicionaPacienteHttpDTO();
@@ -62,6 +67,11 @@ class PacienteRestTest {
                 .accept(MediaType.APPLICATION_JSON));
 
         retornoEsperado.andExpect(status().isOk());
+        AdicionarPaciente comandoCapturado = captor.getValue();
+        Assertions.assertThat(comandoCapturado.getNome()).isEqualTo(httpDTO.nome);
+        Assertions.assertThat(comandoCapturado.getEndereco()).isEqualTo(httpDTO.endereco);
+        Assertions.assertThat(comandoCapturado.getQuantidaDeDiasNoMes().valor().intValue()).isEqualTo(httpDTO.quantidaDeDiasNoMes);
+        Assertions.assertThat(comandoCapturado.getValorPorSessao().valor()).isEqualTo(httpDTO.valorPorSessao);
     }
 
     @Test
@@ -78,6 +88,28 @@ class PacienteRestTest {
 
         retornoEsperado.andExpect(status().isOk());
         retornoEsperado.andExpect(content().json(retornoEsperadoEmJson));
+    }
+
+    @Test
+    void deveSerPossivelAlterarUmPaciente() throws Exception {
+        AlteraPacienteHttpDTO httpDTO = new AlteraPacienteHttpDTO();
+        httpDTO.id = UUID.randomUUID().toString();
+        httpDTO.endereco = "Teste";
+        httpDTO.valorPorSessao = BigDecimal.TEN;
+        ArgumentCaptor<AlterarPaciente> captor = ArgumentCaptor.forClass(AlterarPaciente.class);
+        Mockito.doNothing().when(alteraPaciente).alterar(captor.capture());
+
+        ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
+                .put(PATH)
+                .content(SerializadorDeObjetoJson.serializar(httpDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        retornoEsperado.andExpect(status().isOk());
+        AlterarPaciente comandoCapturado = captor.getValue();
+        Assertions.assertThat(comandoCapturado.getId()).isEqualTo(httpDTO.id);
+        Assertions.assertThat(comandoCapturado.getEndereco()).isEqualTo(httpDTO.endereco);
+        Assertions.assertThat(comandoCapturado.getValorPorSessao().valor()).isEqualTo(httpDTO.valorPorSessao);
     }
 
     @Test
