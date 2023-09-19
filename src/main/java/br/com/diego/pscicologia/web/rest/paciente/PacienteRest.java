@@ -1,6 +1,7 @@
 package br.com.diego.pscicologia.web.rest.paciente;
 
 import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
+import br.com.diego.pscicologia.servico.paciente.InativaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlteraPaciente;
@@ -25,16 +26,19 @@ public class PacienteRest {
     private final ConsultaPacientes consultaPacientes;
     private final AdicionaPaciente adicionaPaciente;
     private final AlteraPaciente alteraPaciente;
+    private final InativaPaciente inativaPaciente;
 
     @Autowired
     public PacienteRest(ConsultaPaciente consultaPaciente,
                         ConsultaPacientes consultaPacientes,
                         AdicionaPaciente adicionaPaciente,
-                        AlteraPaciente alteraPaciente) {
+                        AlteraPaciente alteraPaciente,
+                        InativaPaciente inativaPaciente) {
         this.consultaPaciente = consultaPaciente;
         this.consultaPacientes = consultaPacientes;
         this.adicionaPaciente = adicionaPaciente;
         this.alteraPaciente = alteraPaciente;
+        this.inativaPaciente = inativaPaciente;
     }
 
     @GetMapping("/{id}")
@@ -65,6 +69,13 @@ public class PacienteRest {
     public ResponseEntity alterar(@RequestBody AlteraPacienteHttpDTO httpDTO) throws Exception {
         AlterarPaciente comando = criarComandoParaAlterar(httpDTO);
         alteraPaciente.alterar(comando);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("inativar/{id}")
+    public ResponseEntity inativar(@PathVariable String id) throws Exception {
+        inativaPaciente.inativar(id);
 
         return ResponseEntity.ok().build();
     }

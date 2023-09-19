@@ -1,6 +1,7 @@
 package br.com.diego.pscicologia.web.rest.paciente;
 
 import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
+import br.com.diego.pscicologia.servico.paciente.InativaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlteraPaciente;
@@ -8,7 +9,6 @@ import br.com.diego.pscicologia.servico.paciente.altera.AlterarPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPacientes;
 import br.com.diego.pscicologia.servico.paciente.consulta.PacienteDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -55,6 +55,9 @@ class PacienteRestTest {
 
     @MockBean
     private AlteraPaciente alteraPaciente;
+
+    @MockBean
+    private InativaPaciente inativaPaciente;
 
     @Test
     void deveSerPossivelAdicionarUmPaciente() throws Exception {
@@ -138,6 +141,19 @@ class PacienteRestTest {
     }
 
     @Test
+    void deveSerPossivelInativarUmPaciente() throws Exception {
+        String id = UUID.randomUUID().toString();
+        Mockito.doNothing().when(inativaPaciente).inativar(id);
+
+        ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
+                .delete(PATH + "/inativar/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        retornoEsperado.andExpect(status().isOk());
+    }
+
+    @Test
     void deveSerPossivelAdicionarUmPacienteTestandoDeOutraManeira() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
@@ -153,13 +169,5 @@ class PacienteRestTest {
 
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(200);
         Assertions.assertThat(response.getBody()).isEqualTo(retornoEsperado);
-    }
-
-    public static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }
