@@ -46,6 +46,8 @@ class ConsultaPacientesTest {
                 segundoPaciente.getDataDeInicio());
         Assertions.assertThat(dtos).extracting(dto -> dto.inativo).containsExactlyInAnyOrder(primeiroPaciente.getInativo(),
                 segundoPaciente.getInativo());
+        Assertions.assertThat(dtos).extracting(dto -> dto.tipo).containsExactlyInAnyOrder(primeiroPaciente.obterDescricaoDoTipo(),
+                segundoPaciente.obterDescricaoDoTipo());
     }
 
     @Test
