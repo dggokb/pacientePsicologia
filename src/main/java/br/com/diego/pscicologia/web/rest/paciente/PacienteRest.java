@@ -92,11 +92,11 @@ public class PacienteRest {
         return ResponseEntity.ok().build();
     }
 
-    private static AdicionarPaciente criarComandoParaAdicionar(AdicionaPacienteHttpDTO httpDTO) {
+    private AdicionarPaciente criarComandoParaAdicionar(AdicionaPacienteHttpDTO httpDTO) {
         return new AdicionarPaciente(httpDTO.nome, httpDTO.endereco, Optional.ofNullable(httpDTO.quantidaDeDiasNoMes), httpDTO.valorPorSessao, httpDTO.tipo);
     }
 
-    private static AlterarPaciente criarComandoParaAlterar(AlteraPacienteHttpDTO httpDTO) {
+    private AlterarPaciente criarComandoParaAlterar(AlteraPacienteHttpDTO httpDTO) {
         return new AlterarPaciente(httpDTO.id, httpDTO.endereco, httpDTO.valorPorSessao);
     }
 }
