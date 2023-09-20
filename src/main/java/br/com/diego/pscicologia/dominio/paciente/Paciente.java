@@ -1,6 +1,7 @@
 package br.com.diego.pscicologia.dominio.paciente;
 
 import br.com.diego.pscicologia.comum.*;
+import org.springframework.data.annotation.PersistenceCreator;
 
 import java.time.LocalDate;
 
@@ -13,7 +14,7 @@ public class Paciente extends Entidade {
     private Moeda valorPorSessao;
     private Boolean inativo;
     private Tipo tipo;
-
+    @PersistenceCreator
     public Paciente(String nome,
                     String endereco,
                     Moeda valorPorSessao) {
