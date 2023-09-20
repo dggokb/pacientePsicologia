@@ -182,7 +182,7 @@ class PacienteRestTest {
         httpDTO.endereco = "Teste";
         httpDTO.quantidaDeDiasNoMes = 10;
         httpDTO.valorPorSessao = BigDecimal.TEN;
-        httpDTO.tipo = "VALOR_MENSAL";
+        httpDTO.tipo = "VALOR_POR_SESSAO";
 
         return httpDTO;
     }
