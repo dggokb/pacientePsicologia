@@ -35,7 +35,7 @@ public class ConsultaPacienteTest {
         Assertions.assertThat(dtoObtido.nome).isEqualTo(paciente.getNome());
         Assertions.assertThat(dtoObtido.endereco).isEqualTo(paciente.getEndereco());
         Assertions.assertThat(dtoObtido.dataDeInicio).isEqualTo(paciente.getDataDeInicio());
-        Assertions.assertThat(dtoObtido.quantidaDeDiasNoMes).isEqualTo(paciente.getQuantidaDeDiasNoMes().valor().intValue());
+        Assertions.assertThat(dtoObtido.quantidaDeDiasNoMes).isEqualTo(paciente.getQuantidadeDeDiasNoMes().valor().intValue());
         Assertions.assertThat(dtoObtido.valorPorSessao).isEqualTo(paciente.getValorPorSessao().valor());
         Assertions.assertThat(dtoObtido.inativo).isEqualTo(paciente.getInativo());
         Assertions.assertThat(dtoObtido.tipo).isEqualTo(paciente.obterDescricaoDoTipo());

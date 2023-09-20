@@ -31,7 +31,7 @@ class PacienteFabricaTest {
         Paciente pacienteFabricado = fabrica.fabricar(nome, endereco, quantidadeDeDiasNoMesEsperado, valorPorSessao, tipoEsperado);
 
         Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipoEsperado);
-        Assertions.assertThat(pacienteFabricado.getQuantidaDeDiasNoMes()).isEqualTo(quantidadeDeDiasNoMesEsperado);
+        Assertions.assertThat(pacienteFabricado.getQuantidadeDeDiasNoMes()).isEqualTo(quantidadeDeDiasNoMesEsperado);
     }
 
     @Test
@@ -41,7 +41,7 @@ class PacienteFabricaTest {
         Paciente pacienteFabricado = fabrica.fabricar(nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, tipoEsperado);
 
         Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipoEsperado);
-        Assertions.assertThat(pacienteFabricado.getQuantidaDeDiasNoMes()).isNull();
+        Assertions.assertThat(pacienteFabricado.getQuantidadeDeDiasNoMes()).isNull();
     }
 
     @Test

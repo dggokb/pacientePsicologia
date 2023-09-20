@@ -41,7 +41,7 @@ class MontadorDePacienteDTOTest {
         Assertions.assertThat(dto.nome).isEqualTo(paciente.getNome());
         Assertions.assertThat(dto.endereco).isEqualTo(paciente.getEndereco());
         Assertions.assertThat(dto.dataDeInicio).isEqualTo(paciente.getDataDeInicio());
-        Assertions.assertThat(dto.quantidaDeDiasNoMes).isEqualTo(paciente.getQuantidaDeDiasNoMes().valor().intValue());
+        Assertions.assertThat(dto.quantidaDeDiasNoMes).isEqualTo(paciente.getQuantidadeDeDiasNoMes().valor().intValue());
         Assertions.assertThat(dto.valorPorSessao).isEqualTo(paciente.getValorPorSessao().valor());
         Assertions.assertThat(dto.inativo).isEqualTo(paciente.getInativo());
         Assertions.assertThat(dto.tipo).isEqualTo(paciente.obterDescricaoDoTipo());

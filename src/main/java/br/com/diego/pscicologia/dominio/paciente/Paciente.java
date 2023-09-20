@@ -10,7 +10,7 @@ public class Paciente extends Entidade {
     private String nome;
     private String endereco;
     private LocalDate dataDeInicio;
-    private Quantidade quantidaDeDiasNoMes;
+    private Quantidade quantidadeDeDiasNoMes;
     private Moeda valorPorSessao;
     private Boolean inativo;
     private Tipo tipo;
@@ -29,13 +29,13 @@ public class Paciente extends Entidade {
 
     public Paciente(String nome,
                     String endereco,
-                    Quantidade quantidaDeDiasNoMes,
+                    Quantidade quantidadeDeDiasNoMes,
                     Moeda valorPorSessao) {
-        validarCamposObrigatorios(nome, endereco, quantidaDeDiasNoMes, valorPorSessao);
+        validarCamposObrigatorios(nome, endereco, quantidadeDeDiasNoMes, valorPorSessao);
         this.nome = nome;
         this.endereco = endereco;
         this.dataDeInicio = LocalDate.now();
-        this.quantidaDeDiasNoMes = quantidaDeDiasNoMes;
+        this.quantidadeDeDiasNoMes = quantidadeDeDiasNoMes;
         this.valorPorSessao = valorPorSessao;
         this.inativo = false;
         this.tipo = Tipo.VALOR_POR_SESSAO;
@@ -103,8 +103,8 @@ public class Paciente extends Entidade {
         return dataDeInicio;
     }
 
-    public Quantidade getQuantidaDeDiasNoMes() {
-        return quantidaDeDiasNoMes;
+    public Quantidade getQuantidadeDeDiasNoMes() {
+        return quantidadeDeDiasNoMes;
     }
 
     public Moeda getValorPorSessao() {

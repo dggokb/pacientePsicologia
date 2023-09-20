@@ -46,7 +46,7 @@ public class PacienteTest {
         Assertions.assertThat(paciente.getNome()).isEqualTo(nomeEsperado);
         Assertions.assertThat(paciente.getEndereco()).isEqualTo(enderecoEsperado);
         Assertions.assertThat(paciente.getDataDeInicio()).isEqualTo(dataDeInicioEsperado);
-        Assertions.assertThat(paciente.getQuantidaDeDiasNoMes()).isEqualTo(quantidadeDeDiasNoMesEsperado);
+        Assertions.assertThat(paciente.getQuantidadeDeDiasNoMes()).isEqualTo(quantidadeDeDiasNoMesEsperado);
         Assertions.assertThat(paciente.getValorPorSessao()).isEqualTo(valorPorSessaoEsperado);
         Assertions.assertThat(paciente.getInativo()).isFalse();
         Assertions.assertThat(paciente.getTipo()).isEqualTo(tipoDePacienteEsperado);

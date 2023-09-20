@@ -38,8 +38,8 @@ class ConsultaPacientesTest {
                 segundoPaciente.getNome());
         Assertions.assertThat(dtos).extracting(dto -> dto.endereco).containsExactlyInAnyOrder(primeiroPaciente.getEndereco(),
                 segundoPaciente.getEndereco());
-        Assertions.assertThat(dtos).extracting(dto -> dto.quantidaDeDiasNoMes).containsExactlyInAnyOrder(primeiroPaciente.getQuantidaDeDiasNoMes().quantidade(),
-                segundoPaciente.getQuantidaDeDiasNoMes().quantidade());
+        Assertions.assertThat(dtos).extracting(dto -> dto.quantidaDeDiasNoMes).containsExactlyInAnyOrder(primeiroPaciente.getQuantidadeDeDiasNoMes().quantidade(),
+                segundoPaciente.getQuantidadeDeDiasNoMes().quantidade());
         Assertions.assertThat(dtos).extracting(dto -> dto.valorPorSessao).containsExactlyInAnyOrder(primeiroPaciente.getValorPorSessao().valor(),
                 segundoPaciente.getValorPorSessao().valor());
         Assertions.assertThat(dtos).extracting(dto -> dto.dataDeInicio).containsExactlyInAnyOrder(primeiroPaciente.getDataDeInicio(),

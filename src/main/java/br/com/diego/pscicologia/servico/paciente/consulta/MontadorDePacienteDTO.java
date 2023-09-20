@@ -14,8 +14,8 @@ public class MontadorDePacienteDTO {
         dto.nome = paciente.getNome();
         dto.endereco = paciente.getEndereco();
         dto.valorPorSessao = paciente.getValorPorSessao().valor();
-        if (Objects.nonNull(paciente.getQuantidaDeDiasNoMes())) {
-            dto.quantidaDeDiasNoMes = paciente.getQuantidaDeDiasNoMes().valor().intValue();
+        if (Objects.nonNull(paciente.getQuantidadeDeDiasNoMes())) {
+            dto.quantidaDeDiasNoMes = paciente.getQuantidadeDeDiasNoMes().valor().intValue();
         }
         dto.dataDeInicio = paciente.getDataDeInicio();
         dto.inativo = paciente.getInativo();
