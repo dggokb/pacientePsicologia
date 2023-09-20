@@ -15,42 +15,71 @@ import java.util.stream.Stream;
 public class PacienteTest {
 
     @Test
-    void deveSerPossivelCriarUmPaciente() {
+    void deveSerPossivelCriarUmPacienteDoTipoFixo() {
         String nomeEsperado = "Diego Guedes";
         String enderecoEsperado = "Av das Bananeiras";
         LocalDate dataDeInicioEsperado = LocalDate.now();
-        Quantidade quantidaDeDiasNoMesEsperado = Quantidade.criar(2);
         Moeda valorPorSessaoEsperado = Moeda.criar(150);
-        Tipo tipoDePacienteEsperado = Tipo.VALOR_MENSAL;
+        Tipo tipoDePacienteEsperado = Tipo.VALOR_FIXO;
 
-        Paciente paciente = new Paciente(nomeEsperado, enderecoEsperado, quantidaDeDiasNoMesEsperado, valorPorSessaoEsperado, tipoDePacienteEsperado);
+        Paciente paciente = new Paciente(nomeEsperado, enderecoEsperado, valorPorSessaoEsperado);
 
         Assertions.assertThat(paciente.getNome()).isEqualTo(nomeEsperado);
         Assertions.assertThat(paciente.getEndereco()).isEqualTo(enderecoEsperado);
         Assertions.assertThat(paciente.getDataDeInicio()).isEqualTo(dataDeInicioEsperado);
-        Assertions.assertThat(paciente.getQuantidaDeDiasNoMes()).isEqualTo(quantidaDeDiasNoMesEsperado);
+        Assertions.assertThat(paciente.getValorPorSessao()).isEqualTo(valorPorSessaoEsperado);
+        Assertions.assertThat(paciente.getInativo()).isFalse();
+        Assertions.assertThat(paciente.getTipo()).isEqualTo(tipoDePacienteEsperado);
+    }
+
+    @Test
+    void deveSerPossivelCriarUmPacienteDoTipoMensal() {
+        String nomeEsperado = "Diego Guedes";
+        String enderecoEsperado = "Av das Bananeiras";
+        LocalDate dataDeInicioEsperado = LocalDate.now();
+        Quantidade quantidadeDeDiasNoMesEsperado = Quantidade.criar(10);
+        Moeda valorPorSessaoEsperado = Moeda.criar(150);
+        Tipo tipoDePacienteEsperado = Tipo.VALOR_MENSAL;
+
+        Paciente paciente = new Paciente(nomeEsperado, enderecoEsperado, quantidadeDeDiasNoMesEsperado, valorPorSessaoEsperado);
+
+        Assertions.assertThat(paciente.getNome()).isEqualTo(nomeEsperado);
+        Assertions.assertThat(paciente.getEndereco()).isEqualTo(enderecoEsperado);
+        Assertions.assertThat(paciente.getDataDeInicio()).isEqualTo(dataDeInicioEsperado);
+        Assertions.assertThat(paciente.getQuantidaDeDiasNoMes()).isEqualTo(quantidadeDeDiasNoMesEsperado);
         Assertions.assertThat(paciente.getValorPorSessao()).isEqualTo(valorPorSessaoEsperado);
         Assertions.assertThat(paciente.getInativo()).isFalse();
         Assertions.assertThat(paciente.getTipo()).isEqualTo(tipoDePacienteEsperado);
     }
 
     @ParameterizedTest
-    @MethodSource("dadosNecessariosParaValidarCriacao")
-    void naoDeveSerPossivelCriarUmPacienteSemOsDadosNecessarios(String nome,
-                                                                String endereco,
-                                                                Quantidade quantidaDeDiasNoMes,
-                                                                Moeda valorPorSessao,
-                                                                Tipo tipo,
-                                                                String mensagemEsperada) {
+    @MethodSource("dadosNecessariosParaValidarCriacaoDeTipoMensal")
+    void naoDeveSerPossivelCriarUmPacienteDeValorMensalSemOsDadosNecessarios(String nome,
+                                                                             String endereco,
+                                                                             Quantidade quantidaDeDiasNoMes,
+                                                                             Moeda valorPorSessao,
+                                                                             String mensagemEsperada) {
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, tipo));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao));
+
+        Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
+    }
+
+    @ParameterizedTest
+    @MethodSource("dadosNecessariosParaValidarCriacaoDeTipoFixo")
+    void naoDeveSerPossivelCriarUmPacienteDeValorFixoSemOsDadosNecessarios(String nome,
+                                                                           String endereco,
+                                                                           Moeda valorPorSessao,
+                                                                           String mensagemEsperada) {
+
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(nome, endereco, valorPorSessao));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
 
     @Test
     void deveSerPossivelAlterarOsDadosDeUmPaciente() {
-        Paciente paciente = new PacienteBuilder().criar();
+        Paciente paciente = new PacienteBuilder().criarTipoMensal();
         String novoEnderecoEsperado = "Novo endereço.";
         Moeda novoValorPorSessaoEsperado = Moeda.criar(300);
 
@@ -65,7 +94,7 @@ public class PacienteTest {
     void naoDeveSerPossivelAlterarUmPacienteSemOsDadosNecessarios(String endereco,
                                                                   Moeda valorPorSessao,
                                                                   String mensagemEsperada) {
-        Paciente paciente = new PacienteBuilder().criar();
+        Paciente paciente = new PacienteBuilder().criarTipoMensal();
 
         Throwable excecaoLancada = Assertions.catchThrowable(() -> paciente.alterar(endereco, valorPorSessao));
 
@@ -74,7 +103,7 @@ public class PacienteTest {
 
     @Test
     void deveSerPossivelInativarUmPaciente() {
-        Paciente pacienteAtivo = new PacienteBuilder().ativo().criar();
+        Paciente pacienteAtivo = new PacienteBuilder().ativo().criarTipoMensal();
 
         pacienteAtivo.inativar();
 
@@ -84,7 +113,7 @@ public class PacienteTest {
     @Test
     void naoDeveSerPossivelInativarUmPacienteQueJahEstaInativo() {
         String mensagemEsperda = "O paciente já está inativo.";
-        Paciente pacienteInativo = new PacienteBuilder().inativo().criar();
+        Paciente pacienteInativo = new PacienteBuilder().inativo().criarTipoMensal();
 
         Throwable excecaoLancada = Assertions.catchThrowable(pacienteInativo::inativar);
 
@@ -93,7 +122,7 @@ public class PacienteTest {
 
     @Test
     void deveSerPossivelAtivarUmPaciente() {
-        Paciente pacienteInativo = new PacienteBuilder().inativo().criar();
+        Paciente pacienteInativo = new PacienteBuilder().inativo().criarTipoMensal();
 
         pacienteInativo.ativar();
 
@@ -103,7 +132,7 @@ public class PacienteTest {
     @Test
     void naoDeveSerPossivelAtivarUmPacienteQueJahEstaAtivo() {
         String mensagemEsperda = "O paciente já está ativo.";
-        Paciente pacienteAtivo = new PacienteBuilder().ativo().criar();
+        Paciente pacienteAtivo = new PacienteBuilder().ativo().criarTipoMensal();
 
         Throwable excecaoLancada = Assertions.catchThrowable(pacienteAtivo::ativar);
 
@@ -112,27 +141,37 @@ public class PacienteTest {
 
     @Test
     void deveSerPossivelObterADescricaoDoTipoDoPaciente() {
-        Tipo tipo = Tipo.VALOR_FIXO;
-        Paciente paciente = new PacienteBuilder().comTipo(tipo).criar();
+        Tipo tipo = Tipo.VALOR_MENSAL;
+        Paciente paciente = new PacienteBuilder().comTipo(tipo).criarTipoMensal();
 
         String descricaoDoTipo = paciente.obterDescricaoDoTipo();
 
         Assertions.assertThat(descricaoDoTipo).isEqualTo(tipo.getDescricao());
     }
 
-    private static Stream<Arguments> dadosNecessariosParaValidarCriacao() {
+    private static Stream<Arguments> dadosNecessariosParaValidarCriacaoDeTipoMensal() {
         String nome = "Teste";
         String endereco = "Endereço teste";
         Quantidade quantidaDeDiasNoMes = Quantidade.ZERO;
         Moeda valorPorSessao = Moeda.ZERO;
-        Tipo tipo = Tipo.VALOR_FIXO;
 
         return Stream.of(
-                Arguments.of(null, endereco, quantidaDeDiasNoMes, valorPorSessao, tipo,"Não é possível criar um paciente sem informar o nome."),
-                Arguments.of(nome, null, quantidaDeDiasNoMes, valorPorSessao, tipo,"Não é possível criar um paciente sem informar o endereço."),
-                Arguments.of(nome, endereco, null, valorPorSessao, tipo, "Não é possível criar um paciente sem quantidade de dias no mes."),
-                Arguments.of(nome, endereco, quantidaDeDiasNoMes, null, tipo, "Não é possível criar um paciente sem informar o valor por sessão."),
-                Arguments.of(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, null, "Não é possível criar um paciente sem informar o tipo do paciente.")
+                Arguments.of(null, endereco, quantidaDeDiasNoMes, valorPorSessao, "Não é possível criar um paciente sem informar o nome."),
+                Arguments.of(nome, null, quantidaDeDiasNoMes, valorPorSessao, "Não é possível criar um paciente sem informar o endereço."),
+                Arguments.of(nome, endereco, null, valorPorSessao, "Não é possível criar um paciente sem quantidade de dias no mes."),
+                Arguments.of(nome, endereco, quantidaDeDiasNoMes, null, "Não é possível criar um paciente sem informar o valor por sessão.")
+        );
+    }
+
+    private static Stream<Arguments> dadosNecessariosParaValidarCriacaoDeTipoFixo() {
+        String nome = "Teste";
+        String endereco = "Endereço teste";
+        Moeda valorPorSessao = Moeda.ZERO;
+
+        return Stream.of(
+                Arguments.of(null, endereco, valorPorSessao, "Não é possível criar um paciente sem informar o nome."),
+                Arguments.of(nome, null, valorPorSessao, "Não é possível criar um paciente sem informar o endereço."),
+                Arguments.of(nome, endereco, null, "Não é possível criar um paciente sem informar o valor por sessão.")
         );
     }
 

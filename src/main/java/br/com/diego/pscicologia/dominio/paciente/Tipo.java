@@ -10,6 +10,14 @@ public enum Tipo {
         this.descricao = descricao;
     }
 
+    public Boolean ehValorFixo() {
+        return this.equals(Tipo.VALOR_FIXO);
+    }
+
+    public Boolean ehValorMensal() {
+        return this.equals(Tipo.VALOR_MENSAL);
+    }
+
     public String getDescricao() {
         return descricao;
     }

@@ -24,14 +24,17 @@ public class PacienteBuilder {
         this.quantidaDeDiasNoMes = Quantidade.criar(2);
         this.valorPorSessao = Moeda.criar(23);
         this.inativo = false;
-        this.tipo = Tipo.VALOR_MENSAL;
     }
 
-    public Paciente criar() {
-        Paciente paciente = new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, tipo);
-        if (this.inativo.equals(Boolean.TRUE)) {
-            paciente.inativar();
-        }
+    public Paciente criarTipoMensal() {
+        Paciente paciente = new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao);
+        inativarPaciente(paciente);
+        return paciente;
+    }
+
+    public Paciente criarTipoFixo() {
+        Paciente paciente = new Paciente(nome, endereco, valorPorSessao);
+        inativarPaciente(paciente);
         return paciente;
     }
 
@@ -73,5 +76,11 @@ public class PacienteBuilder {
     public PacienteBuilder inativo() {
         this.inativo = true;
         return this;
+    }
+
+    private void inativarPaciente(Paciente paciente) {
+        if (this.inativo.equals(Boolean.TRUE)) {
+            paciente.inativar();
+        }
     }
 }
