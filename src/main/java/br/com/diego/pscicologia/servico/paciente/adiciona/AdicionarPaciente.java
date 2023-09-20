@@ -6,23 +6,24 @@ import br.com.diego.pscicologia.comum.Quantidade;
 import br.com.diego.pscicologia.dominio.paciente.Tipo;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public class AdicionarPaciente implements Comando {
 
     private String nome;
     private String endereco;
-    private Quantidade quantidaDeDiasNoMes;
+    private Quantidade quantidadeDeDiasNoMes;
     private Moeda valorPorSessao;
     private Tipo tipo;
 
     public AdicionarPaciente(String nome,
                              String endereco,
-                             Integer quantidaDeDiasNoMes,
+                             Optional<Integer> quantidadeDeDiasNoMes,
                              BigDecimal valorPorSessao,
                              String tipo) {
         this.nome = nome;
         this.endereco = endereco;
-        this.quantidaDeDiasNoMes = Quantidade.criar(quantidaDeDiasNoMes);
+        this.quantidadeDeDiasNoMes = quantidadeDeDiasNoMes.map(Quantidade::criar).orElse(null);
         this.valorPorSessao = Moeda.criar(valorPorSessao);
         this.tipo = Tipo.valueOf(tipo);
     }
@@ -35,8 +36,8 @@ public class AdicionarPaciente implements Comando {
         return endereco;
     }
 
-    public Quantidade getQuantidaDeDiasNoMes() {
-        return quantidaDeDiasNoMes;
+    public Quantidade getQuantidadeDeDiasNoMes() {
+        return quantidadeDeDiasNoMes;
     }
 
     public Moeda getValorPorSessao() {

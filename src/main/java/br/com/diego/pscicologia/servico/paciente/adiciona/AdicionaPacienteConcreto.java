@@ -22,7 +22,7 @@ public class AdicionaPacienteConcreto implements AdicionaPaciente {
     public String adicionar(AdicionarPaciente comando) {
         Paciente paciente = new PacienteFabrica().fabricar(comando.getNome(),
                 comando.getEndereco(),
-                comando.getQuantidaDeDiasNoMes(),
+                comando.getQuantidadeDeDiasNoMes(),
                 comando.getValorPorSessao(),
                 comando.getTipo());
         pacienteRepositorio.insert(paciente);

@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.Optional;
+
 public class AdicionaPacienteTest {
 
     private PacienteRepositorio pacienteRepositorio;
@@ -28,7 +30,7 @@ public class AdicionaPacienteTest {
     void deveSerPossivelAdicionarUmPaciente() {
         Paciente paciente = new PacienteBuilder().criarTipoValorPorSessao();
         AdicionarPaciente comando = new AdicionarPaciente(paciente.getNome(), paciente.getEndereco(),
-                paciente.getQuantidadeDeDiasNoMes().valor().intValue(), paciente.getValorPorSessao().valor(), paciente.getTipo().name());
+                Optional.of(paciente.getQuantidadeDeDiasNoMes().valor().intValue()), paciente.getValorPorSessao().valor(), paciente.getTipo().name());
         ArgumentCaptor<Paciente> pacienteCaptor = ArgumentCaptor.forClass(Paciente.class);
         Mockito.when(pacienteRepositorio.insert(pacienteCaptor.capture())).thenReturn(paciente);
 
