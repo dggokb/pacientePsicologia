@@ -27,12 +27,12 @@ public class ConsultaPacienteConcreto implements ConsultaPaciente {
         Optional<Paciente> pacienteObtido = pacienteRepositorio.findById(id);
         validarSePacienteFoiEncontrado(pacienteObtido);
 
-        return criarDTO(pacienteObtido.get());
+        return new MontadorDePacienteDTO().montar(pacienteObtido.get());
     }
 
     private void validarSePossuiIdentificador(String id) throws Exception {
-        if (Objects.isNull(id)){
-            throw  new Exception("É necessário informar o paciente para consulta.");
+        if (Objects.isNull(id)) {
+            throw new Exception("É necessário informar o paciente para consulta.");
         }
     }
 
@@ -40,19 +40,5 @@ public class ConsultaPacienteConcreto implements ConsultaPaciente {
         if (pacienteObtido.isEmpty()) {
             throw new Exception("Não foi possível contrar o paciente.");
         }
-    }
-
-    private PacienteDTO criarDTO(Paciente pacienteObtido) {
-        PacienteDTO dto = new PacienteDTO();
-        dto.id = pacienteObtido.getId();
-        dto.nome = pacienteObtido.getNome();
-        dto.endereco = pacienteObtido.getEndereco();
-        dto.quantidaDeDiasNoMes = pacienteObtido.getQuantidaDeDiasNoMes().valor().intValue();
-        dto.valorPorSessao = pacienteObtido.getValorPorSessao().valor();
-        dto.dataDeInicio = pacienteObtido.getDataDeInicio();
-        dto.inativo = pacienteObtido.getInativo();
-        dto.tipo = pacienteObtido.obterDescricaoDoTipo();
-
-        return dto;
     }
 }

@@ -36,17 +36,11 @@ public class ConsultaPacientesConcreto implements ConsultaPacientes {
 
     private List<PacienteDTO> montarDTOs(List<Paciente> pacientes) {
         return pacientes.stream().map(paciente -> {
-            PacienteDTO dto = new PacienteDTO();
-            dto.id = paciente.getId();
-            dto.nome = paciente.getNome();
-            dto.endereco = paciente.getEndereco();
-            dto.valorPorSessao = paciente.getValorPorSessao().valor();
-            dto.quantidaDeDiasNoMes = paciente.getQuantidaDeDiasNoMes().valor().intValue();
-            dto.dataDeInicio = paciente.getDataDeInicio();
-            dto.inativo = paciente.getInativo();
-            dto.tipo = paciente.obterDescricaoDoTipo();
-
-            return dto;
+            try {
+                return new MontadorDePacienteDTO().montar(paciente);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }).collect(Collectors.toList());
     }
 }
