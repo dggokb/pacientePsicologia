@@ -21,8 +21,9 @@ public class PacienteTest {
         LocalDate dataDeInicioEsperado = LocalDate.now();
         Quantidade quantidaDeDiasNoMesEsperado = Quantidade.criar(2);
         Moeda valorPorSessaoEsperado = Moeda.criar(150);
+        TipoDoPaciente tipoDePaciente = TipoDoPaciente.VALOR_MENSAL;
 
-        Paciente paciente = new Paciente(nomeEsperado, enderecoEsperado, quantidaDeDiasNoMesEsperado, valorPorSessaoEsperado);
+        Paciente paciente = new Paciente(nomeEsperado, enderecoEsperado, quantidaDeDiasNoMesEsperado, valorPorSessaoEsperado, tipoDePaciente);
 
         Assertions.assertThat(paciente.getNome()).isEqualTo(nomeEsperado);
         Assertions.assertThat(paciente.getEndereco()).isEqualTo(enderecoEsperado);
@@ -30,6 +31,7 @@ public class PacienteTest {
         Assertions.assertThat(paciente.getQuantidaDeDiasNoMes()).isEqualTo(quantidaDeDiasNoMesEsperado);
         Assertions.assertThat(paciente.getValorPorSessao()).isEqualTo(valorPorSessaoEsperado);
         Assertions.assertThat(paciente.getInativo()).isFalse();
+        Assertions.assertThat(paciente.getTipoDoPaciente()).isEqualTo(tipoDePaciente);
     }
 
     @ParameterizedTest
@@ -38,9 +40,10 @@ public class PacienteTest {
                                                                 String endereco,
                                                                 Quantidade quantidaDeDiasNoMes,
                                                                 Moeda valorPorSessao,
+                                                                TipoDoPaciente tipoDoPaciente,
                                                                 String mensagemEsperada) {
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, tipoDoPaciente));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
@@ -112,12 +115,14 @@ public class PacienteTest {
         String endereco = "Endereço teste";
         Quantidade quantidaDeDiasNoMes = Quantidade.ZERO;
         Moeda valorPorSessao = Moeda.ZERO;
+        TipoDoPaciente tipoDoPaciente = TipoDoPaciente.VALOR_FIXO;
 
         return Stream.of(
-                Arguments.of(null, endereco, quantidaDeDiasNoMes, valorPorSessao, "Não é possível criar um paciênte sem informar o nome."),
-                Arguments.of(nome, null, quantidaDeDiasNoMes, valorPorSessao, "Não é possível criar um paciênte sem informar o endereço."),
-                Arguments.of(nome, endereco, null, valorPorSessao, "Não é possível criar um paciênte sem quantidade de dias no mes."),
-                Arguments.of(nome, endereco, quantidaDeDiasNoMes, null, "Não é possível criar um paciênte sem informar o valor por sessão.")
+                Arguments.of(null, endereco, quantidaDeDiasNoMes, valorPorSessao, tipoDoPaciente,"Não é possível criar um paciente sem informar o nome."),
+                Arguments.of(nome, null, quantidaDeDiasNoMes, valorPorSessao, tipoDoPaciente,"Não é possível criar um paciente sem informar o endereço."),
+                Arguments.of(nome, endereco, null, valorPorSessao, tipoDoPaciente, "Não é possível criar um paciente sem quantidade de dias no mes."),
+                Arguments.of(nome, endereco, quantidaDeDiasNoMes, null, tipoDoPaciente, "Não é possível criar um paciente sem informar o valor por sessão."),
+                Arguments.of(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, null, "Não é possível criar um paciente sem informar o tipo de paciente.")
         );
     }
 
@@ -126,8 +131,8 @@ public class PacienteTest {
         Moeda valorPorSessao = Moeda.ZERO;
 
         return Stream.of(
-                Arguments.of(null, valorPorSessao, "Não é possível alterar um paciênte sem informar o endereço."),
-                Arguments.of(endereco, null, "Não é possível alterar um paciênte sem informar o valor por sessão.")
+                Arguments.of(null, valorPorSessao, "Não é possível alterar um paciente sem informar o endereço."),
+                Arguments.of(endereco, null, "Não é possível alterar um paciente sem informar o valor por sessão.")
         );
     }
 }
