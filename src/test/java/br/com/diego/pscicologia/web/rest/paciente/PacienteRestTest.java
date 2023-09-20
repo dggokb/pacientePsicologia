@@ -1,6 +1,7 @@
 package br.com.diego.pscicologia.web.rest.paciente;
 
 import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
+import br.com.diego.pscicologia.dominio.paciente.Tipo;
 import br.com.diego.pscicologia.servico.paciente.ativa.AtivaPaciente;
 import br.com.diego.pscicologia.servico.paciente.inativa.InativaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
@@ -181,6 +182,7 @@ class PacienteRestTest {
         httpDTO.endereco = "Teste";
         httpDTO.quantidaDeDiasNoMes = 10;
         httpDTO.valorPorSessao = BigDecimal.TEN;
+        httpDTO.tipo = "VALOR_MENSAL";
 
         return httpDTO;
     }
