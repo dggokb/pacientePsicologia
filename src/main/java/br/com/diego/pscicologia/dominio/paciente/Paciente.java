@@ -37,7 +37,7 @@ public class Paciente extends Entidade {
         this.quantidaDeDiasNoMes = quantidaDeDiasNoMes;
         this.valorPorSessao = valorPorSessao;
         this.inativo = false;
-        this.tipo = Tipo.VALOR_MENSAL;
+        this.tipo = Tipo.VALOR_POR_SESSAO;
     }
 
     public void alterar(String endereco, Moeda valorPorSessao) {

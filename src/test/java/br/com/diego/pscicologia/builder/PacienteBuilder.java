@@ -26,7 +26,7 @@ public class PacienteBuilder {
         this.inativo = false;
     }
 
-    public Paciente criarTipoMensal() {
+    public Paciente criarTipoValorPorSessao() {
         Paciente paciente = new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao);
         inativarPaciente(paciente);
         return paciente;
