@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "paciente",
@@ -92,7 +93,7 @@ public class PacienteRest {
     }
 
     private static AdicionarPaciente criarComandoParaAdicionar(AdicionaPacienteHttpDTO httpDTO) {
-        return new AdicionarPaciente(httpDTO.nome, httpDTO.endereco, httpDTO.quantidaDeDiasNoMes, httpDTO.valorPorSessao, httpDTO.tipo);
+        return new AdicionarPaciente(httpDTO.nome, httpDTO.endereco, Optional.ofNullable(httpDTO.quantidaDeDiasNoMes), httpDTO.valorPorSessao, httpDTO.tipo);
     }
 
     private static AlterarPaciente criarComandoParaAlterar(AlteraPacienteHttpDTO httpDTO) {

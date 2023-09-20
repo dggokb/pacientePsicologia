@@ -1,7 +1,6 @@
 package br.com.diego.pscicologia.web.rest.paciente;
 
 import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
-import br.com.diego.pscicologia.dominio.paciente.Tipo;
 import br.com.diego.pscicologia.servico.paciente.ativa.AtivaPaciente;
 import br.com.diego.pscicologia.servico.paciente.inativa.InativaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
@@ -80,7 +79,7 @@ class PacienteRestTest {
         AdicionarPaciente comandoCapturado = captor.getValue();
         Assertions.assertThat(comandoCapturado.getNome()).isEqualTo(httpDTO.nome);
         Assertions.assertThat(comandoCapturado.getEndereco()).isEqualTo(httpDTO.endereco);
-        Assertions.assertThat(comandoCapturado.getQuantidaDeDiasNoMes().valor().intValue()).isEqualTo(httpDTO.quantidaDeDiasNoMes);
+        Assertions.assertThat(comandoCapturado.getQuantidadeDeDiasNoMes().valor().intValue()).isEqualTo(httpDTO.quantidaDeDiasNoMes);
         Assertions.assertThat(comandoCapturado.getValorPorSessao().valor()).isEqualTo(httpDTO.valorPorSessao);
     }
 
