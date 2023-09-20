@@ -92,7 +92,7 @@ public class PacienteRest {
     }
 
     private static AdicionarPaciente criarComandoParaAdicionar(AdicionaPacienteHttpDTO httpDTO) {
-        return new AdicionarPaciente(httpDTO.nome, httpDTO.endereco, httpDTO.quantidaDeDiasNoMes, httpDTO.valorPorSessao, httpDTO.tipoDoPaciente);
+        return new AdicionarPaciente(httpDTO.nome, httpDTO.endereco, httpDTO.quantidaDeDiasNoMes, httpDTO.valorPorSessao, httpDTO.tipo);
     }
 
     private static AlterarPaciente criarComandoParaAlterar(AlteraPacienteHttpDTO httpDTO) {

@@ -1,12 +1,12 @@
 package br.com.diego.pscicologia.dominio.paciente;
 
-public enum TipoDoPaciente {
+public enum Tipo {
     VALOR_FIXO("Valor fixo"),
     VALOR_MENSAL("Valor mensal");
 
     private final String descricao;
 
-    TipoDoPaciente(String descricao) {
+    Tipo(String descricao) {
         this.descricao = descricao;
     }
 

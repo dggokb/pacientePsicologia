@@ -3,7 +3,7 @@ package br.com.diego.pscicologia.servico.paciente.adiciona;
 import br.com.diego.pscicologia.comum.Comando;
 import br.com.diego.pscicologia.comum.Moeda;
 import br.com.diego.pscicologia.comum.Quantidade;
-import br.com.diego.pscicologia.dominio.paciente.TipoDoPaciente;
+import br.com.diego.pscicologia.dominio.paciente.Tipo;
 
 import java.math.BigDecimal;
 
@@ -13,18 +13,18 @@ public class AdicionarPaciente implements Comando {
     private String endereco;
     private Quantidade quantidaDeDiasNoMes;
     private Moeda valorPorSessao;
-    private TipoDoPaciente tipoDoPaciente;
+    private Tipo tipo;
 
     public AdicionarPaciente(String nome,
                              String endereco,
                              Integer quantidaDeDiasNoMes,
                              BigDecimal valorPorSessao,
-                             String tipoDePaciente) {
+                             String tipo) {
         this.nome = nome;
         this.endereco = endereco;
         this.quantidaDeDiasNoMes = Quantidade.criar(quantidaDeDiasNoMes);
         this.valorPorSessao = Moeda.criar(valorPorSessao);
-        this.tipoDoPaciente = TipoDoPaciente.valueOf(tipoDePaciente);
+        this.tipo = Tipo.valueOf(tipo);
     }
 
     public String getNome() {
@@ -43,7 +43,7 @@ public class AdicionarPaciente implements Comando {
         return valorPorSessao;
     }
 
-    public TipoDoPaciente getTipoDoPaciente() {
-        return tipoDoPaciente;
+    public Tipo getTipo() {
+        return tipo;
     }
 }

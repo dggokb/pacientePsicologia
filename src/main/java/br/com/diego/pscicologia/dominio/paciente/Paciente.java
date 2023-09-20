@@ -12,21 +12,21 @@ public class Paciente extends Entidade {
     private Quantidade quantidaDeDiasNoMes;
     private Moeda valorPorSessao;
     private Boolean inativo;
-    private TipoDoPaciente tipoDoPaciente;
+    private Tipo tipo;
 
     public Paciente(String nome,
                     String endereco,
                     Quantidade quantidaDeDiasNoMes,
                     Moeda valorPorSessao,
-                    TipoDoPaciente tipoDoPaciente) {
-        validarCamposObrigatorios(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, tipoDoPaciente);
+                    Tipo tipo) {
+        validarCamposObrigatorios(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, tipo);
         this.nome = nome;
         this.endereco = endereco;
         this.dataDeInicio = LocalDate.now();
         this.quantidaDeDiasNoMes = quantidaDeDiasNoMes;
         this.valorPorSessao = valorPorSessao;
         this.inativo = false;
-        this.tipoDoPaciente = tipoDoPaciente;
+        this.tipo = tipo;
     }
 
     public void alterar(String endereco, Moeda valorPorSessao) {
@@ -39,13 +39,13 @@ public class Paciente extends Entidade {
                                            String endereco,
                                            Quantidade quantidaDeDiasNoMes,
                                            Moeda valorPorSessao,
-                                           TipoDoPaciente tipoDoPaciente) {
+                                           Tipo tipo) {
         new ExcecaoDeCampoObrigatorio()
                 .quandoNulo(nome, "Não é possível criar um paciente sem informar o nome.")
                 .quandoNulo(endereco, "Não é possível criar um paciente sem informar o endereço.")
                 .quandoNulo(quantidaDeDiasNoMes, "Não é possível criar um paciente sem quantidade de dias no mes.")
                 .quandoNulo(valorPorSessao, "Não é possível criar um paciente sem informar o valor por sessão.")
-                .quandoNulo(tipoDoPaciente, "Não é possível criar um paciente sem informar o tipo do paciente.")
+                .quandoNulo(tipo, "Não é possível criar um paciente sem informar o tipo do paciente.")
                 .entaoDispara();
     }
 
@@ -96,7 +96,7 @@ public class Paciente extends Entidade {
         return inativo;
     }
 
-    public TipoDoPaciente getTipoDoPaciente() {
-        return tipoDoPaciente;
+    public Tipo getTipo() {
+        return tipo;
     }
 }

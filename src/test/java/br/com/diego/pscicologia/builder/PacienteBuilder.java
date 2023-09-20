@@ -3,7 +3,7 @@ package br.com.diego.pscicologia.builder;
 import br.com.diego.pscicologia.comum.Moeda;
 import br.com.diego.pscicologia.comum.Quantidade;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
-import br.com.diego.pscicologia.dominio.paciente.TipoDoPaciente;
+import br.com.diego.pscicologia.dominio.paciente.Tipo;
 
 import java.time.LocalDate;
 
@@ -15,7 +15,7 @@ public class PacienteBuilder {
     private Quantidade quantidaDeDiasNoMes;
     private Moeda valorPorSessao;
     private Boolean inativo;
-    private TipoDoPaciente tipoDoPaciente;
+    private Tipo tipo;
 
     public PacienteBuilder() {
         this.nome = "Diego Guedes";
@@ -24,11 +24,11 @@ public class PacienteBuilder {
         this.quantidaDeDiasNoMes = Quantidade.criar(2);
         this.valorPorSessao = Moeda.criar(23);
         this.inativo = false;
-        this.tipoDoPaciente = TipoDoPaciente.VALOR_MENSAL;
+        this.tipo = Tipo.VALOR_MENSAL;
     }
 
     public Paciente criar() {
-        Paciente paciente = new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, tipoDoPaciente);
+        Paciente paciente = new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, tipo);
         if (this.inativo.equals(Boolean.TRUE)) {
             paciente.inativar();
         }
@@ -60,8 +60,8 @@ public class PacienteBuilder {
         return this;
     }
 
-    public PacienteBuilder comTipoDePaciente(TipoDoPaciente tipoDoPaciente) {
-        this.tipoDoPaciente = tipoDoPaciente;
+    public PacienteBuilder comTipoDePaciente(Tipo tipo) {
+        this.tipo = tipo;
         return this;
     }
 

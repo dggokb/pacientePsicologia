@@ -7,5 +7,5 @@ public class AdicionaPacienteHttpDTO {
     public String endereco;
     public Integer quantidaDeDiasNoMes;
     public BigDecimal valorPorSessao;
-    public String tipoDoPaciente;
+    public String tipo;
 }

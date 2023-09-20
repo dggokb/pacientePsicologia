@@ -21,9 +21,9 @@ public class PacienteTest {
         LocalDate dataDeInicioEsperado = LocalDate.now();
         Quantidade quantidaDeDiasNoMesEsperado = Quantidade.criar(2);
         Moeda valorPorSessaoEsperado = Moeda.criar(150);
-        TipoDoPaciente tipoDePaciente = TipoDoPaciente.VALOR_MENSAL;
+        Tipo tipoDePacienteEsperado = Tipo.VALOR_MENSAL;
 
-        Paciente paciente = new Paciente(nomeEsperado, enderecoEsperado, quantidaDeDiasNoMesEsperado, valorPorSessaoEsperado, tipoDePaciente);
+        Paciente paciente = new Paciente(nomeEsperado, enderecoEsperado, quantidaDeDiasNoMesEsperado, valorPorSessaoEsperado, tipoDePacienteEsperado);
 
         Assertions.assertThat(paciente.getNome()).isEqualTo(nomeEsperado);
         Assertions.assertThat(paciente.getEndereco()).isEqualTo(enderecoEsperado);
@@ -31,7 +31,7 @@ public class PacienteTest {
         Assertions.assertThat(paciente.getQuantidaDeDiasNoMes()).isEqualTo(quantidaDeDiasNoMesEsperado);
         Assertions.assertThat(paciente.getValorPorSessao()).isEqualTo(valorPorSessaoEsperado);
         Assertions.assertThat(paciente.getInativo()).isFalse();
-        Assertions.assertThat(paciente.getTipoDoPaciente()).isEqualTo(tipoDePaciente);
+        Assertions.assertThat(paciente.getTipo()).isEqualTo(tipoDePacienteEsperado);
     }
 
     @ParameterizedTest
@@ -40,10 +40,10 @@ public class PacienteTest {
                                                                 String endereco,
                                                                 Quantidade quantidaDeDiasNoMes,
                                                                 Moeda valorPorSessao,
-                                                                TipoDoPaciente tipoDoPaciente,
+                                                                Tipo tipo,
                                                                 String mensagemEsperada) {
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, tipoDoPaciente));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, tipo));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
@@ -115,14 +115,14 @@ public class PacienteTest {
         String endereco = "Endereço teste";
         Quantidade quantidaDeDiasNoMes = Quantidade.ZERO;
         Moeda valorPorSessao = Moeda.ZERO;
-        TipoDoPaciente tipoDoPaciente = TipoDoPaciente.VALOR_FIXO;
+        Tipo tipo = Tipo.VALOR_FIXO;
 
         return Stream.of(
-                Arguments.of(null, endereco, quantidaDeDiasNoMes, valorPorSessao, tipoDoPaciente,"Não é possível criar um paciente sem informar o nome."),
-                Arguments.of(nome, null, quantidaDeDiasNoMes, valorPorSessao, tipoDoPaciente,"Não é possível criar um paciente sem informar o endereço."),
-                Arguments.of(nome, endereco, null, valorPorSessao, tipoDoPaciente, "Não é possível criar um paciente sem quantidade de dias no mes."),
-                Arguments.of(nome, endereco, quantidaDeDiasNoMes, null, tipoDoPaciente, "Não é possível criar um paciente sem informar o valor por sessão."),
-                Arguments.of(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, null, "Não é possível criar um paciente sem informar o tipo de paciente.")
+                Arguments.of(null, endereco, quantidaDeDiasNoMes, valorPorSessao, tipo,"Não é possível criar um paciente sem informar o nome."),
+                Arguments.of(nome, null, quantidaDeDiasNoMes, valorPorSessao, tipo,"Não é possível criar um paciente sem informar o endereço."),
+                Arguments.of(nome, endereco, null, valorPorSessao, tipo, "Não é possível criar um paciente sem quantidade de dias no mes."),
+                Arguments.of(nome, endereco, quantidaDeDiasNoMes, null, tipo, "Não é possível criar um paciente sem informar o valor por sessão."),
+                Arguments.of(nome, endereco, quantidaDeDiasNoMes, valorPorSessao, null, "Não é possível criar um paciente sem informar o tipo do paciente.")
         );
     }
 
