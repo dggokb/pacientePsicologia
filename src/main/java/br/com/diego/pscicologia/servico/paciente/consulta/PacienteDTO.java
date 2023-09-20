@@ -11,4 +11,5 @@ public class PacienteDTO {
     public BigDecimal valorPorSessao;
     public LocalDate dataDeInicio;
     public Boolean inativo;
+    public String tipo;
 }
