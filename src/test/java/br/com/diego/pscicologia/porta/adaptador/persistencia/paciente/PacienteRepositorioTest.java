@@ -18,6 +18,7 @@ public class PacienteRepositorioTest {
     @Autowired
     private PacienteRepositorio pacienteRepositorio;
 
+    //TODO: verificar forma de criar em memória banco
     @BeforeEach
     void setUp() {
         pacienteRepositorio.deleteAll();
