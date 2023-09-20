@@ -2,7 +2,7 @@ package br.com.diego.pscicologia.dominio.paciente;
 
 public enum Tipo {
     VALOR_FIXO("Valor fixo"),
-    VALOR_MENSAL("Valor mensal");
+    VALOR_POR_SESSAO("Valor por sessão");
 
     private final String descricao;
 
@@ -15,7 +15,7 @@ public enum Tipo {
     }
 
     public Boolean ehValorMensal() {
-        return this.equals(Tipo.VALOR_MENSAL);
+        return this.equals(Tipo.VALOR_POR_SESSAO);
     }
 
     public String getDescricao() {

@@ -34,7 +34,7 @@ class AlteraPacienteTest {
         String enderecoEsperado = "Novo endereço do paciente";
         BigDecimal valorPorSessaoEsperado = BigDecimal.valueOf(200);
         AlterarPaciente comando = new AlterarPaciente(id, enderecoEsperado, valorPorSessaoEsperado);
-        Paciente paciente = new PacienteBuilder().criarTipoMensal();
+        Paciente paciente = new PacienteBuilder().criarTipoValorPorSessao();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
 
         alteraPaciente.alterar(comando);

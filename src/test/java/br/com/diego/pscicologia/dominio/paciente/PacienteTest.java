@@ -39,7 +39,7 @@ public class PacienteTest {
         LocalDate dataDeInicioEsperado = LocalDate.now();
         Quantidade quantidadeDeDiasNoMesEsperado = Quantidade.criar(10);
         Moeda valorPorSessaoEsperado = Moeda.criar(150);
-        Tipo tipoDePacienteEsperado = Tipo.VALOR_MENSAL;
+        Tipo tipoDePacienteEsperado = Tipo.VALOR_POR_SESSAO;
 
         Paciente paciente = new Paciente(nomeEsperado, enderecoEsperado, quantidadeDeDiasNoMesEsperado, valorPorSessaoEsperado);
 
@@ -79,7 +79,7 @@ public class PacienteTest {
 
     @Test
     void deveSerPossivelAlterarOsDadosDeUmPaciente() {
-        Paciente paciente = new PacienteBuilder().criarTipoMensal();
+        Paciente paciente = new PacienteBuilder().criarTipoValorPorSessao();
         String novoEnderecoEsperado = "Novo endereço.";
         Moeda novoValorPorSessaoEsperado = Moeda.criar(300);
 
@@ -94,7 +94,7 @@ public class PacienteTest {
     void naoDeveSerPossivelAlterarUmPacienteSemOsDadosNecessarios(String endereco,
                                                                   Moeda valorPorSessao,
                                                                   String mensagemEsperada) {
-        Paciente paciente = new PacienteBuilder().criarTipoMensal();
+        Paciente paciente = new PacienteBuilder().criarTipoValorPorSessao();
 
         Throwable excecaoLancada = Assertions.catchThrowable(() -> paciente.alterar(endereco, valorPorSessao));
 
@@ -103,7 +103,7 @@ public class PacienteTest {
 
     @Test
     void deveSerPossivelInativarUmPaciente() {
-        Paciente pacienteAtivo = new PacienteBuilder().ativo().criarTipoMensal();
+        Paciente pacienteAtivo = new PacienteBuilder().ativo().criarTipoValorPorSessao();
 
         pacienteAtivo.inativar();
 
@@ -113,7 +113,7 @@ public class PacienteTest {
     @Test
     void naoDeveSerPossivelInativarUmPacienteQueJahEstaInativo() {
         String mensagemEsperda = "O paciente já está inativo.";
-        Paciente pacienteInativo = new PacienteBuilder().inativo().criarTipoMensal();
+        Paciente pacienteInativo = new PacienteBuilder().inativo().criarTipoValorPorSessao();
 
         Throwable excecaoLancada = Assertions.catchThrowable(pacienteInativo::inativar);
 
@@ -122,7 +122,7 @@ public class PacienteTest {
 
     @Test
     void deveSerPossivelAtivarUmPaciente() {
-        Paciente pacienteInativo = new PacienteBuilder().inativo().criarTipoMensal();
+        Paciente pacienteInativo = new PacienteBuilder().inativo().criarTipoValorPorSessao();
 
         pacienteInativo.ativar();
 
@@ -132,7 +132,7 @@ public class PacienteTest {
     @Test
     void naoDeveSerPossivelAtivarUmPacienteQueJahEstaAtivo() {
         String mensagemEsperda = "O paciente já está ativo.";
-        Paciente pacienteAtivo = new PacienteBuilder().ativo().criarTipoMensal();
+        Paciente pacienteAtivo = new PacienteBuilder().ativo().criarTipoValorPorSessao();
 
         Throwable excecaoLancada = Assertions.catchThrowable(pacienteAtivo::ativar);
 
@@ -141,8 +141,8 @@ public class PacienteTest {
 
     @Test
     void deveSerPossivelObterADescricaoDoTipoDoPaciente() {
-        Tipo tipo = Tipo.VALOR_MENSAL;
-        Paciente paciente = new PacienteBuilder().comTipo(tipo).criarTipoMensal();
+        Tipo tipo = Tipo.VALOR_POR_SESSAO;
+        Paciente paciente = new PacienteBuilder().comTipo(tipo).criarTipoValorPorSessao();
 
         String descricaoDoTipo = paciente.obterDescricaoDoTipo();
 
