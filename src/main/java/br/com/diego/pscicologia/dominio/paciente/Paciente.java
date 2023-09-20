@@ -99,4 +99,8 @@ public class Paciente extends Entidade {
     public Tipo getTipo() {
         return tipo;
     }
+
+    public String obterDescricaoDoTipo() {
+        return getTipo().getDescricao();
+    }
 }

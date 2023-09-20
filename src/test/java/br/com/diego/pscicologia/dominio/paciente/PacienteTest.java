@@ -110,6 +110,16 @@ public class PacienteTest {
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperda);
     }
 
+    @Test
+    void deveSerPossivelObterADescricaoDoTipoDoPaciente() {
+        Tipo tipo = Tipo.VALOR_FIXO;
+        Paciente paciente = new PacienteBuilder().comTipo(tipo).criar();
+
+        String descricaoDoTipo = paciente.obterDescricaoDoTipo();
+
+        Assertions.assertThat(descricaoDoTipo).isEqualTo(tipo.getDescricao());
+    }
+
     private static Stream<Arguments> dadosNecessariosParaValidarCriacao() {
         String nome = "Teste";
         String endereco = "Endereço teste";

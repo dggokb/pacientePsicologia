@@ -60,7 +60,7 @@ public class PacienteBuilder {
         return this;
     }
 
-    public PacienteBuilder comTipoDePaciente(Tipo tipo) {
+    public PacienteBuilder comTipo(Tipo tipo) {
         this.tipo = tipo;
         return this;
     }
