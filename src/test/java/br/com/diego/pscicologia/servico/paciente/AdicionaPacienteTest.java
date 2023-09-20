@@ -26,7 +26,7 @@ public class AdicionaPacienteTest {
 
     @Test
     void deveSerPossivelAdicionarUmPaciente() {
-        Paciente paciente = new PacienteBuilder().criar();
+        Paciente paciente = new PacienteBuilder().criarTipoValorPorSessao();
         AdicionarPaciente comando = new AdicionarPaciente(paciente.getNome(), paciente.getEndereco(),
                 paciente.getQuantidaDeDiasNoMes().valor().intValue(), paciente.getValorPorSessao().valor(), paciente.getTipo().name());
         ArgumentCaptor<Paciente> pacienteCaptor = ArgumentCaptor.forClass(Paciente.class);
