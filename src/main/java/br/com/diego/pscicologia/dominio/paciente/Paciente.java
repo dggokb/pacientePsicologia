@@ -14,7 +14,9 @@ public class Paciente extends Entidade {
     private Boolean inativo;
     private Tipo tipo;
 
-    public Paciente(String nome, String endereco, Moeda valorPorSessao) {
+    public Paciente(String nome,
+                    String endereco,
+                    Moeda valorPorSessao) {
         validarCamposObrigatorios(nome, endereco, valorPorSessao);
         this.nome = nome;
         this.endereco = endereco;
