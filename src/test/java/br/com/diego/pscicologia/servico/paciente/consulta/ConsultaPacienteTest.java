@@ -26,7 +26,7 @@ public class ConsultaPacienteTest {
 
     @Test
     void deveSerPossivelConsultarUmPaciente() throws Exception {
-        Paciente paciente = new PacienteBuilder().criar();
+        Paciente paciente = new PacienteBuilder().criarTipoMensal();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
 
         PacienteDTO dtoObtido = consultaPaciente.buscar(id);

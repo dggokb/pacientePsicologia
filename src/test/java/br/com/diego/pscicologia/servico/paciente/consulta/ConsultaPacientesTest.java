@@ -25,8 +25,8 @@ class ConsultaPacientesTest {
 
     @Test
     void deveSerPossivelConsultarTodosPacientesCadastrados() throws Exception {
-        Paciente primeiroPaciente = new PacienteBuilder().criar();
-        Paciente segundoPaciente = new PacienteBuilder().criar();
+        Paciente primeiroPaciente = new PacienteBuilder().criarTipoMensal();
+        Paciente segundoPaciente = new PacienteBuilder().criarTipoMensal();
         List<Paciente> pacientes = Arrays.asList(primeiroPaciente, segundoPaciente);
         Mockito.when(pacienteRepositorio.findAll()).thenReturn(pacientes);
 
