@@ -65,11 +65,7 @@ class PacienteRestTest {
 
     @Test
     void deveSerPossivelAdicionarUmPaciente() throws Exception {
-        AdicionaPacienteHttpDTO httpDTO = new AdicionaPacienteHttpDTO();
-        httpDTO.nome = "Teste";
-        httpDTO.endereco = "Teste";
-        httpDTO.quantidaDeDiasNoMes = 10;
-        httpDTO.valorPorSessao = BigDecimal.TEN;
+        AdicionaPacienteHttpDTO httpDTO = criarAdicionaPacienteHttpDTO();
         ArgumentCaptor<AdicionarPaciente> captor = ArgumentCaptor.forClass(AdicionarPaciente.class);
         Mockito.when(adicionaPaciente.adicionar(captor.capture())).thenReturn(UUID.randomUUID().toString());
 
@@ -89,8 +85,7 @@ class PacienteRestTest {
 
     @Test
     void deveSerOPossivelConsultarUmPaciente() throws Exception {
-        PacienteDTO dto = new PacienteDTO();
-        dto.id = "1";
+        PacienteDTO dto = criarPacienteDTO("1");
         String retornoEsperadoEmJson = SerializadorDeObjetoJson.serializar(dto);
         Mockito.when(consultaPaciente.buscar(dto.id)).thenReturn(dto);
 
@@ -105,10 +100,8 @@ class PacienteRestTest {
 
     @Test
     void deveSerOPossivelConsultarTodosPacientes() throws Exception {
-        PacienteDTO primeiroDTO = new PacienteDTO();
-        primeiroDTO.id = "1";
-        PacienteDTO segundoDTO = new PacienteDTO();
-        primeiroDTO.id = "2";
+        PacienteDTO primeiroDTO = criarPacienteDTO("1");
+        PacienteDTO segundoDTO = criarPacienteDTO("2");
         List<PacienteDTO> dtos = Arrays.asList(primeiroDTO, segundoDTO);
         String retornoEsperadoEmJson = SerializadorDeObjetoJson.serializar(dtos);
         Mockito.when(consultaPacientes.buscarTodos()).thenReturn(dtos);
@@ -124,10 +117,7 @@ class PacienteRestTest {
 
     @Test
     void deveSerPossivelAlterarUmPaciente() throws Exception {
-        AlteraPacienteHttpDTO httpDTO = new AlteraPacienteHttpDTO();
-        httpDTO.id = UUID.randomUUID().toString();
-        httpDTO.endereco = "Teste";
-        httpDTO.valorPorSessao = BigDecimal.TEN;
+        AlteraPacienteHttpDTO httpDTO = criarAlteraPacienteHttpDTO();
         ArgumentCaptor<AlterarPaciente> captor = ArgumentCaptor.forClass(AlterarPaciente.class);
         Mockito.doNothing().when(alteraPaciente).alterar(captor.capture());
 
@@ -172,19 +162,42 @@ class PacienteRestTest {
 
     @Test
     void deveSerPossivelAdicionarUmPacienteTestandoDeOutraManeira() throws Exception {
+        int codigoDeRetornoEsperado = 200;
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         ArgumentCaptor<AdicionarPaciente> captor = ArgumentCaptor.forClass(AdicionarPaciente.class);
         String retornoEsperado = UUID.randomUUID().toString();
         Mockito.when(adicionaPaciente.adicionar(captor.capture())).thenReturn(retornoEsperado);
+        AdicionaPacienteHttpDTO httpDTO = criarAdicionaPacienteHttpDTO();
+        ResponseEntity<String> response = pacienteRest.adicionar(httpDTO);
+
+        Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(codigoDeRetornoEsperado);
+        Assertions.assertThat(response.getBody()).isEqualTo(retornoEsperado);
+    }
+
+    private AdicionaPacienteHttpDTO criarAdicionaPacienteHttpDTO() {
         AdicionaPacienteHttpDTO httpDTO = new AdicionaPacienteHttpDTO();
         httpDTO.nome = "Teste";
         httpDTO.endereco = "Teste";
         httpDTO.quantidaDeDiasNoMes = 10;
         httpDTO.valorPorSessao = BigDecimal.TEN;
-        ResponseEntity<String> response = pacienteRest.adicionar(httpDTO);
 
-        Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(200);
-        Assertions.assertThat(response.getBody()).isEqualTo(retornoEsperado);
+        return httpDTO;
+    }
+
+    private PacienteDTO criarPacienteDTO(String id) {
+        PacienteDTO dto = new PacienteDTO();
+        dto.id = id;
+
+        return dto;
+    }
+
+    private AlteraPacienteHttpDTO criarAlteraPacienteHttpDTO() {
+        AlteraPacienteHttpDTO httpDTO = new AlteraPacienteHttpDTO();
+        httpDTO.id = UUID.randomUUID().toString();
+        httpDTO.endereco = "Teste";
+        httpDTO.valorPorSessao = BigDecimal.TEN;
+
+        return httpDTO;
     }
 }
