@@ -1,8 +1,10 @@
 package br.com.diego.pscicologia.servico.paciente.consulta;
 
 import br.com.diego.pscicologia.builder.PacienteBuilder;
+import br.com.diego.pscicologia.builder.ValorBuilder;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
+import br.com.diego.pscicologia.dominio.paciente.Valor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +28,8 @@ public class ConsultaPacienteTest {
 
     @Test
     void deveSerPossivelConsultarUmPaciente() throws Exception {
-        Paciente paciente = new PacienteBuilder().criarTipoValorPorSessao();
+        Valor valor = new ValorBuilder().criar();
+        Paciente paciente = new PacienteBuilder().comValores(valor).criar();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
 
         PacienteDTO dtoObtido = consultaPaciente.buscar(id);
@@ -35,10 +38,12 @@ public class ConsultaPacienteTest {
         Assertions.assertThat(dtoObtido.nome).isEqualTo(paciente.getNome());
         Assertions.assertThat(dtoObtido.endereco).isEqualTo(paciente.getEndereco());
         Assertions.assertThat(dtoObtido.dataDeInicio).isEqualTo(paciente.getDataDeInicio());
-        Assertions.assertThat(dtoObtido.quantidaDeDiasNoMes).isEqualTo(paciente.getQuantidadeDeDiasNoMes().valor().intValue());
-        Assertions.assertThat(dtoObtido.valorPorSessao).isEqualTo(paciente.getValorPorSessao().valor());
         Assertions.assertThat(dtoObtido.inativo).isEqualTo(paciente.getInativo());
         Assertions.assertThat(dtoObtido.tipo).isEqualTo(paciente.obterDescricaoDoTipo());
+        Assertions.assertThat(dtoObtido.valores).extracting(valorDTO -> valorDTO.valorPorSessao).containsOnly(valor.getValorPorSessao().valor());
+        Assertions.assertThat(dtoObtido.valores).extracting(valorDTO -> valorDTO.quantidaDeDiasNoMes).containsOnly(valor.getQuantidadeDeDiasNoMes().valor().intValue());
+        Assertions.assertThat(dtoObtido.valores).extracting(valorDTO -> valorDTO.mes).containsOnly(valor.getMes().getDescricao());
+        Assertions.assertThat(dtoObtido.valores).extracting(valorDTO -> valorDTO.ano).containsOnly(valor.getAno());
     }
 
     @Test
