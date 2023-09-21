@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
@@ -128,8 +129,8 @@ public class PacienteTest {
     }
 
     @ParameterizedTest
-    @NullAndEmptySource
-    void naoDeveSerPossivelAlterarOsValoresDeUmPacienteSeNaoInformarOsValores(String valores) {
+    @EmptySource
+    void naoDeveSerPossivelAlterarOsValoresDeUmPacienteSeNaoInformarOsValores(List<Valor> valores) {
         String mensagemEsperada = "Não é possível adicionar um valor ao paciente, pois, não foi informado os valores.";
         Paciente paciente = new PacienteBuilder().criar();
 
@@ -148,7 +149,6 @@ public class PacienteTest {
         return Stream.of(
                 Arguments.of(null, endereco, valores, tipo, "Não é possível criar um paciente sem informar o nome."),
                 Arguments.of(nome, null, valores, tipo, "Não é possível criar um paciente sem informar o endereço."),
-                Arguments.of(nome, endereco, null, tipo, "Não é possível criar um paciente sem informar o valor."),
                 Arguments.of(nome, endereco, Collections.emptyList(), tipo, "Não é possível criar um paciente sem informar o valor."),
                 Arguments.of(nome, endereco, valores, null, "Não é possível criar um paciente sem informar o tipo.")
         );
