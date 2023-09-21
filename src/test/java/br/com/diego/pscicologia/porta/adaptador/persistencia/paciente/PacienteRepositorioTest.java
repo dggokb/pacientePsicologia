@@ -51,5 +51,30 @@ public class PacienteRepositorioTest {
         Assertions.assertThat(pacientesObtidos).usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(pacienteInativo, outroPacienteInativo);
     }
+
+    @Test
+    public void deveSerPossivelBuscarPacientePorNome() {
+        String nomeParaBuscar = "Mario Esteban";
+        Paciente paciente = new PacienteBuilder().comNome(nomeParaBuscar).criar();
+        Paciente outroPaciente = new PacienteBuilder().criar();
+        List<Paciente> pacientes = Arrays.asList(paciente, outroPaciente);
+        pacienteRepositorio.saveAll(pacientes);
+
+        Paciente pacienteObtido = pacienteRepositorio.buscar(nomeParaBuscar);
+
+        Assertions.assertThat(pacienteObtido).usingRecursiveComparison().isEqualTo(paciente);
+    }
+
+    @Test
+    public void naoDeveSerPossivelBuscarPacientePorNomeSeONomeNaoForIgual() {
+        String nomeParaBuscar = "Mario Esteban";
+        String nomeIncompleto = "Mario";
+        Paciente paciente = new PacienteBuilder().comNome(nomeParaBuscar).criar();
+        pacienteRepositorio.save(paciente);
+
+        Paciente pacienteObtido = pacienteRepositorio.buscar(nomeIncompleto);
+
+        Assertions.assertThat(pacienteObtido).isNull();
+    }
 }
 
