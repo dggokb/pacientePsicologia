@@ -3,6 +3,7 @@ package br.com.diego.pscicologia.servico.paciente;
 import br.com.diego.pscicologia.builder.PacienteBuilder;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
+import br.com.diego.pscicologia.dominio.paciente.Valor;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPacienteConcreto;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
@@ -28,9 +29,11 @@ public class AdicionaPacienteTest {
 
     @Test
     void deveSerPossivelAdicionarUmPaciente() {
-        Paciente paciente = new PacienteBuilder().criarTipoValorPorSessao();
+        Paciente paciente = new PacienteBuilder().criar();
+        Valor valor = paciente.getValores().get(0);
         AdicionarPaciente comando = new AdicionarPaciente(paciente.getNome(), paciente.getEndereco(),
-                Optional.of(paciente.getQuantidadeDeDiasNoMes().valor().intValue()), paciente.getValorPorSessao().valor(), paciente.getTipo().name());
+                Optional.of(valor.getQuantidadeDeDiasNoMes().quantidade()), valor.getValorPorSessao().valor(),
+                valor.getMes().name(), valor.getAno(), paciente.getTipo().name());
         ArgumentCaptor<Paciente> pacienteCaptor = ArgumentCaptor.forClass(Paciente.class);
         Mockito.when(pacienteRepositorio.insert(pacienteCaptor.capture())).thenReturn(paciente);
 
@@ -41,8 +44,7 @@ public class AdicionaPacienteTest {
         Assertions.assertThat(pacienteCapturado.getNome()).isEqualTo(paciente.getNome());
         Assertions.assertThat(pacienteCapturado.getEndereco()).isEqualTo(paciente.getEndereco());
         Assertions.assertThat(pacienteCapturado.getDataDeInicio()).isEqualTo(paciente.getDataDeInicio());
-        Assertions.assertThat(pacienteCapturado.getQuantidadeDeDiasNoMes()).isEqualTo(paciente.getQuantidadeDeDiasNoMes());
-        Assertions.assertThat(pacienteCapturado.getValorPorSessao()).isEqualTo(paciente.getValorPorSessao());
+        Assertions.assertThat(pacienteCapturado.getValores()).usingRecursiveFieldByFieldElementComparator().containsOnly(valor);
         Assertions.assertThat(pacienteCapturado.getTipo()).isEqualTo(paciente.getTipo());
     }
 }
