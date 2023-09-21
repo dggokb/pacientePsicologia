@@ -26,30 +26,55 @@ public class PacienteRepositorioTest {
 
     @Test
     public void deveSerPossivelBuscarSomentePacientesAtivos() {
-        Paciente pacienteAtivoValorPorSessao = new PacienteBuilder().ativo().criarTipoValorPorSessao();
-        Paciente pacienteAtivoFixo = new PacienteBuilder().ativo().criarTipoFixo();
-        Paciente pacienteInativo = new PacienteBuilder().inativo().criarTipoValorPorSessao();
-        List<Paciente> pacientes = Arrays.asList(pacienteAtivoValorPorSessao, pacienteAtivoFixo, pacienteInativo);
+        Paciente pacienteAtivo = new PacienteBuilder().ativo().criar();
+        Paciente outroPacienteAtivo = new PacienteBuilder().ativo().criar();
+        Paciente pacienteInativo = new PacienteBuilder().inativo().criar();
+        List<Paciente> pacientes = Arrays.asList(pacienteAtivo, outroPacienteAtivo, pacienteInativo);
         pacienteRepositorio.saveAll(pacientes);
 
         List<Paciente> pacientesObtidos = pacienteRepositorio.buscarAtivos();
 
         Assertions.assertThat(pacientesObtidos).usingRecursiveFieldByFieldElementComparator()
-                .containsExactlyInAnyOrder(pacienteAtivoValorPorSessao, pacienteAtivoFixo);
+                .containsExactlyInAnyOrder(pacienteAtivo, outroPacienteAtivo);
     }
 
     @Test
     public void deveSerPossivelBuscarSomentePacientesInativos() {
-        Paciente pacienteInativoValorPoSessao = new PacienteBuilder().inativo().criarTipoValorPorSessao();
-        Paciente pacienteInativoFixo = new PacienteBuilder().inativo().criarTipoFixo();
-        Paciente pacienteAtivo = new PacienteBuilder().ativo().criarTipoValorPorSessao();
-        List<Paciente> pacientes = Arrays.asList(pacienteInativoValorPoSessao, pacienteInativoFixo, pacienteAtivo);
+        Paciente pacienteInativo = new PacienteBuilder().inativo().criar();
+        Paciente outroPacienteInativo = new PacienteBuilder().inativo().criar();
+        Paciente pacienteAtivo = new PacienteBuilder().ativo().criar();
+        List<Paciente> pacientes = Arrays.asList(pacienteInativo, outroPacienteInativo, pacienteAtivo);
         pacienteRepositorio.saveAll(pacientes);
 
         List<Paciente> pacientesObtidos = pacienteRepositorio.buscarInativos();
 
         Assertions.assertThat(pacientesObtidos).usingRecursiveFieldByFieldElementComparator()
-                .containsExactlyInAnyOrder(pacienteInativoValorPoSessao, pacienteInativoFixo);
+                .containsExactlyInAnyOrder(pacienteInativo, outroPacienteInativo);
+    }
+
+    @Test
+    public void deveSerPossivelBuscarPacientePorNome() {
+        String nomeParaBuscar = "Mario Esteban";
+        Paciente paciente = new PacienteBuilder().comNome(nomeParaBuscar).criar();
+        Paciente outroPaciente = new PacienteBuilder().criar();
+        List<Paciente> pacientes = Arrays.asList(paciente, outroPaciente);
+        pacienteRepositorio.saveAll(pacientes);
+
+        Paciente pacienteObtido = pacienteRepositorio.buscar(nomeParaBuscar);
+
+        Assertions.assertThat(pacienteObtido).usingRecursiveComparison().isEqualTo(paciente);
+    }
+
+    @Test
+    public void naoDeveSerPossivelBuscarPacientePorNomeSeONomeNaoForIgual() {
+        String nomeParaBuscar = "Mario Esteban";
+        String nomeIncompleto = "Mario";
+        Paciente paciente = new PacienteBuilder().comNome(nomeParaBuscar).criar();
+        pacienteRepositorio.save(paciente);
+
+        Paciente pacienteObtido = pacienteRepositorio.buscar(nomeIncompleto);
+
+        Assertions.assertThat(pacienteObtido).isNull();
     }
 }
 

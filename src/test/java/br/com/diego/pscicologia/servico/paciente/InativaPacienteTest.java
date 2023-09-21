@@ -27,7 +27,7 @@ class InativaPacienteTest {
     @Test
     void deveSerPossivelInativarUmPaciente() throws Exception {
         String id = UUID.randomUUID().toString();
-        Paciente paciente = new PacienteBuilder().ativo().criarTipoValorPorSessao();
+        Paciente paciente = new PacienteBuilder().ativo().criar();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
 
         inativaPaciente.inativar(id);

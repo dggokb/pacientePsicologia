@@ -13,4 +13,7 @@ public interface PacienteRepositorio extends MongoRepository<Paciente, String> {
 
     @Query("{inativo :true}")
     public List<Paciente> buscarInativos();
+
+    @Query("{nome :?0}")
+    Paciente buscar(String nome);
 }

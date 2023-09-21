@@ -1,19 +1,19 @@
 package br.com.diego.pscicologia.builder;
 
-import br.com.diego.pscicologia.comum.Moeda;
-import br.com.diego.pscicologia.comum.Quantidade;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.Tipo;
+import br.com.diego.pscicologia.dominio.paciente.Valor;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 
 public class PacienteBuilder {
 
     private String nome;
     private String endereco;
     private LocalDate dataDeInicio;
-    private Quantidade quantidaDeDiasNoMes;
-    private Moeda valorPorSessao;
+    private List<Valor> valores;
     private Boolean inativo;
     private Tipo tipo;
 
@@ -21,20 +21,14 @@ public class PacienteBuilder {
         this.nome = "Diego Guedes";
         this.endereco = "Rua Batatinha, Bairro das batatas";
         this.dataDeInicio = LocalDate.now();
-        this.quantidaDeDiasNoMes = Quantidade.criar(2);
-        this.valorPorSessao = Moeda.criar(23);
+        this.valores = Collections.singletonList(new ValorBuilder().criar());
         this.inativo = false;
+        this.tipo = Tipo.VALOR_POR_SESSAO;
     }
 
-    public Paciente criarTipoValorPorSessao() {
-        Paciente paciente = new Paciente(nome, endereco, quantidaDeDiasNoMes, valorPorSessao);
-        inativarPaciente(paciente);
-        return paciente;
-    }
-
-    public Paciente criarTipoFixo() {
-        Paciente paciente = new Paciente(nome, endereco, valorPorSessao);
-        inativarPaciente(paciente);
+    public Paciente criar() {
+        Paciente paciente = new Paciente(nome, endereco, valores, tipo);
+        inativar(paciente);
         return paciente;
     }
 
@@ -53,13 +47,13 @@ public class PacienteBuilder {
         return this;
     }
 
-    public PacienteBuilder comQuantidaDeDiasNoMes(Quantidade quantidaDeDiasNoMes) {
-        this.quantidaDeDiasNoMes = quantidaDeDiasNoMes;
+    public PacienteBuilder comValores(List<Valor> valores) {
+        this.valores = valores;
         return this;
     }
 
-    public PacienteBuilder comValorPorSessao(Moeda valorPorSessao) {
-        this.valorPorSessao = valorPorSessao;
+    public PacienteBuilder comValores(Valor... valores) {
+        this.valores = List.of(valores);
         return this;
     }
 
@@ -78,7 +72,7 @@ public class PacienteBuilder {
         return this;
     }
 
-    private void inativarPaciente(Paciente paciente) {
+    private void inativar(Paciente paciente) {
         if (this.inativo.equals(Boolean.TRUE)) {
             paciente.inativar();
         }

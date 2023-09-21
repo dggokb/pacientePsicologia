@@ -1,8 +1,10 @@
 package br.com.diego.pscicologia.servico.paciente.consulta;
 
 import br.com.diego.pscicologia.builder.PacienteBuilder;
+import br.com.diego.pscicologia.builder.ValorBuilder;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
+import br.com.diego.pscicologia.dominio.paciente.Valor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,8 +27,10 @@ class ConsultaPacientesTest {
 
     @Test
     void deveSerPossivelConsultarTodosPacientesCadastrados() throws Exception {
-        Paciente primeiroPaciente = new PacienteBuilder().criarTipoValorPorSessao();
-        Paciente segundoPaciente = new PacienteBuilder().criarTipoValorPorSessao();
+        Valor valorDoPrimeiroPaciente = new ValorBuilder().criar();
+        Paciente primeiroPaciente = new PacienteBuilder().comValores(valorDoPrimeiroPaciente).criar();
+        Valor valorDoSegundoPaciente = new ValorBuilder().criar();
+        Paciente segundoPaciente = new PacienteBuilder().comValores(valorDoSegundoPaciente).criar();
         List<Paciente> pacientes = Arrays.asList(primeiroPaciente, segundoPaciente);
         Mockito.when(pacienteRepositorio.findAll()).thenReturn(pacientes);
 
@@ -38,10 +42,14 @@ class ConsultaPacientesTest {
                 segundoPaciente.getNome());
         Assertions.assertThat(dtos).extracting(dto -> dto.endereco).containsExactlyInAnyOrder(primeiroPaciente.getEndereco(),
                 segundoPaciente.getEndereco());
-        Assertions.assertThat(dtos).extracting(dto -> dto.quantidaDeDiasNoMes).containsExactlyInAnyOrder(primeiroPaciente.getQuantidadeDeDiasNoMes().quantidade(),
-                segundoPaciente.getQuantidadeDeDiasNoMes().quantidade());
-        Assertions.assertThat(dtos).extracting(dto -> dto.valorPorSessao).containsExactlyInAnyOrder(primeiroPaciente.getValorPorSessao().valor(),
-                segundoPaciente.getValorPorSessao().valor());
+        Assertions.assertThat(dtos).flatExtracting(dto -> dto.valores).extracting(valorDTO -> valorDTO.ano)
+                .containsOnly(valorDoPrimeiroPaciente.getAno(), valorDoSegundoPaciente.getAno());
+        Assertions.assertThat(dtos).flatExtracting(dto -> dto.valores).extracting(valorDTO -> valorDTO.mes)
+                .containsOnly(valorDoPrimeiroPaciente.getMes().getDescricao(), valorDoSegundoPaciente.getMes().getDescricao());
+        Assertions.assertThat(dtos).flatExtracting(dto -> dto.valores).extracting(valorDTO -> valorDTO.valorPorSessao)
+                .containsOnly(valorDoPrimeiroPaciente.getValorPorSessao().valor(), valorDoSegundoPaciente.getValorPorSessao().valor());
+        Assertions.assertThat(dtos).flatExtracting(dto -> dto.valores).extracting(valorDTO -> valorDTO.quantidaDeDiasNoMes)
+                .containsOnly(valorDoPrimeiroPaciente.getQuantidadeDeDiasNoMes().quantidade(), valorDoSegundoPaciente.getQuantidadeDeDiasNoMes().quantidade());
         Assertions.assertThat(dtos).extracting(dto -> dto.dataDeInicio).containsExactlyInAnyOrder(primeiroPaciente.getDataDeInicio(),
                 segundoPaciente.getDataDeInicio());
         Assertions.assertThat(dtos).extracting(dto -> dto.inativo).containsExactlyInAnyOrder(primeiroPaciente.getInativo(),

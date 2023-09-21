@@ -1,15 +1,15 @@
 package br.com.diego.pscicologia.web.rest.paciente;
 
 import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
-import br.com.diego.pscicologia.servico.paciente.ativa.AtivaPaciente;
-import br.com.diego.pscicologia.servico.paciente.inativa.InativaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlteraPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlterarPaciente;
+import br.com.diego.pscicologia.servico.paciente.ativa.AtivaPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPacientes;
 import br.com.diego.pscicologia.servico.paciente.consulta.PacienteDTO;
+import br.com.diego.pscicologia.servico.paciente.inativa.InativaPaciente;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -131,7 +131,6 @@ class PacienteRestTest {
         AlterarPaciente comandoCapturado = captor.getValue();
         Assertions.assertThat(comandoCapturado.getId()).isEqualTo(httpDTO.id);
         Assertions.assertThat(comandoCapturado.getEndereco()).isEqualTo(httpDTO.endereco);
-        Assertions.assertThat(comandoCapturado.getValorPorSessao().valor()).isEqualTo(httpDTO.valorPorSessao);
     }
 
     @Test
@@ -181,6 +180,8 @@ class PacienteRestTest {
         httpDTO.endereco = "Teste";
         httpDTO.quantidaDeDiasNoMes = 10;
         httpDTO.valorPorSessao = BigDecimal.TEN;
+        httpDTO.mes = "JANEIRO";
+        httpDTO.ano = 2023;
         httpDTO.tipo = "VALOR_POR_SESSAO";
 
         return httpDTO;

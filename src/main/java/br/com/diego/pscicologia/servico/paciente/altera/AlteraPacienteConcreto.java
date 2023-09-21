@@ -23,12 +23,12 @@ public class AlteraPacienteConcreto implements AlteraPaciente {
     public void alterar(AlterarPaciente comando) throws Exception {
         Optional<Paciente> pacienteObtido = pacienteRepositorio.findById(comando.getId());
         validarPacienteObtido(pacienteObtido);
-        pacienteObtido.get().alterar(comando.getEndereco(), comando.getValorPorSessao());
+        pacienteObtido.get().alterar(comando.getEndereco());
         pacienteRepositorio.save(pacienteObtido.get());
     }
 
     private static void validarPacienteObtido(Optional<Paciente> pacienteObtido) throws Exception {
-        if(pacienteObtido.isEmpty()){
+        if (pacienteObtido.isEmpty()) {
             throw new Exception("Não foi possível encontrar o paciente para alteração.");
         }
     }

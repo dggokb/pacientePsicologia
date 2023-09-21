@@ -9,12 +9,10 @@ public class AlterarPaciente implements Comando {
 
     private String id;
     private String endereco;
-    private Moeda valorPorSessao;
 
-    public AlterarPaciente(String id, String endereco, BigDecimal valorPorSessao) {
+    public AlterarPaciente(String id, String endereco) {
         this.id = id;
         this.endereco = endereco;
-        this.valorPorSessao = Moeda.criar(valorPorSessao);
     }
 
     public String getId() {
@@ -23,9 +21,5 @@ public class AlterarPaciente implements Comando {
 
     public String getEndereco() {
         return endereco;
-    }
-
-    public Moeda getValorPorSessao() {
-        return valorPorSessao;
     }
 }

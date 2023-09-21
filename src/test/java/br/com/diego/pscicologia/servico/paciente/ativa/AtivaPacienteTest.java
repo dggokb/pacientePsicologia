@@ -26,7 +26,7 @@ class AtivaPacienteTest {
 
     @Test
     void deveSerPossivelAtivarUmPaciente() throws Exception {
-        Paciente paciente = new PacienteBuilder().inativo().criarTipoValorPorSessao();
+        Paciente paciente = new PacienteBuilder().inativo().criar();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
 
         ativaPaciente.ativar(id);

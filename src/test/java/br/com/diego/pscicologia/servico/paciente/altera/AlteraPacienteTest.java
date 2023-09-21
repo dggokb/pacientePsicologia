@@ -18,7 +18,6 @@ class AlteraPacienteTest {
     private AlteraPaciente alteraPaciente;
     private String id;
     private String endereco;
-    private BigDecimal valorPorSessao;
 
     @BeforeEach
     void setUp() {
@@ -26,28 +25,25 @@ class AlteraPacienteTest {
         alteraPaciente = new AlteraPacienteConcreto(pacienteRepositorio);
         id = UUID.randomUUID().toString();
         endereco = "Novo endereço do paciente";
-        valorPorSessao = BigDecimal.valueOf(200);
     }
 
     @Test
     void deveSerPossivelAlterarOsDadosDeUmPaciente() throws Exception {
         String enderecoEsperado = "Novo endereço do paciente";
-        BigDecimal valorPorSessaoEsperado = BigDecimal.valueOf(200);
-        AlterarPaciente comando = new AlterarPaciente(id, enderecoEsperado, valorPorSessaoEsperado);
-        Paciente paciente = new PacienteBuilder().criarTipoValorPorSessao();
+        AlterarPaciente comando = new AlterarPaciente(id, enderecoEsperado);
+        Paciente paciente = new PacienteBuilder().criar();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
 
         alteraPaciente.alterar(comando);
 
         Mockito.verify(pacienteRepositorio).save(paciente);
         Assertions.assertThat(paciente.getEndereco()).isEqualTo(enderecoEsperado);
-        Assertions.assertThat(paciente.getValorPorSessao().valor()).isEqualTo(valorPorSessaoEsperado);
     }
 
     @Test
     void naoDeveSerPossivelAlterarOsDadosDeUmPacienteSeNaoEncontrarOPaciente() throws Exception {
         String mensagemEsperada = "Não foi possível encontrar o paciente para alteração.";
-        AlterarPaciente comando = new AlterarPaciente(id, endereco, valorPorSessao);
+        AlterarPaciente comando = new AlterarPaciente(id, endereco);
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.empty());
 
         Throwable excecaoLancada = Assertions.catchThrowable(() -> alteraPaciente.alterar(comando));

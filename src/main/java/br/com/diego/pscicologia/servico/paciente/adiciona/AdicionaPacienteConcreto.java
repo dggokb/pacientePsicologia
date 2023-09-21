@@ -20,12 +20,14 @@ public class AdicionaPacienteConcreto implements AdicionaPaciente {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public String adicionar(AdicionarPaciente comando) {
-        Paciente paciente = new PacienteFabrica().fabricar(comando.getNome(),
+        Paciente paciente = new PacienteFabrica(pacienteRepositorio).fabricar(comando.getNome(),
                 comando.getEndereco(),
                 comando.getQuantidadeDeDiasNoMes(),
                 comando.getValorPorSessao(),
+                comando.getMes(),
+                comando.getAno(),
                 comando.getTipo());
-        pacienteRepositorio.insert(paciente);
+        pacienteRepositorio.save(paciente);
 
         return paciente.getId();
     }

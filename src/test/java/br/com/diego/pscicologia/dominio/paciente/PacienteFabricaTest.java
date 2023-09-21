@@ -1,10 +1,16 @@
 package br.com.diego.pscicologia.dominio.paciente;
 
+import br.com.diego.pscicologia.builder.PacienteBuilder;
+import br.com.diego.pscicologia.builder.ValorBuilder;
+import br.com.diego.pscicologia.comum.Mes;
 import br.com.diego.pscicologia.comum.Moeda;
 import br.com.diego.pscicologia.comum.Quantidade;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 class PacienteFabricaTest {
 
@@ -13,43 +19,75 @@ class PacienteFabricaTest {
     private String endereco;
     private Quantidade quantidadeDeDiasNoMes;
     private Moeda valorPorSessao;
+    private PacienteRepositorio pacienteRepositorio;
+    private Mes mes;
+    private Integer ano;
+    private Tipo tipo;
 
     @BeforeEach
     void setUp() {
-        nome = "Diego";
-        endereco = "Av lalal lulu";
+        nome = "Diego Guedes";
+        endereco = "Rua Batatinha, Bairro das batatas";
         quantidadeDeDiasNoMes = Quantidade.criar(10);
         valorPorSessao = Moeda.criar(100);
-        fabrica = new PacienteFabrica();
+        mes = Mes.ABRIL;
+        ano = 2023;
+        tipo = Tipo.VALOR_POR_SESSAO;
+        pacienteRepositorio = Mockito.mock(PacienteRepositorio.class);
+        fabrica = new PacienteFabrica(pacienteRepositorio);
     }
 
     @Test
-    void deveFabricarUmPacienteDoTipoValorPorSessaoComQuantidadeDeDiasNoMesQuandoForDoTipoValorPoSessao() {
-        Tipo tipoEsperado = Tipo.VALOR_POR_SESSAO;
-        Quantidade quantidadeDeDiasNoMesEsperado = Quantidade.criar(10);
+    void deveSerPossivelFabricarUmPacienteQueNaoFoiCadastradoAinda() {
+        String nome = "Diego";
+        String endereco = "Av lalal lulu";
+        Quantidade quantidadeDeDiasNoMes = Quantidade.criar(10);
+        Moeda valorPorSessao = Moeda.criar(100);
+        Mes mes = Mes.ABRIL;
+        Integer ano = 2023;
+        Tipo tipo = Tipo.VALOR_POR_SESSAO;
+        Mockito.when(pacienteRepositorio.buscar(nome)).thenReturn(null);
 
-        Paciente pacienteFabricado = fabrica.fabricar(nome, endereco, quantidadeDeDiasNoMesEsperado, valorPorSessao, tipoEsperado);
+        Paciente pacienteFabricado = fabrica.fabricar(nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipo);
 
-        Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipoEsperado);
-        Assertions.assertThat(pacienteFabricado.getQuantidadeDeDiasNoMes()).isEqualTo(quantidadeDeDiasNoMesEsperado);
+        Assertions.assertThat(pacienteFabricado.getNome()).isEqualTo(nome);
+        Assertions.assertThat(pacienteFabricado.getEndereco()).isEqualTo(endereco);
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getValorPorSessao).containsOnly(valorPorSessao);
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getQuantidadeDeDiasNoMes).containsOnly(quantidadeDeDiasNoMes);
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getMes).containsOnly(mes);
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getAno).containsOnly(ano);
+        Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipo);
     }
 
     @Test
-    void deveFabricarUmPacienteDoTipoValorFixoSemQuantidadeDeDiasNoMesQuandoForDoTipoFixo() {
-        Tipo tipoEsperado = Tipo.VALOR_FIXO;
+    void deveSerPossivelFabricarUmPacienteJahCadastradoQueNaoPossuaOMesmoMesEAno() {
+        Mes mes = Mes.ABRIL;
+        Integer ano = 2023;
+        Valor valor = new ValorBuilder().comMes(Mes.JANEIRO).comAno(ano).criar();
+        Paciente paciente = new PacienteBuilder().comValores(valor).criar();
+        Mockito.when(pacienteRepositorio.buscar(nome)).thenReturn(paciente);
 
-        Paciente pacienteFabricado = fabrica.fabricar(nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, tipoEsperado);
+        Paciente pacienteFabricado = fabrica.fabricar(nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipo);
 
-        Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipoEsperado);
-        Assertions.assertThat(pacienteFabricado.getQuantidadeDeDiasNoMes()).isNull();
+        Assertions.assertThat(pacienteFabricado.getNome()).isEqualTo(nome);
+        Assertions.assertThat(pacienteFabricado.getEndereco()).isEqualTo(endereco);
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getValorPorSessao).containsOnly(valorPorSessao, valor.getValorPorSessao());
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getQuantidadeDeDiasNoMes).containsOnly(quantidadeDeDiasNoMes, valor.getQuantidadeDeDiasNoMes());
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getMes).containsOnly(mes, valor.getMes());
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getAno).containsOnly(ano, valor.getAno());
+        Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipo);
     }
 
     @Test
-    void naoDeveFabricarUmPacienteSeNaoForInformadoOTipo() {
-        String mensagemEsperada = "É necessário informar o tipo de paciente para criar um paciente.";
-        Tipo tipoEsperado = null;
+    void naoDeveSerPossivelFabricarUmPacienteJahCadastradoSeJahPossuirOMesmoMesEAno() {
+        Mes mes = Mes.ABRIL;
+        Integer ano = 2023;
+        String mensagemEsperada = String.format("Paciente já possui valores referente ao mês %s e ano %s.", mes, ano);
+        Valor valor = new ValorBuilder().comMes(mes).comAno(ano).criar();
+        Paciente paciente = new PacienteBuilder().comValores(valor).criar();
+        Mockito.when(pacienteRepositorio.buscar(nome)).thenReturn(paciente);
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> fabrica.fabricar(nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, tipoEsperado));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> fabrica.fabricar(nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipo));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
