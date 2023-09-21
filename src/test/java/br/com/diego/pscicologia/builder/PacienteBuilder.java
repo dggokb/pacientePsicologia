@@ -52,6 +52,11 @@ public class PacienteBuilder {
         return this;
     }
 
+    public PacienteBuilder comValores(Valor... valores) {
+        this.valores = List.of(valores);
+        return this;
+    }
+
     public PacienteBuilder comTipo(Tipo tipo) {
         this.tipo = tipo;
         return this;
