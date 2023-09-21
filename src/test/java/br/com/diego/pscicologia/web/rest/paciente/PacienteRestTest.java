@@ -131,7 +131,6 @@ class PacienteRestTest {
         AlterarPaciente comandoCapturado = captor.getValue();
         Assertions.assertThat(comandoCapturado.getId()).isEqualTo(httpDTO.id);
         Assertions.assertThat(comandoCapturado.getEndereco()).isEqualTo(httpDTO.endereco);
-        Assertions.assertThat(comandoCapturado.getValorPorSessao().valor()).isEqualTo(httpDTO.valorPorSessao);
     }
 
     @Test
