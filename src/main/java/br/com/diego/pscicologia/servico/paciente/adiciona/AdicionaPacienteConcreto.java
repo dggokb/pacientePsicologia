@@ -27,7 +27,7 @@ public class AdicionaPacienteConcreto implements AdicionaPaciente {
                 comando.getMes(),
                 comando.getAno(),
                 comando.getTipo());
-        pacienteRepositorio.insert(paciente);
+        pacienteRepositorio.save(paciente);
 
         return paciente.getId();
     }

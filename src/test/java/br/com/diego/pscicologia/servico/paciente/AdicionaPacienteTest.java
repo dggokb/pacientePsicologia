@@ -40,7 +40,7 @@ public class AdicionaPacienteTest {
         adicionaPaciente.adicionar(comando);
 
         Paciente pacienteCapturado = pacienteCaptor.getValue();
-        Mockito.verify(pacienteRepositorio).insert(pacienteCaptor.capture());
+        Mockito.verify(pacienteRepositorio).save(pacienteCaptor.capture());
         Assertions.assertThat(pacienteCapturado.getNome()).isEqualTo(paciente.getNome());
         Assertions.assertThat(pacienteCapturado.getEndereco()).isEqualTo(paciente.getEndereco());
         Assertions.assertThat(pacienteCapturado.getDataDeInicio()).isEqualTo(paciente.getDataDeInicio());
