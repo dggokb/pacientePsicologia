@@ -1,9 +1,12 @@
 package br.com.diego.pscicologia.dominio.paciente;
 
-import br.com.diego.pscicologia.comum.*;
+import br.com.diego.pscicologia.comum.Entidade;
+import br.com.diego.pscicologia.comum.ExcecaoDeCampoObrigatorio;
+import br.com.diego.pscicologia.comum.ExcecaoDeRegraDeNegocio;
 import org.springframework.data.annotation.PersistenceCreator;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 public class Paciente extends Entidade {
@@ -12,70 +15,43 @@ public class Paciente extends Entidade {
     private String endereco;
     private LocalDate dataDeInicio;
     private List<Valor> valores;
-    private Quantidade quantidadeDeDiasNoMes;
-    private Moeda valorPorSessao;
     private Boolean inativo;
     private Tipo tipo;
+
     @PersistenceCreator
     public Paciente(String nome,
                     String endereco,
-                    Moeda valorPorSessao) {
-        validarCamposObrigatorios(nome, endereco, valorPorSessao);
+                    List<Valor> valores,
+                    Tipo tipo) {
+        validarCamposObrigatorios(nome, endereco, valores, tipo);
         this.nome = nome;
         this.endereco = endereco;
         this.dataDeInicio = LocalDate.now();
-        this.valorPorSessao = valorPorSessao;
+        this.valores = valores;
         this.inativo = false;
-        this.tipo = Tipo.VALOR_FIXO;
+        this.tipo = tipo;
     }
 
-    public Paciente(String nome,
-                    String endereco,
-                    Quantidade quantidadeDeDiasNoMes,
-                    Moeda valorPorSessao) {
-        validarCamposObrigatorios(nome, endereco, quantidadeDeDiasNoMes, valorPorSessao);
-        this.nome = nome;
+    public void alterar(String endereco) {
+        validarCamposObrigatorios(endereco);
         this.endereco = endereco;
-        this.dataDeInicio = LocalDate.now();
-        this.quantidadeDeDiasNoMes = quantidadeDeDiasNoMes;
-        this.valorPorSessao = valorPorSessao;
-        this.inativo = false;
-        this.tipo = Tipo.VALOR_POR_SESSAO;
-    }
-
-    public void alterar(String endereco, Moeda valorPorSessao) {
-        validarCamposObrigatorios(endereco, valorPorSessao);
-        this.endereco = endereco;
-        this.valorPorSessao = valorPorSessao;
     }
 
     private void validarCamposObrigatorios(String nome,
                                            String endereco,
-                                           Moeda valorPorSessao) {
+                                           List<Valor> valor,
+                                           Tipo tipo) {
         new ExcecaoDeCampoObrigatorio()
                 .quandoNulo(nome, "Não é possível criar um paciente sem informar o nome.")
                 .quandoNulo(endereco, "Não é possível criar um paciente sem informar o endereço.")
-                .quandoNulo(valorPorSessao, "Não é possível criar um paciente sem informar o valor por sessão.")
+                .quandoColecaoVazia(valor, "Não é possível criar um paciente sem informar o valor.")
+                .quandoNulo(tipo, "Não é possível criar um paciente sem informar o tipo.")
                 .entaoDispara();
     }
 
-    private void validarCamposObrigatorios(String nome,
-                                           String endereco,
-                                           Quantidade quantidaDeDiasNoMes,
-                                           Moeda valorPorSessao) {
-        new ExcecaoDeCampoObrigatorio()
-                .quandoNulo(nome, "Não é possível criar um paciente sem informar o nome.")
-                .quandoNulo(endereco, "Não é possível criar um paciente sem informar o endereço.")
-                .quandoNulo(quantidaDeDiasNoMes, "Não é possível criar um paciente sem quantidade de dias no mes.")
-                .quandoNulo(valorPorSessao, "Não é possível criar um paciente sem informar o valor por sessão.")
-                .entaoDispara();
-    }
-
-    private void validarCamposObrigatorios(String endereco,
-                                           Moeda valorPorSessao) {
+    private void validarCamposObrigatorios(String endereco) {
         new ExcecaoDeCampoObrigatorio()
                 .quandoNulo(endereco, "Não é possível alterar um paciente sem informar o endereço.")
-                .quandoNulo(valorPorSessao, "Não é possível alterar um paciente sem informar o valor por sessão.")
                 .entaoDispara();
     }
 
@@ -93,6 +69,17 @@ public class Paciente extends Entidade {
         this.inativo = false;
     }
 
+    public void alterar(List<Valor> valores) {
+        validarCampoObrigatorio(valores);
+        this.valores = valores;
+    }
+
+    private void validarCampoObrigatorio(List<Valor> valores) {
+        new ExcecaoDeCampoObrigatorio()
+                .quandoColecaoVazia(valores, "Não é possível adicionar um valor ao paciente, pois, não foi informado os valores.")
+                .entaoDispara();
+    }
+
     public String getNome() {
         return nome;
     }
@@ -105,20 +92,16 @@ public class Paciente extends Entidade {
         return dataDeInicio;
     }
 
-    public Quantidade getQuantidadeDeDiasNoMes() {
-        return quantidadeDeDiasNoMes;
-    }
-
-    public Moeda getValorPorSessao() {
-        return valorPorSessao;
-    }
-
     public Boolean getInativo() {
         return inativo;
     }
 
     public Tipo getTipo() {
         return tipo;
+    }
+
+    public List<Valor> getValores() {
+        return Collections.unmodifiableList(valores);
     }
 
     public String obterDescricaoDoTipo() {
