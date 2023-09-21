@@ -14,7 +14,7 @@ public enum Tipo {
         return this.equals(Tipo.VALOR_FIXO);
     }
 
-    public Boolean ehValorMensal() {
+    public Boolean ehValorPorSessao() {
         return this.equals(Tipo.VALOR_POR_SESSAO);
     }
 

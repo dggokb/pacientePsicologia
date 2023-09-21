@@ -53,17 +53,16 @@ public class Valor {
         return ano;
     }
 
-    //testar
-    public boolean ehDoMesmoMesEAno(Mes mes, Integer ano) {
-        return ehDoMesmoAno(ano) && ehDoMesmoMes(mes);
+    public boolean ehDoMesmo(Mes mes, Integer ano) {
+        return ehDoMesmo(ano) && ehDoMesmo(mes);
     }
 
-    private boolean ehDoMesmoAno(Integer ano) {
+    private boolean ehDoMesmo(Integer ano) {
         return getAno().equals(ano);
     }
 
 
-    private boolean ehDoMesmoMes(Mes mes) {
+    private boolean ehDoMesmo(Mes mes) {
         return getMes().equals(mes);
     }
 }

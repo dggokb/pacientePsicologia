@@ -1,5 +1,6 @@
 package br.com.diego.pscicologia.dominio.paciente;
 
+import br.com.diego.pscicologia.builder.ValorBuilder;
 import br.com.diego.pscicologia.comum.Mes;
 import br.com.diego.pscicologia.comum.Moeda;
 import br.com.diego.pscicologia.comum.Quantidade;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDate;
@@ -79,6 +81,20 @@ class ValorTest {
         Throwable excecaoLancada = Assertions.catchThrowable(() -> new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipo));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"JANEIRO, 2023, TRUE",
+            "FEVEREIRO, 2023, FALSE",
+            "JANEIRO, 2022, FALSE",})
+    void deveSerPossivelInformarSeEhDoMesmoMesEAno(String mesParaComparacao, Integer anoParaComparacao, Boolean retornoEsperado) {
+        Mes mes = Mes.JANEIRO;
+        int ano = 2023;
+        Valor valor = new ValorBuilder().comMes(mes).comAno(ano).criar();
+
+        boolean ehDoMesmoMesEAno = valor.ehDoMesmo(Mes.valueOf(mesParaComparacao), anoParaComparacao);
+
+        Assertions.assertThat(ehDoMesmoMesEAno).isEqualTo(retornoEsperado);
     }
 
     private static Stream<Arguments> dadosNecessariosParaValidarCriacao() {
