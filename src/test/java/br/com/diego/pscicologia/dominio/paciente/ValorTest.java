@@ -29,13 +29,14 @@ class ValorTest {
     }
 
     @Test
-    void deveSerPossivelCriarUmValor() {
+    void deveSerPossivelCriarUmValorComQuantidadeDeDiasNoMesSeOTipoForValorPorSessao() {
         Quantidade quantidadeDeDiasNoMesEsperada = Quantidade.criar(10);
         Moeda valorPorSessaoEsperado = Moeda.ZERO;
         Mes mesEsperado = Mes.ABRIL;
         Integer anoEsperado = LocalDate.now().getYear();
+        Tipo tipo = Tipo.VALOR_POR_SESSAO;
 
-        Valor valor = new Valor(quantidadeDeDiasNoMesEsperada, valorPorSessaoEsperado, mesEsperado, anoEsperado);
+        Valor valor = new Valor(quantidadeDeDiasNoMesEsperada, valorPorSessaoEsperado, mesEsperado, anoEsperado, tipo);
 
         Assertions.assertThat(valor.getQuantidadeDeDiasNoMes()).isEqualTo(quantidadeDeDiasNoMesEsperada);
         Assertions.assertThat(valor.getValorPorSessao()).isEqualTo(valorPorSessaoEsperado);
@@ -44,10 +45,11 @@ class ValorTest {
     }
 
     @Test
-    void deveSerPossivelCriarValorSemInformarAQuantidadeDeDiasDoMes() {
+    void deveSerPossivelCriarValorSemInformarAQuantidadeDeDiasDoMesSeOTipoForValorFixo() {
         Quantidade quantidadeDeDiasNoMes = null;
+        Tipo tipo = Tipo.VALOR_FIXO;
 
-        Valor valor = new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano);
+        Valor valor = new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipo);
 
         Assertions.assertThat(valor.getQuantidadeDeDiasNoMes()).isNull();
         Assertions.assertThat(valor.getValorPorSessao()).isEqualTo(valorPorSessao);
@@ -60,9 +62,21 @@ class ValorTest {
     void naoDeveSerPossivelCriarValorSemDadosNecessarios(Moeda valorPorSessao,
                                                          Mes mes,
                                                          Integer ano,
+                                                         Tipo tipo,
                                                          String mensagemEsperada) {
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipo));
+
+        Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
+    }
+
+    @Test
+    void naoDeveSerPossivelCriarValorSemInformarAQuantidadeDeDiasDoMesSeOTipoForValorPorSessao() {
+        String mensagemEsperada = "Não pode ser inserido um valor sem quantidade de dias no mês quando for valor por sessão.";
+        Quantidade quantidadeDeDiasNoMes = null;
+        Tipo tipo = Tipo.VALOR_POR_SESSAO;
+
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipo));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
@@ -75,7 +89,8 @@ class ValorTest {
         return Stream.of(
                 Arguments.of(null, mes, ano, "Não é possível criar um valor sem informar o valor por sessão."),
                 Arguments.of(valorPorSessao, null, ano, "Não é possível criar um valor sem informar o mês."),
-                Arguments.of(valorPorSessao, mes, null, "Não é possível criar um valor sem informar o ano.")
+                Arguments.of(valorPorSessao, mes, null, "Não é possível criar um valor sem informar o ano."),
+                Arguments.of(valorPorSessao, mes, null, "Não é possível criar um valor sem informar o tipo.")
         );
     }
 }
