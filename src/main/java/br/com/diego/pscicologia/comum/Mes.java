@@ -21,4 +21,12 @@ public enum Mes {
         this.descricao = descricao;
         this.numero = numero;
     }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
 }
