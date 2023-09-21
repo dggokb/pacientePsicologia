@@ -101,12 +101,13 @@ class ValorTest {
         Moeda valorPorSessao = Moeda.ZERO;
         Mes mes = Mes.ABRIL;
         Integer ano = LocalDate.now().getYear();
+        Tipo tipo = Tipo.VALOR_POR_SESSAO;
 
         return Stream.of(
-                Arguments.of(null, mes, ano, "Não é possível criar um valor sem informar o valor por sessão."),
-                Arguments.of(valorPorSessao, null, ano, "Não é possível criar um valor sem informar o mês."),
-                Arguments.of(valorPorSessao, mes, null, "Não é possível criar um valor sem informar o ano."),
-                Arguments.of(valorPorSessao, mes, null, "Não é possível criar um valor sem informar o tipo.")
+                Arguments.of(null, mes, ano, tipo, "Não é possível criar um valor sem informar o valor por sessão."),
+                Arguments.of(valorPorSessao, null, ano, tipo, "Não é possível criar um valor sem informar o mês."),
+                Arguments.of(valorPorSessao, mes, null, tipo, "Não é possível criar um valor sem informar o ano."),
+                Arguments.of(valorPorSessao, mes, ano, null, "Não é possível criar um valor sem informar o tipo.")
         );
     }
 }
