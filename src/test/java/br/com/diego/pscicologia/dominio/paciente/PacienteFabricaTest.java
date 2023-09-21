@@ -9,6 +9,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 class PacienteFabricaTest {
 
@@ -24,13 +26,14 @@ class PacienteFabricaTest {
 
     @BeforeEach
     void setUp() {
-        nome = "Diego";
-        endereco = "Av lalal lulu";
+        nome = "Diego Guedes";
+        endereco = "Rua Batatinha, Bairro das batatas";
         quantidadeDeDiasNoMes = Quantidade.criar(10);
         valorPorSessao = Moeda.criar(100);
         mes = Mes.ABRIL;
         ano = 2023;
         tipo = Tipo.VALOR_POR_SESSAO;
+        pacienteRepositorio = Mockito.mock(PacienteRepositorio.class);
         fabrica = new PacienteFabrica(pacienteRepositorio);
     }
 

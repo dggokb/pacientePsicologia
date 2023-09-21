@@ -5,9 +5,11 @@ import br.com.diego.pscicologia.comum.Mes;
 import br.com.diego.pscicologia.comum.Moeda;
 import br.com.diego.pscicologia.comum.Quantidade;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class PacienteFabrica {
 
@@ -29,7 +31,7 @@ public class PacienteFabrica {
         if (Objects.nonNull(pacienteObtido)) {
             if (!verificarSePacienteJahPossuiValorNoMesEAno(mes, ano, pacienteObtido)) {
                 Valor novoValorASerInserido = criarValor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipo);
-                List<Valor> valores = pacienteObtido.getValores();
+                List<Valor> valores = new ArrayList<>(pacienteObtido.getValores());
                 valores.add(novoValorASerInserido);
                 pacienteObtido.alterar(valores);
                 return pacienteObtido;

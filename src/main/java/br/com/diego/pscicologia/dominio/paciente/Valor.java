@@ -11,6 +11,7 @@ public class Valor {
     private Moeda valorPorSessao;
     private Mes mes;
     private Integer ano;
+    private Tipo tipo;
 
 
     public Valor(Quantidade quantidadeDeDiasNoMes, Moeda valorPorSessao, Mes mes, Integer ano, Tipo tipo) {
@@ -20,6 +21,7 @@ public class Valor {
         this.valorPorSessao = valorPorSessao;
         this.mes = mes;
         this.ano = ano;
+        this.tipo = tipo;
     }
 
     private void validarQuantidadeDeDiasNoMes(Quantidade quantidadeDeDiasNoMes, Tipo tipo) {
