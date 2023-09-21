@@ -4,12 +4,14 @@ import br.com.diego.pscicologia.comum.*;
 import org.springframework.data.annotation.PersistenceCreator;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Paciente extends Entidade {
 
     private String nome;
     private String endereco;
     private LocalDate dataDeInicio;
+    private List<Valor> valores;
     private Quantidade quantidadeDeDiasNoMes;
     private Moeda valorPorSessao;
     private Boolean inativo;
