@@ -4,6 +4,8 @@ import br.com.diego.pscicologia.comum.*;
 
 import java.util.Objects;
 
+
+//TODO: ver o melhor nome para compor esse objeto de valor
 public class Valor {
     private Quantidade quantidadeDeDiasNoMes;
     private Moeda valorPorSessao;
