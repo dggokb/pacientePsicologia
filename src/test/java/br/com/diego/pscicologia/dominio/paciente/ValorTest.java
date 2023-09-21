@@ -97,6 +97,16 @@ class ValorTest {
         Assertions.assertThat(ehDoMesmoMesEAno).isEqualTo(retornoEsperado);
     }
 
+    @Test
+    void deveSerPossivelCriarUmValorComQuantidadePorDiasNuloSeForDoTipoFixoMesmoInformandoQuantidadeDeDiasPorSessao() {
+        Quantidade quantidadeDeDiasNoMes = Quantidade.criar(10);
+        Tipo tipo = Tipo.VALOR_FIXO;
+
+        Valor valor = new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipo);
+
+        Assertions.assertThat(valor.getQuantidadeDeDiasNoMes()).isNull();
+    }
+
     private static Stream<Arguments> dadosNecessariosParaValidarCriacao() {
         Moeda valorPorSessao = Moeda.ZERO;
         Mes mes = Mes.ABRIL;

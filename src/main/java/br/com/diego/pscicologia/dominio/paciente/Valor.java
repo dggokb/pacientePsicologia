@@ -17,7 +17,7 @@ public class Valor {
     public Valor(Quantidade quantidadeDeDiasNoMes, Moeda valorPorSessao, Mes mes, Integer ano, Tipo tipo) {
         validarCamposObrigatorios(valorPorSessao, mes, ano, tipo);
         validarQuantidadeDeDiasNoMes(quantidadeDeDiasNoMes, tipo);
-        this.quantidadeDeDiasNoMes = quantidadeDeDiasNoMes;
+        this.quantidadeDeDiasNoMes = !tipo.ehValorFixo() ? quantidadeDeDiasNoMes : null;
         this.valorPorSessao = valorPorSessao;
         this.mes = mes;
         this.ano = ano;
