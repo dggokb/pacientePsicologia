@@ -6,9 +6,7 @@ import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlteraPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlterarPaciente;
 import br.com.diego.pscicologia.servico.paciente.ativa.AtivaPaciente;
-import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPaciente;
-import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPacientes;
-import br.com.diego.pscicologia.servico.paciente.consulta.PacienteDTO;
+import br.com.diego.pscicologia.servico.paciente.consulta.*;
 import br.com.diego.pscicologia.servico.paciente.inativa.InativaPaciente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,6 +28,7 @@ public class PacienteRest {
     private final AlteraPaciente alteraPaciente;
     private final AtivaPaciente ativaPaciente;
     private final InativaPaciente inativaPaciente;
+    private final ConsultaTipoDePaciente consultaTiposDePaciente;
 
     @Autowired
     public PacienteRest(ConsultaPaciente consultaPaciente,
@@ -37,18 +36,28 @@ public class PacienteRest {
                         AdicionaPaciente adicionaPaciente,
                         AlteraPaciente alteraPaciente,
                         AtivaPaciente ativaPaciente,
-                        InativaPaciente inativaPaciente) {
+                        InativaPaciente inativaPaciente,
+                        ConsultaTipoDePaciente consultaTiposDePaciente) {
         this.consultaPaciente = consultaPaciente;
         this.consultaPacientes = consultaPacientes;
         this.adicionaPaciente = adicionaPaciente;
         this.alteraPaciente = alteraPaciente;
         this.ativaPaciente = ativaPaciente;
         this.inativaPaciente = inativaPaciente;
+        this.consultaTiposDePaciente = consultaTiposDePaciente;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<String> buscar(@PathVariable String id) throws Exception {
         PacienteDTO dto = consultaPaciente.buscar(id);
+        String json = SerializadorDeObjetoJson.serializar(dto);
+
+        return ResponseEntity.ok(json);
+    }
+
+    @GetMapping("/tipo")
+    public ResponseEntity<String> buscar() throws Exception {
+        List<TipoDePacienteDTO> dto = consultaTiposDePaciente.buscar();
         String json = SerializadorDeObjetoJson.serializar(dto);
 
         return ResponseEntity.ok(json);

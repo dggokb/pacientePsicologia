@@ -6,9 +6,7 @@ import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlteraPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlterarPaciente;
 import br.com.diego.pscicologia.servico.paciente.ativa.AtivaPaciente;
-import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPaciente;
-import br.com.diego.pscicologia.servico.paciente.consulta.ConsultaPacientes;
-import br.com.diego.pscicologia.servico.paciente.consulta.PacienteDTO;
+import br.com.diego.pscicologia.servico.paciente.consulta.*;
 import br.com.diego.pscicologia.servico.paciente.inativa.InativaPaciente;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,6 +26,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,6 +61,9 @@ class PacienteRestTest {
 
     @MockBean
     private InativaPaciente inativaPaciente;
+
+    @MockBean
+    private ConsultaTipoDePaciente consultaTipoDePaciente;
 
     @Test
     void deveSerPossivelAdicionarUmPaciente() throws Exception {
@@ -108,6 +110,24 @@ class PacienteRestTest {
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .get(PATH)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        retornoEsperado.andExpect(status().isOk());
+        retornoEsperado.andExpect(content().json(retornoEsperadoEmJson));
+    }
+
+    @Test
+    void deveSerOPossivelConsultarTiposDePaciente() throws Exception {
+        TipoDePacienteDTO dto = new TipoDePacienteDTO();
+        dto.name = "VALOR_FIXO";
+        dto.descricao = "Valor fixo";
+        List<TipoDePacienteDTO> dtos = Collections.singletonList(dto);
+        String retornoEsperadoEmJson = SerializadorDeObjetoJson.serializar(dtos);
+        Mockito.when(consultaTipoDePaciente.buscar()).thenReturn(dtos);
+
+        ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
+                .get(PATH + "/tipo")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
