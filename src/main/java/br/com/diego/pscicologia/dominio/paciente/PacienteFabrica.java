@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class PacienteFabrica {
 
@@ -25,12 +24,12 @@ public class PacienteFabrica {
                              Moeda valorPorSessao,
                              Mes mes,
                              Integer ano,
-                             Tipo tipo) {
+                             TipoDePaciente tipoDePaciente) {
 
         Paciente pacienteObtido = pacienteRepositorio.buscar(nome);
         if (Objects.nonNull(pacienteObtido)) {
             if (!verificarSePacienteJahPossuiValorNoMesEAno(mes, ano, pacienteObtido)) {
-                Valor novoValorASerInserido = criarValor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipo);
+                Valor novoValorASerInserido = criarValor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
                 List<Valor> valores = new ArrayList<>(pacienteObtido.getValores());
                 valores.add(novoValorASerInserido);
                 pacienteObtido.alterar(valores);
@@ -39,9 +38,9 @@ public class PacienteFabrica {
                 throw new ExcecaoDeRegraDeNegocio(String.format("Paciente já possui valores referente ao mês %s e ano %s.", mes, ano));
             }
         } else {
-            Valor novoValorASerInserido = criarValor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipo);
+            Valor novoValorASerInserido = criarValor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
 
-            return new Paciente(nome, endereco, Collections.singletonList(novoValorASerInserido), tipo);
+            return new Paciente(nome, endereco, Collections.singletonList(novoValorASerInserido), tipoDePaciente);
         }
     }
 
@@ -49,7 +48,7 @@ public class PacienteFabrica {
         return pacienteObtido.getValores().stream().anyMatch(valor -> valor.ehDoMesmo(mes, ano));
     }
 
-    private static Valor criarValor(Quantidade quantidaDeDiasNoMes, Moeda valorPorSessao, Mes mes, Integer ano, Tipo tipo) {
-        return new Valor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipo);
+    private static Valor criarValor(Quantidade quantidaDeDiasNoMes, Moeda valorPorSessao, Mes mes, Integer ano, TipoDePaciente tipoDePaciente) {
+        return new Valor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
     }
 }

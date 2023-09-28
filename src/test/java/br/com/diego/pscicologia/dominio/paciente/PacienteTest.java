@@ -9,7 +9,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -24,15 +23,15 @@ public class PacienteTest {
         String enderecoEsperado = "Av das Bananeiras";
         LocalDate dataDeInicioEsperado = LocalDate.now();
         List<Valor> valoresEsperados = Collections.singletonList(new ValorBuilder().criar());
-        Tipo tipoDePacienteEsperado = Tipo.VALOR_POR_SESSAO;
+        TipoDePaciente tipoDePacienteDePacienteEsperado = TipoDePaciente.VALOR_POR_SESSAO;
 
-        Paciente paciente = new Paciente(nomeEsperado, enderecoEsperado, valoresEsperados, tipoDePacienteEsperado);
+        Paciente paciente = new Paciente(nomeEsperado, enderecoEsperado, valoresEsperados, tipoDePacienteDePacienteEsperado);
 
         Assertions.assertThat(paciente.getNome()).isEqualTo(nomeEsperado);
         Assertions.assertThat(paciente.getEndereco()).isEqualTo(enderecoEsperado);
         Assertions.assertThat(paciente.getDataDeInicio()).isEqualTo(dataDeInicioEsperado);
         Assertions.assertThat(paciente.getValores()).isEqualTo(valoresEsperados);
-        Assertions.assertThat(paciente.getTipo()).isEqualTo(tipoDePacienteEsperado);
+        Assertions.assertThat(paciente.getTipo()).isEqualTo(tipoDePacienteDePacienteEsperado);
         Assertions.assertThat(paciente.getInativo()).isFalse();
     }
 
@@ -41,10 +40,10 @@ public class PacienteTest {
     void naoDeveSerPossivelCriarUmPacienteDeValorMensalSemOsDadosNecessarios(String nome,
                                                                              String endereco,
                                                                              List<Valor> valores,
-                                                                             Tipo tipo,
+                                                                             TipoDePaciente tipoDePaciente,
                                                                              String mensagemEsperada) {
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(nome, endereco, valores, tipo));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(nome, endereco, valores, tipoDePaciente));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
@@ -110,12 +109,12 @@ public class PacienteTest {
 
     @Test
     void deveSerPossivelObterADescricaoDoTipoDoPaciente() {
-        Tipo tipo = Tipo.VALOR_POR_SESSAO;
-        Paciente paciente = new PacienteBuilder().comTipo(tipo).criar();
+        TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
+        Paciente paciente = new PacienteBuilder().comTipo(tipoDePaciente).criar();
 
         String descricaoDoTipo = paciente.obterDescricaoDoTipo();
 
-        Assertions.assertThat(descricaoDoTipo).isEqualTo(tipo.getDescricao());
+        Assertions.assertThat(descricaoDoTipo).isEqualTo(tipoDePaciente.getDescricao());
     }
 
     @Test
@@ -143,13 +142,13 @@ public class PacienteTest {
         String nome = "Teste";
         String endereco = "Endereço teste";
         List<Valor> valores = Collections.singletonList(new ValorBuilder().criar());
-        Tipo tipo = Tipo.VALOR_POR_SESSAO;
+        TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
 
 
         return Stream.of(
-                Arguments.of(null, endereco, valores, tipo, "Não é possível criar um paciente sem informar o nome."),
-                Arguments.of(nome, null, valores, tipo, "Não é possível criar um paciente sem informar o endereço."),
-                Arguments.of(nome, endereco, Collections.emptyList(), tipo, "Não é possível criar um paciente sem informar o valor."),
+                Arguments.of(null, endereco, valores, tipoDePaciente, "Não é possível criar um paciente sem informar o nome."),
+                Arguments.of(nome, null, valores, tipoDePaciente, "Não é possível criar um paciente sem informar o endereço."),
+                Arguments.of(nome, endereco, Collections.emptyList(), tipoDePaciente, "Não é possível criar um paciente sem informar o valor."),
                 Arguments.of(nome, endereco, valores, null, "Não é possível criar um paciente sem informar o tipo.")
         );
     }

@@ -1,21 +1,21 @@
 package br.com.diego.pscicologia.dominio.paciente;
 
-public enum Tipo {
+public enum TipoDePaciente {
     VALOR_FIXO("Valor fixo"),
     VALOR_POR_SESSAO("Valor por sessão");
 
     private final String descricao;
 
-    Tipo(String descricao) {
+    TipoDePaciente(String descricao) {
         this.descricao = descricao;
     }
 
     public Boolean ehValorFixo() {
-        return this.equals(Tipo.VALOR_FIXO);
+        return this.equals(TipoDePaciente.VALOR_FIXO);
     }
 
     public Boolean ehValorPorSessao() {
-        return this.equals(Tipo.VALOR_POR_SESSAO);
+        return this.equals(TipoDePaciente.VALOR_POR_SESSAO);
     }
 
     public String getDescricao() {

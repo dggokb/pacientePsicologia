@@ -3,7 +3,7 @@ package br.com.diego.pscicologia.servico.paciente.consulta;
 import br.com.diego.pscicologia.builder.PacienteBuilder;
 import br.com.diego.pscicologia.builder.ValorBuilder;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
-import br.com.diego.pscicologia.dominio.paciente.Tipo;
+import br.com.diego.pscicologia.dominio.paciente.TipoDePaciente;
 import br.com.diego.pscicologia.dominio.paciente.Valor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ class MontadorDePacienteDTOTest {
     @Test
     void deveSerPossivelMontarUmPacienteDTOLevenadoEmConsideracaoOTipoParaDevolverQuantidadeDeDiasNoMes() throws Exception {
         Valor primeiroValor = new ValorBuilder().criar();
-        Valor segundoValor = new ValorBuilder().comTipo(Tipo.VALOR_FIXO).comQuantidadeDeDiasNoMes(null).criar();
+        Valor segundoValor = new ValorBuilder().comTipo(TipoDePaciente.VALOR_FIXO).comQuantidadeDeDiasNoMes(null).criar();
         Paciente paciente = new PacienteBuilder().comValores(primeiroValor, segundoValor).criar();
 
         PacienteDTO dto = montadorDTO.montar(paciente);

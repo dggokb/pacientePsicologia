@@ -3,7 +3,7 @@ package br.com.diego.pscicologia.builder;
 import br.com.diego.pscicologia.comum.Mes;
 import br.com.diego.pscicologia.comum.Moeda;
 import br.com.diego.pscicologia.comum.Quantidade;
-import br.com.diego.pscicologia.dominio.paciente.Tipo;
+import br.com.diego.pscicologia.dominio.paciente.TipoDePaciente;
 import br.com.diego.pscicologia.dominio.paciente.Valor;
 
 import java.time.LocalDate;
@@ -13,18 +13,18 @@ public class ValorBuilder {
     private Moeda valorPorSessao;
     private Mes mes;
     private Integer ano;
-    private Tipo tipo;
+    private TipoDePaciente tipoDePaciente;
 
     public ValorBuilder() {
         this.quantidadeDeDiasNoMes = Quantidade.criar(10);
         this.valorPorSessao = Moeda.criar(10);
         this.mes = Mes.JANEIRO;
         this.ano = LocalDate.now().getYear();
-        this.tipo = Tipo.VALOR_POR_SESSAO;
+        this.tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
     }
 
     public Valor criar() {
-        return new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipo);
+        return new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
     }
 
     public ValorBuilder comQuantidadeDeDiasNoMes(Quantidade quantidadeDeDiasNoMes) {
@@ -47,8 +47,8 @@ public class ValorBuilder {
         return this;
     }
 
-    public ValorBuilder comTipo(Tipo tipo) {
-        this.tipo = tipo;
+    public ValorBuilder comTipo(TipoDePaciente tipoDePaciente) {
+        this.tipoDePaciente = tipoDePaciente;
         return this;
     }
 }

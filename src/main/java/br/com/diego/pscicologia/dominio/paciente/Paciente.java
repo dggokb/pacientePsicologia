@@ -16,20 +16,20 @@ public class Paciente extends Entidade {
     private LocalDate dataDeInicio;
     private List<Valor> valores;
     private Boolean inativo;
-    private Tipo tipo;
+    private TipoDePaciente tipoDePaciente;
 
     @PersistenceCreator
     public Paciente(String nome,
                     String endereco,
                     List<Valor> valores,
-                    Tipo tipo) {
-        validarCamposObrigatorios(nome, endereco, valores, tipo);
+                    TipoDePaciente tipoDePaciente) {
+        validarCamposObrigatorios(nome, endereco, valores, tipoDePaciente);
         this.nome = nome;
         this.endereco = endereco;
         this.dataDeInicio = LocalDate.now();
         this.valores = valores;
         this.inativo = false;
-        this.tipo = tipo;
+        this.tipoDePaciente = tipoDePaciente;
     }
 
     public void alterar(String endereco) {
@@ -40,12 +40,12 @@ public class Paciente extends Entidade {
     private void validarCamposObrigatorios(String nome,
                                            String endereco,
                                            List<Valor> valor,
-                                           Tipo tipo) {
+                                           TipoDePaciente tipoDePaciente) {
         new ExcecaoDeCampoObrigatorio()
                 .quandoNulo(nome, "Não é possível criar um paciente sem informar o nome.")
                 .quandoNulo(endereco, "Não é possível criar um paciente sem informar o endereço.")
                 .quandoColecaoVazia(valor, "Não é possível criar um paciente sem informar o valor.")
-                .quandoNulo(tipo, "Não é possível criar um paciente sem informar o tipo.")
+                .quandoNulo(tipoDePaciente, "Não é possível criar um paciente sem informar o tipo.")
                 .entaoDispara();
     }
 
@@ -96,8 +96,8 @@ public class Paciente extends Entidade {
         return inativo;
     }
 
-    public Tipo getTipo() {
-        return tipo;
+    public TipoDePaciente getTipo() {
+        return tipoDePaciente;
     }
 
     public List<Valor> getValores() {

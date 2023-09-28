@@ -1,7 +1,7 @@
 package br.com.diego.pscicologia.builder;
 
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
-import br.com.diego.pscicologia.dominio.paciente.Tipo;
+import br.com.diego.pscicologia.dominio.paciente.TipoDePaciente;
 import br.com.diego.pscicologia.dominio.paciente.Valor;
 
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ public class PacienteBuilder {
     private LocalDate dataDeInicio;
     private List<Valor> valores;
     private Boolean inativo;
-    private Tipo tipo;
+    private TipoDePaciente tipoDePaciente;
 
     public PacienteBuilder() {
         this.nome = "Diego Guedes";
@@ -23,11 +23,11 @@ public class PacienteBuilder {
         this.dataDeInicio = LocalDate.now();
         this.valores = Collections.singletonList(new ValorBuilder().criar());
         this.inativo = false;
-        this.tipo = Tipo.VALOR_POR_SESSAO;
+        this.tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
     }
 
     public Paciente criar() {
-        Paciente paciente = new Paciente(nome, endereco, valores, tipo);
+        Paciente paciente = new Paciente(nome, endereco, valores, tipoDePaciente);
         inativar(paciente);
         return paciente;
     }
@@ -57,8 +57,8 @@ public class PacienteBuilder {
         return this;
     }
 
-    public PacienteBuilder comTipo(Tipo tipo) {
-        this.tipo = tipo;
+    public PacienteBuilder comTipo(TipoDePaciente tipoDePaciente) {
+        this.tipoDePaciente = tipoDePaciente;
         return this;
     }
 
