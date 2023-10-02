@@ -72,7 +72,7 @@ public class PacienteRest {
     }
 
     @PostMapping()
-    public ResponseEntity<String> adicionar(@RequestBody AdicionaPacienteHttpDTO httpDTO) {
+    public ResponseEntity<String> adicionar(@RequestBody AdicionaPacienteHttpDTO httpDTO) throws Exception {
         AdicionarPaciente comando = criarComandoParaAdicionar(httpDTO);
         String retorno = adicionaPaciente.executar(comando);
 
@@ -82,7 +82,7 @@ public class PacienteRest {
     @PutMapping()
     public ResponseEntity alterar(@RequestBody AlteraPacienteHttpDTO httpDTO) throws Exception {
         AlterarPaciente comando = criarComandoParaAlterar(httpDTO);
-        alteraPaciente.alterar(comando);
+        alteraPaciente.executar(comando);
 
         return ResponseEntity.ok().build();
     }

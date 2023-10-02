@@ -1,5 +1,7 @@
 package br.com.diego.pscicologia.servico.paciente.altera;
 
-public interface AlteraPaciente {
-    void alterar(AlterarPaciente comando) throws Exception;
+import br.com.diego.pscicologia.comum.ServicoDeAplicacaoDeComando;
+
+public interface AlteraPaciente extends ServicoDeAplicacaoDeComando<AlterarPaciente> {
+
 }

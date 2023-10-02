@@ -139,7 +139,7 @@ class PacienteRestTest {
     void deveSerPossivelAlterarUmPaciente() throws Exception {
         AlteraPacienteHttpDTO httpDTO = criarAlteraPacienteHttpDTO();
         ArgumentCaptor<AlterarPaciente> captor = ArgumentCaptor.forClass(AlterarPaciente.class);
-        Mockito.doNothing().when(alteraPaciente).alterar(captor.capture());
+        Mockito.when(alteraPaciente.executar(captor.capture())).thenReturn(UUID.randomUUID().toString());
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .put(PATH)

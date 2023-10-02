@@ -34,7 +34,7 @@ class AlteraPacienteTest {
         Paciente paciente = new PacienteBuilder().criar();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
 
-        alteraPaciente.alterar(comando);
+        alteraPaciente.executar(comando);
 
         Mockito.verify(pacienteRepositorio).save(paciente);
         Assertions.assertThat(paciente.getEndereco()).isEqualTo(enderecoEsperado);
@@ -46,7 +46,7 @@ class AlteraPacienteTest {
         AlterarPaciente comando = new AlterarPaciente(id, endereco);
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.empty());
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> alteraPaciente.alterar(comando));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> alteraPaciente.executar(comando));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }

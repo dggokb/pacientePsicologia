@@ -18,16 +18,21 @@ public class AlteraPacienteConcreto implements AlteraPaciente {
         this.pacienteRepositorio = pacienteRepositorio;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void alterar(AlterarPaciente comando) throws Exception {
+    public String executar(AlterarPaciente comando) {
         Optional<Paciente> pacienteObtido = pacienteRepositorio.findById(comando.getId());
-        validarPacienteObtido(pacienteObtido);
+        try {
+            validarPacienteObtido(pacienteObtido);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         pacienteObtido.get().alterar(comando.getEndereco());
         pacienteRepositorio.save(pacienteObtido.get());
+
+        return pacienteObtido.get().getId();
     }
 
-    private static void validarPacienteObtido(Optional<Paciente> pacienteObtido) throws Exception {
+    private void validarPacienteObtido(Optional<Paciente> pacienteObtido) throws Exception {
         if (pacienteObtido.isEmpty()) {
             throw new Exception("Não foi possível encontrar o paciente para alteração.");
         }

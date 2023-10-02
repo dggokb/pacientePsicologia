@@ -28,7 +28,7 @@ public class AdicionaPacienteTest {
     }
 
     @Test
-    void deveSerPossivelAdicionarUmPaciente() {
+    void deveSerPossivelAdicionarUmPaciente() throws Exception {
         Paciente paciente = new PacienteBuilder().criar();
         Valor valor = paciente.getValores().get(0);
         AdicionarPaciente comando = new AdicionarPaciente(paciente.getNome(), paciente.getEndereco(),
