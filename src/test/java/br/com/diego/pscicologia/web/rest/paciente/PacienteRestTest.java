@@ -69,7 +69,7 @@ class PacienteRestTest {
     void deveSerPossivelAdicionarUmPaciente() throws Exception {
         AdicionaPacienteHttpDTO httpDTO = criarAdicionaPacienteHttpDTO();
         ArgumentCaptor<AdicionarPaciente> captor = ArgumentCaptor.forClass(AdicionarPaciente.class);
-        Mockito.when(adicionaPaciente.adicionar(captor.capture())).thenReturn(UUID.randomUUID().toString());
+        Mockito.when(adicionaPaciente.executar(captor.capture())).thenReturn(UUID.randomUUID().toString());
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .post(PATH)
@@ -186,7 +186,7 @@ class PacienteRestTest {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         ArgumentCaptor<AdicionarPaciente> captor = ArgumentCaptor.forClass(AdicionarPaciente.class);
         String retornoEsperado = UUID.randomUUID().toString();
-        Mockito.when(adicionaPaciente.adicionar(captor.capture())).thenReturn(retornoEsperado);
+        Mockito.when(adicionaPaciente.executar(captor.capture())).thenReturn(retornoEsperado);
         AdicionaPacienteHttpDTO httpDTO = criarAdicionaPacienteHttpDTO();
         ResponseEntity<String> response = pacienteRest.adicionar(httpDTO);
 

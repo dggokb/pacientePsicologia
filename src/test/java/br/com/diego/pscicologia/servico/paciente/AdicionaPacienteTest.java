@@ -37,7 +37,7 @@ public class AdicionaPacienteTest {
         ArgumentCaptor<Paciente> pacienteCaptor = ArgumentCaptor.forClass(Paciente.class);
         Mockito.when(pacienteRepositorio.save(pacienteCaptor.capture())).thenReturn(paciente);
 
-        adicionaPaciente.adicionar(comando);
+        adicionaPaciente.executar(comando);
 
         Paciente pacienteCapturado = pacienteCaptor.getValue();
         Mockito.verify(pacienteRepositorio).save(pacienteCaptor.capture());

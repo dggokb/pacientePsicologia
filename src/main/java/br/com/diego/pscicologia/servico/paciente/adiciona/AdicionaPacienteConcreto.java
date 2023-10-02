@@ -1,5 +1,6 @@
 package br.com.diego.pscicologia.servico.paciente.adiciona;
 
+import br.com.diego.pscicologia.comum.Comando;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteFabrica;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
@@ -17,9 +18,8 @@ public class AdicionaPacienteConcreto implements AdicionaPaciente {
         this.pacienteRepositorio = pacienteRepositorio;
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
-    public String adicionar(AdicionarPaciente comando) {
+    public String executar(AdicionarPaciente comando) {
         Paciente paciente = new PacienteFabrica(pacienteRepositorio).fabricar(comando.getNome(),
                 comando.getEndereco(),
                 comando.getQuantidadeDeDiasNoMes(),

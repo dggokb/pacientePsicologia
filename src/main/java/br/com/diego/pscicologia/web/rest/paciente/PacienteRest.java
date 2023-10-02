@@ -74,7 +74,7 @@ public class PacienteRest {
     @PostMapping()
     public ResponseEntity<String> adicionar(@RequestBody AdicionaPacienteHttpDTO httpDTO) {
         AdicionarPaciente comando = criarComandoParaAdicionar(httpDTO);
-        String retorno = adicionaPaciente.adicionar(comando);
+        String retorno = adicionaPaciente.executar(comando);
 
         return ResponseEntity.ok(retorno);
     }

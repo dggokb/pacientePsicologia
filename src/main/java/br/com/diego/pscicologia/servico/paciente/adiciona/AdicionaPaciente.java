@@ -1,6 +1,6 @@
 package br.com.diego.pscicologia.servico.paciente.adiciona;
 
-public interface AdicionaPaciente {
+import br.com.diego.pscicologia.comum.ServicoDeAplicacaoDeComando;
 
-    String adicionar(AdicionarPaciente comando);
+public interface AdicionaPaciente extends ServicoDeAplicacaoDeComando<AdicionarPaciente> {
 }
