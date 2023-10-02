@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 public class ConsultaPacientesConcreto implements ConsultaPacientes {
 
     private final PacienteRepositorio pacienteRepositorio;
@@ -19,9 +18,8 @@ public class ConsultaPacientesConcreto implements ConsultaPacientes {
         this.pacienteRepositorio = pacienteRepositorio;
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public List<PacienteDTO> buscarTodos() throws Exception {
+    public List<PacienteDTO> consultar(FiltroDeConsultaDePaciente filtro) throws Exception {
         List<Paciente> pacientes = pacienteRepositorio.findAll();
         validarPacientesObtidos(pacientes);
 
@@ -43,4 +41,6 @@ public class ConsultaPacientesConcreto implements ConsultaPacientes {
             }
         }).collect(Collectors.toList());
     }
+
+
 }

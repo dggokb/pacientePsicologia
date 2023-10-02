@@ -18,11 +18,13 @@ class ConsultaPacientesTest {
 
     private PacienteRepositorio pacienteRepositorio;
     private ConsultaPacientes consultaPacientes;
+    private FiltroDeConsultaDePaciente filtro;
 
     @BeforeEach
     void setUp() {
         pacienteRepositorio = Mockito.mock(PacienteRepositorio.class);
         consultaPacientes = new ConsultaPacientesConcreto(pacienteRepositorio);
+        filtro = new FiltroDeConsultaDePaciente();
     }
 
     @Test
@@ -34,7 +36,7 @@ class ConsultaPacientesTest {
         List<Paciente> pacientes = Arrays.asList(primeiroPaciente, segundoPaciente);
         Mockito.when(pacienteRepositorio.findAll()).thenReturn(pacientes);
 
-        List<PacienteDTO> dtos = consultaPacientes.buscarTodos();
+        List<PacienteDTO> dtos = consultaPacientes.consultar(filtro);
 
         Assertions.assertThat(dtos).extracting(dto -> dto.id).containsExactlyInAnyOrder(primeiroPaciente.getId(),
                 segundoPaciente.getId());
@@ -62,7 +64,7 @@ class ConsultaPacientesTest {
     void deveInformarMensagemSeNaoPossuirNenhumPacienteCadastrado() {
         Mockito.when(pacienteRepositorio.findAll()).thenReturn(Collections.emptyList());
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPacientes.buscarTodos());
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPacientes.consultar(filtro));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining("Não foi possível encontrar nenhum paciente cadastrado.");
     }

@@ -66,7 +66,7 @@ public class PacienteRest {
 
     @GetMapping()
     public ResponseEntity<String> buscarTodos() throws Exception {
-        List<PacienteDTO> dtos = consultaPacientes.buscarTodos();
+        List<PacienteDTO> dtos = consultaPacientes.consultar(new FiltroDeConsultaDePaciente());
         String json = SerializadorDeObjetoJson.serializar(dtos);
 
         return ResponseEntity.ok(json);

@@ -107,7 +107,8 @@ class PacienteRestTest {
         PacienteDTO segundoDTO = criarPacienteDTO("2");
         List<PacienteDTO> dtos = Arrays.asList(primeiroDTO, segundoDTO);
         String retornoEsperadoEmJson = SerializadorDeObjetoJson.serializar(dtos);
-        Mockito.when(consultaPacientes.buscarTodos()).thenReturn(dtos);
+        ArgumentCaptor<FiltroDeConsultaDePaciente> filtroCapturado = ArgumentCaptor.forClass(FiltroDeConsultaDePaciente.class);
+        Mockito.when(consultaPacientes.consultar(filtroCapturado.capture())).thenReturn(dtos);
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .get(PATH)
