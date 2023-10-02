@@ -18,12 +18,14 @@ public class ConsultaPacienteTest {
     private ConsultaPaciente consultaPaciente;
     private PacienteRepositorio pacienteRepositorio;
     private String id;
+    private FiltroDeConsultaDePaciente filtro;
 
     @BeforeEach
     void setUp() {
         pacienteRepositorio = Mockito.mock(PacienteRepositorio.class);
         consultaPaciente = new ConsultaPacienteConcreto(pacienteRepositorio);
         id = UUID.randomUUID().toString();
+        filtro = new FiltroDeConsultaDePaciente().comId(id);
     }
 
     @Test
@@ -32,7 +34,7 @@ public class ConsultaPacienteTest {
         Paciente paciente = new PacienteBuilder().comValores(valor).criar();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
 
-        PacienteDTO dtoObtido = consultaPaciente.buscar(id);
+        PacienteDTO dtoObtido = (PacienteDTO) consultaPaciente.consultar(filtro);
 
         Assertions.assertThat(dtoObtido.id).isEqualTo(paciente.getId());
         Assertions.assertThat(dtoObtido.nome).isEqualTo(paciente.getNome());
@@ -50,8 +52,9 @@ public class ConsultaPacienteTest {
     void naoDeveSerPossivelConsultarUmPacienteSeNaoInformar() throws Exception {
         String mensagemEsperada = "É necessário informar o paciente para consulta.";
         String id = null;
+        FiltroDeConsultaDePaciente filtroSemId = new FiltroDeConsultaDePaciente();
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPaciente.buscar(id));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPaciente.consultar(filtroSemId));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
@@ -61,7 +64,7 @@ public class ConsultaPacienteTest {
         String mensagemEsperada = "Não foi possível contrar o paciente.";
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.empty());
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPaciente.buscar(id));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPaciente.consultar(filtro));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }

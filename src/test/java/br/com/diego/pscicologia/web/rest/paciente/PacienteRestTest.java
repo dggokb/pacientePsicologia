@@ -88,8 +88,9 @@ class PacienteRestTest {
     @Test
     void deveSerOPossivelConsultarUmPaciente() throws Exception {
         PacienteDTO dto = criarPacienteDTO("1");
+        ArgumentCaptor<FiltroDeConsultaDePaciente> filtroCapturado = ArgumentCaptor.forClass(FiltroDeConsultaDePaciente.class);
         String retornoEsperadoEmJson = SerializadorDeObjetoJson.serializar(dto);
-        Mockito.when(consultaPaciente.buscar(dto.id)).thenReturn(dto);
+        Mockito.when(consultaPaciente.consultar(filtroCapturado.capture())).thenReturn(dto);
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .get(PATH + "/" + dto.id)

@@ -49,7 +49,8 @@ public class PacienteRest {
 
     @GetMapping("/{id}")
     public ResponseEntity<String> buscar(@PathVariable String id) throws Exception {
-        PacienteDTO dto = consultaPaciente.buscar(id);
+        FiltroDeConsultaDePaciente filtro = new FiltroDeConsultaDePaciente().comId(id);
+        PacienteDTO dto = (PacienteDTO) consultaPaciente.consultar(filtro);
         String json = SerializadorDeObjetoJson.serializar(dto);
 
         return ResponseEntity.ok(json);

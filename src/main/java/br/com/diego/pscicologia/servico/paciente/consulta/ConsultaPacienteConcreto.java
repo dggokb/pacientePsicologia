@@ -4,13 +4,10 @@ package br.com.diego.pscicologia.servico.paciente.consulta;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Optional;
 
-@Service
 public class ConsultaPacienteConcreto implements ConsultaPaciente {
 
     private final PacienteRepositorio pacienteRepositorio;
@@ -20,11 +17,10 @@ public class ConsultaPacienteConcreto implements ConsultaPaciente {
         this.pacienteRepositorio = pacienteRepositorio;
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public PacienteDTO buscar(String id) throws Exception {
-        validarSePossuiIdentificador(id);
-        Optional<Paciente> pacienteObtido = pacienteRepositorio.findById(id);
+    public PacienteDTO consultar(FiltroDeConsultaDePaciente filtro) throws Exception {
+        validarSePossuiIdentificador(filtro.getId());
+        Optional<Paciente> pacienteObtido = pacienteRepositorio.findById(filtro.getId());
         validarSePacienteFoiEncontrado(pacienteObtido);
 
         return new MontadorDePacienteDTO().montar(pacienteObtido.get());
@@ -36,7 +32,7 @@ public class ConsultaPacienteConcreto implements ConsultaPaciente {
         }
     }
 
-    private static void validarSePacienteFoiEncontrado(Optional<Paciente> pacienteObtido) throws Exception {
+    private void validarSePacienteFoiEncontrado(Optional<Paciente> pacienteObtido) throws Exception {
         if (pacienteObtido.isEmpty()) {
             throw new Exception("Não foi possível contrar o paciente.");
         }

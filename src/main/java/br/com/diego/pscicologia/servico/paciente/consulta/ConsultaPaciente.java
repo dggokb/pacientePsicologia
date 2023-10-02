@@ -1,6 +1,6 @@
 package br.com.diego.pscicologia.servico.paciente.consulta;
 
-public interface ConsultaPaciente {
+import br.com.diego.pscicologia.comum.ServicoDeAplicacaoDeConsulta;
 
-    public PacienteDTO buscar (String id) throws Exception;
+public interface ConsultaPaciente extends ServicoDeAplicacaoDeConsulta<Object, FiltroDeConsultaDePaciente> {
 }
