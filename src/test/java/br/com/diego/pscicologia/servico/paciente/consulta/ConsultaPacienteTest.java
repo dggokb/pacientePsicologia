@@ -34,7 +34,7 @@ public class ConsultaPacienteTest {
         Paciente paciente = new PacienteBuilder().comValores(valor).criar();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
 
-        PacienteDTO dtoObtido = (PacienteDTO) consultaPaciente.consultar(filtro);
+        PacienteDTO dtoObtido = consultaPaciente.consultar(filtro);
 
         Assertions.assertThat(dtoObtido.id).isEqualTo(paciente.getId());
         Assertions.assertThat(dtoObtido.nome).isEqualTo(paciente.getNome());
@@ -51,7 +51,6 @@ public class ConsultaPacienteTest {
     @Test
     void naoDeveSerPossivelConsultarUmPacienteSeNaoInformar() throws Exception {
         String mensagemEsperada = "É necessário informar o paciente para consulta.";
-        String id = null;
         FiltroDeConsultaDePaciente filtroSemId = new FiltroDeConsultaDePaciente();
 
         Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPaciente.consultar(filtroSemId));
