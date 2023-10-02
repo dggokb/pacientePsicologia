@@ -84,6 +84,20 @@ class ServicoParaCalcularFechamentoDoPacienteTest {
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
 
+    @Test
+    void naoDeveSerPossivelCalcularOValorDoFechamentoDoPacienteSeNaoPossuirValorNoAnoENoMes() {
+        Mes outroMesInformado = Mes.AGOSTO;
+        Integer outroAnoInformado = 2022;
+        String mensagemEsperada = String.format("Não foi possível encontrar o valor do mês %s do ano %s", outroMesInformado, outroAnoInformado);
+        Valor valor = new ValorBuilder().comMes(mes).comAno(ano).criar();
+        Paciente paciente = new PacienteBuilder().comValores(valor).criar();
+        Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
+
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> servico.calcular(id, outroMesInformado, outroAnoInformado));
+
+        Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
+    }
+
     @ParameterizedTest
     @MethodSource("dadosNecessariosParaValidarCalculo")
     void naoDeveSerPossivelCalcularOValorDoFechamentoSemDadosNecessarios(String id,
