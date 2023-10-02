@@ -37,7 +37,7 @@ class MesRestTest {
         MesDTO segundoMes = criarMesDTO("FEVEREIRO", "Fevereiro");
         List<MesDTO> dtos = Arrays.asList(primeiroMes, segundoMes);
         String retornoEsperadoEmJson = SerializadorDeObjetoJson.serializar(dtos);
-        Mockito.when(consultaMeses.buscarTodos()).thenReturn(dtos);
+        Mockito.when(consultaMeses.consultar(null)).thenReturn(dtos);
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .get(PATH)

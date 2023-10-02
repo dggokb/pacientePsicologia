@@ -1,5 +1,6 @@
 package br.com.diego.pscicologia.web.rest.mes;
 
+import br.com.diego.pscicologia.comum.FiltroDeConsulta;
 import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
 import br.com.diego.pscicologia.servico.mes.ConsultaMeses;
 import br.com.diego.pscicologia.servico.mes.MesDTO;
@@ -24,7 +25,7 @@ public class MesRest {
 
     @GetMapping()
     public ResponseEntity<String> buscarTodos() throws Exception {
-        List<MesDTO> dtos = consultaMeses.buscarTodos();
+        List<MesDTO> dtos = consultaMeses.consultar(null);
         String json = SerializadorDeObjetoJson.serializar(dtos);
 
         return ResponseEntity.ok(json);
