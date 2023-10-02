@@ -107,6 +107,25 @@ class ValorTest {
         Assertions.assertThat(valor.getQuantidadeDeDiasNoMes()).isNull();
     }
 
+    @Test
+    void deveSerPossivelObterOValorTotalDoFechamentoQuandoForDoTipoFixo() {
+        Valor valor = new ValorBuilder().comTipo(TipoDePaciente.VALOR_FIXO).criar();
+
+        Moeda valorTotal = valor.obterValorTotal();
+
+        Assertions.assertThat(valorTotal).isEqualTo(valor.getValorPorSessao());
+    }
+
+    @Test
+    void deveSerPossivelObterOValorTotalDoFechamentoQuandoForDoTipoValorPorSessao() {
+        Valor valor = new ValorBuilder().comTipo(TipoDePaciente.VALOR_POR_SESSAO).criar();
+        Moeda valorEsperado = valor.getValorPorSessao().multiplicar(valor.getQuantidadeDeDiasNoMes());
+
+        Moeda valorTotal = valor.obterValorTotal();
+
+        Assertions.assertThat(valorTotal).isEqualTo(valorEsperado);
+    }
+
     private static Stream<Arguments> dadosNecessariosParaValidarCriacao() {
         Moeda valorPorSessao = Moeda.ZERO;
         Mes mes = Mes.ABRIL;

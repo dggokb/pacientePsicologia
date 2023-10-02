@@ -67,4 +67,11 @@ public class Valor {
     private boolean ehDoMesmo(Mes mes) {
         return getMes().equals(mes);
     }
+
+    public Moeda obterValorTotal() {
+        if(tipoDePaciente.ehValorFixo()){
+            return getValorPorSessao();
+        }
+        return getValorPorSessao().multiplicar(getQuantidadeDeDiasNoMes());
+    }
 }
