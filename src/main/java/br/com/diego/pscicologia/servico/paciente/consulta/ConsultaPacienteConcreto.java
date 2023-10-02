@@ -4,10 +4,12 @@ package br.com.diego.pscicologia.servico.paciente.consulta;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class ConsultaPacienteConcreto implements ConsultaPaciente {
 
     private final PacienteRepositorio pacienteRepositorio;
