@@ -28,7 +28,7 @@ public class ConsultaValorTotalDeFechamentoDoPacienteConcreto implements Consult
     }
 
     private void validarValorCalculado(Moeda valorObtido) throws Exception {
-        if(Objects.isNull(valorObtido)){
+        if (Objects.isNull(valorObtido)) {
             throw new Exception("Não foi possível calcular o fechamendo do paciente.");
         }
     }

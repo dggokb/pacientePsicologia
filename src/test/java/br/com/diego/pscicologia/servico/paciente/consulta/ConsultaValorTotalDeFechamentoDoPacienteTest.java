@@ -1,18 +1,13 @@
 package br.com.diego.pscicologia.servico.paciente.consulta;
 
-import br.com.diego.pscicologia.builder.PacienteBuilder;
 import br.com.diego.pscicologia.comum.Mes;
 import br.com.diego.pscicologia.comum.Moeda;
-import br.com.diego.pscicologia.dominio.paciente.Paciente;
-import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
 import br.com.diego.pscicologia.dominio.paciente.ServicoParaCalcularFechamentoDoPaciente;
-import br.com.diego.pscicologia.dominio.paciente.Valor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Optional;
 import java.util.UUID;
 
 class ConsultaValorTotalDeFechamentoDoPacienteTest {
