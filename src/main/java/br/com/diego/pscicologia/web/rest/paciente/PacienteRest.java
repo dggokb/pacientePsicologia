@@ -29,6 +29,7 @@ public class PacienteRest {
     private final AtivaPaciente ativaPaciente;
     private final InativaPaciente inativaPaciente;
     private final ConsultaTipoDePaciente consultaTiposDePaciente;
+    private final ConsultaValorTotalDeFechamentoDoPaciente consultaValorTotalDeFechamentoDoPaciente;
 
     @Autowired
     public PacienteRest(ConsultaPaciente consultaPaciente,
@@ -37,7 +38,8 @@ public class PacienteRest {
                         AlteraPaciente alteraPaciente,
                         AtivaPaciente ativaPaciente,
                         InativaPaciente inativaPaciente,
-                        ConsultaTipoDePaciente consultaTiposDePaciente) {
+                        ConsultaTipoDePaciente consultaTiposDePaciente,
+                        ConsultaValorTotalDeFechamentoDoPaciente consultaValorTotalDeFechamentoDoPaciente) {
         this.consultaPaciente = consultaPaciente;
         this.consultaPacientes = consultaPacientes;
         this.adicionaPaciente = adicionaPaciente;
@@ -45,6 +47,7 @@ public class PacienteRest {
         this.ativaPaciente = ativaPaciente;
         this.inativaPaciente = inativaPaciente;
         this.consultaTiposDePaciente = consultaTiposDePaciente;
+        this.consultaValorTotalDeFechamentoDoPaciente = consultaValorTotalDeFechamentoDoPaciente;
     }
 
     @GetMapping("/{id}")
@@ -68,6 +71,17 @@ public class PacienteRest {
     public ResponseEntity<String> buscarTodos() throws Exception {
         List<PacienteDTO> dtos = consultaPacientes.consultar(new FiltroDeConsultaDePaciente());
         String json = SerializadorDeObjetoJson.serializar(dtos);
+
+        return ResponseEntity.ok(json);
+    }
+
+    @GetMapping("/fechamento/{id}")
+    public ResponseEntity<String> buscarFechamento(@PathVariable String id,
+                                                   @RequestParam("mes")String mes,
+                                                   @RequestParam("ano") Integer ano) throws Exception {
+        FiltroDeConsultaDeValorTotalDeFechamentoDoPaciente filtro = new FiltroDeConsultaDeValorTotalDeFechamentoDoPaciente(id, mes, ano);
+        ValorTotalDeFechamentoDoPacienteDTO dto = consultaValorTotalDeFechamentoDoPaciente.consultar(filtro);
+        String json = SerializadorDeObjetoJson.serializar(dto);
 
         return ResponseEntity.ok(json);
     }

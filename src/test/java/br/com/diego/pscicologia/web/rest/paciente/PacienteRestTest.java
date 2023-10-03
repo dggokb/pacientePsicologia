@@ -21,6 +21,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -65,6 +66,9 @@ class PacienteRestTest {
     @MockBean
     private ConsultaTipoDePaciente consultaTipoDePaciente;
 
+    @MockBean
+    private ConsultaValorTotalDeFechamentoDoPaciente consultaValorTotalDeFechamentoDoPaciente;
+
     @Test
     void deveSerPossivelAdicionarUmPaciente() throws Exception {
         AdicionaPacienteHttpDTO httpDTO = criarAdicionaPacienteHttpDTO();
@@ -94,6 +98,27 @@ class PacienteRestTest {
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .get(PATH + "/" + dto.id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        retornoEsperado.andExpect(status().isOk());
+        retornoEsperado.andExpect(content().json(retornoEsperadoEmJson));
+    }
+
+    @Test
+    void deveSerOPossivelConsultarOValorTotalDoFechamentoDeUmPaciente() throws Exception {
+        ValorTotalDeFechamentoDoPacienteDTO dto = new ValorTotalDeFechamentoDoPacienteDTO();
+        dto.valorTotal = BigDecimal.TEN;
+        ArgumentCaptor<FiltroDeConsultaDeValorTotalDeFechamentoDoPaciente> filtroCapturado = ArgumentCaptor.forClass(FiltroDeConsultaDeValorTotalDeFechamentoDoPaciente.class);
+        String retornoEsperadoEmJson = SerializadorDeObjetoJson.serializar(dto);
+        Mockito.when(consultaValorTotalDeFechamentoDoPaciente.consultar(filtroCapturado.capture())).thenReturn(dto);
+        String mes = "JANEIRO";
+        String ano = "2023";
+
+        ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
+                .get(PATH + "/fechamento/" + UUID.randomUUID().toString())
+                .param("mes", mes)
+                .param("ano", ano)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
