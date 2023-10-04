@@ -22,21 +22,15 @@ public class ConsultaPacienteConcreto implements ConsultaPaciente {
     @Override
     public PacienteDTO consultar(FiltroDeConsultaDePaciente filtro) throws Exception {
         validarSePossuiIdentificador(filtro.getId());
-        Optional<Paciente> pacienteObtido = pacienteRepositorio.findById(filtro.getId());
-        validarSePacienteFoiEncontrado(pacienteObtido);
+        Paciente pacienteObtido = pacienteRepositorio.findById(filtro.getId())
+                .orElseThrow(()-> new Exception("Não foi possível contrar o paciente."));
 
-        return new MontadorDePacienteDTO().montar(pacienteObtido.get());
+        return new MontadorDePacienteDTO().montar(pacienteObtido);
     }
 
     private void validarSePossuiIdentificador(String id) throws Exception {
         if (Objects.isNull(id)) {
             throw new Exception("É necessário informar o paciente para consulta.");
-        }
-    }
-
-    private void validarSePacienteFoiEncontrado(Optional<Paciente> pacienteObtido) throws Exception {
-        if (pacienteObtido.isEmpty()) {
-            throw new Exception("Não foi possível contrar o paciente.");
         }
     }
 }
