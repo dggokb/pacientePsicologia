@@ -1,4 +1,4 @@
-package br.com.diego.pscicologia.servico.autenticacao.usuario;
+package br.com.diego.pscicologia.servico.autenticacaodeusuario.usuario;
 
 import br.com.diego.pscicologia.dominio.usuario.UserRole;
 import br.com.diego.pscicologia.dominio.usuario.Usuario;

@@ -1,7 +1,7 @@
 package br.com.diego.pscicologia.porta.adaptador.autenticacao;
 
 import br.com.diego.pscicologia.dominio.usuario.UsuarioRepositorio;
-import br.com.diego.pscicologia.servico.autenticacao.ValidadorDeToken;
+import br.com.diego.pscicologia.servico.autenticacaodeusuario.ValidadorDeToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

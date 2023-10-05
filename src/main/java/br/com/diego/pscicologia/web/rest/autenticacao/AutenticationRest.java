@@ -1,7 +1,7 @@
 package br.com.diego.pscicologia.web.rest.autenticacao;
 
-import br.com.diego.pscicologia.servico.autenticacao.AutenticadorDeUsuario;
-import br.com.diego.pscicologia.servico.autenticacao.usuario.AdicionaUsuario;
+import br.com.diego.pscicologia.servico.autenticacaodeusuario.AutenticadorDeUsuario;
+import br.com.diego.pscicologia.servico.autenticacaodeusuario.usuario.AdicionaUsuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
