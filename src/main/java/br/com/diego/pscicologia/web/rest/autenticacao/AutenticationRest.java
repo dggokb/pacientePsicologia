@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AutenticationRest {
 
-    private final AutenticadorDeUsuario autenticadorDeUsuario;
+    private final AutenticadorDeUsuario autenticaUsuario;
     private final AdicionaUsuario adicionaUsuario;
 
     @Autowired
-    public AutenticationRest(AutenticadorDeUsuario autenticadorDeUsuario,
+    public AutenticationRest(AutenticadorDeUsuario autenticaUsuario,
                              AdicionaUsuario adicionaUsuario) {
-        this.autenticadorDeUsuario = autenticadorDeUsuario;
+        this.autenticaUsuario = autenticaUsuario;
         this.adicionaUsuario = adicionaUsuario;
     }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationHttpDTO httpDTO) {
-        String tokenAutenticado = autenticadorDeUsuario.autenticar(httpDTO.username(), httpDTO.password());
+        String tokenAutenticado = autenticaUsuario.autenticar(httpDTO.username(), httpDTO.password());
         LoginResponseHttpDTO tokenParaRetornar = new LoginResponseHttpDTO(tokenAutenticado);
 
         return ResponseEntity.ok(tokenParaRetornar);

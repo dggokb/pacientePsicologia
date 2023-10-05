@@ -8,13 +8,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AutenticadorDeUsuarioConcreto implements AutenticadorDeUsuario {
+public class AutenticaUsuarioConcreto implements AutenticadorDeUsuario {
 
     private final AuthenticationManager authenticationManager;
     private final GeradorDeToken generateToken;
 
     @Autowired
-    public AutenticadorDeUsuarioConcreto(AuthenticationManager authenticationManager, GeradorDeToken generateToken) {
+    public AutenticaUsuarioConcreto(AuthenticationManager authenticationManager, GeradorDeToken generateToken) {
         this.authenticationManager = authenticationManager;
         this.generateToken = generateToken;
     }
