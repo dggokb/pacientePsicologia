@@ -1,6 +1,8 @@
 package br.com.diego.pscicologia.web.rest.paciente;
 
 import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
+import br.com.diego.pscicologia.porta.adaptador.autenticacao.FiltroDeSeguranca;
+import br.com.diego.pscicologia.servico.autenticacaodeusuario.ValidadorDeToken;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlteraPaciente;
@@ -8,11 +10,13 @@ import br.com.diego.pscicologia.servico.paciente.altera.AlterarPaciente;
 import br.com.diego.pscicologia.servico.paciente.ativa.AtivaPaciente;
 import br.com.diego.pscicologia.servico.paciente.consulta.*;
 import br.com.diego.pscicologia.servico.paciente.inativa.InativaPaciente;
+import br.com.diego.pscicologia.web.rest.base.TestBaseApi;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -32,17 +36,14 @@ import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @WebMvcTest(PacienteRest.class)
-class PacienteRestTest {
+@AutoConfigureMockMvc(addFilters = false)
+class PacienteRestTest extends TestBaseApi {
 
     private static String PATH = "/paciente";
 
     @Autowired
     private PacienteRest pacienteRest;
-
-    @Autowired
-    private MockMvc mvc;
 
     @MockBean
     private ConsultaPaciente consultaPaciente;
