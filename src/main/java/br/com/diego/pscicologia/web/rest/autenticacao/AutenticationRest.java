@@ -26,7 +26,7 @@ public class AutenticationRest {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationHttpDTO httpDTO) {
-        String tokenAutenticado = autenticadorDeUsuario.autenticar(httpDTO.username, httpDTO.password);
+        String tokenAutenticado = autenticadorDeUsuario.autenticar(httpDTO.username(), httpDTO.password());
         LoginResponseHttpDTO tokenParaRetornar = new LoginResponseHttpDTO(tokenAutenticado);
 
         return ResponseEntity.ok(tokenParaRetornar);
@@ -34,7 +34,7 @@ public class AutenticationRest {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterHttpDTO httpDTO) throws Exception {
-        String confirmacao = adicionaUsuario.executar(httpDTO.username, httpDTO.password, httpDTO.role);
+        String confirmacao = adicionaUsuario.executar(httpDTO.username(), httpDTO.password(), httpDTO.role());
 
         return ResponseEntity.ok(confirmacao);
     }

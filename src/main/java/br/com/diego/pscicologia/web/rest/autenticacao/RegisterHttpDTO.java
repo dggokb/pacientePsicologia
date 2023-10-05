@@ -1,7 +1,4 @@
 package br.com.diego.pscicologia.web.rest.autenticacao;
 
-public class RegisterHttpDTO {
-    public String username;
-    public String password;
-    public String role;
+public record RegisterHttpDTO(String username, String password, String role) {
 }
