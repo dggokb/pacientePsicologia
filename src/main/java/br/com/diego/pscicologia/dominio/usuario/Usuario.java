@@ -4,10 +4,12 @@ import br.com.diego.pscicologia.comum.Entidade;
 import com.mongodb.lang.NonNull;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class Usuario extends Entidade implements UserDetails {
 
@@ -17,15 +19,21 @@ public class Usuario extends Entidade implements UserDetails {
     @NonNull
     @Indexed(unique = true)
     private String password;
+    private UserRole role;
 
-    public Usuario(String username, String password) {
+    public Usuario(String username, String password, UserRole role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        if(this.role.equals(UserRole.ADMIN)){
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
     }
 
     @Override
@@ -36,6 +44,10 @@ public class Usuario extends Entidade implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public UserRole getRole() {
+        return role;
     }
 
     @Override
