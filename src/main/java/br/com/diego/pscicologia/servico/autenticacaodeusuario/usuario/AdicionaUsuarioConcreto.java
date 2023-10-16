@@ -4,11 +4,8 @@ import br.com.diego.pscicologia.dominio.usuario.UserRole;
 import br.com.diego.pscicologia.dominio.usuario.Usuario;
 import br.com.diego.pscicologia.dominio.usuario.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class AdicionaUsuarioConcreto implements AdicionaUsuario {
@@ -21,14 +18,17 @@ public class AdicionaUsuarioConcreto implements AdicionaUsuario {
 
     @Override
     public String executar(String username, String password, String role) {
-        Optional<UserDetails> userDetails = usuarioRepositorio.finByUsername(username);
-//        if (userDetails.isPresent()) {
-//            return ResponseEntity.badRequest().build();
-//        }
+        validarUsuarioASerAdicionado(username);
         String encryptedPassword = new BCryptPasswordEncoder().encode(password);
         Usuario usuario = new Usuario(username, encryptedPassword, UserRole.valueOf(role));
         usuarioRepositorio.save(usuario);
 
         return usuario.getId();
+    }
+
+    private void validarUsuarioASerAdicionado(String username) {
+        usuarioRepositorio.finByUsername(username).ifPresent(details -> {
+            throw new RuntimeException(String.format("Usuário %s já cadastrado.", username));
+        });
     }
 }
