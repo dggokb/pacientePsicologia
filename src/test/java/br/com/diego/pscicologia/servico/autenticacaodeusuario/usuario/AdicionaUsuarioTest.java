@@ -1,7 +1,7 @@
 package br.com.diego.pscicologia.servico.autenticacaodeusuario.usuario;
 
 import br.com.diego.pscicologia.builder.UsuarioBuilder;
-import br.com.diego.pscicologia.dominio.usuario.UserRole;
+import br.com.diego.pscicologia.dominio.usuario.TipoDeUsuario;
 import br.com.diego.pscicologia.dominio.usuario.Usuario;
 import br.com.diego.pscicologia.dominio.usuario.UsuarioRepositorio;
 import org.assertj.core.api.Assertions;
@@ -27,7 +27,7 @@ class AdicionaUsuarioTest {
     void deveSerPossivelAdicionarUmUsuario() {
         String username = "Diego";
         String password = "123456";
-        String role = UserRole.ADMIN.name();
+        String role = TipoDeUsuario.ADMIN.name();
         Mockito.when(usuarioRepositorio.finByUsername(username)).thenReturn(Optional.empty());
         ArgumentCaptor<Usuario> usuarioArgumentCaptor = ArgumentCaptor.forClass(Usuario.class);
 

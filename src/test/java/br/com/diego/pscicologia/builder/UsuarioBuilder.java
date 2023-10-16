@@ -1,6 +1,6 @@
 package br.com.diego.pscicologia.builder;
 
-import br.com.diego.pscicologia.dominio.usuario.UserRole;
+import br.com.diego.pscicologia.dominio.usuario.TipoDeUsuario;
 import br.com.diego.pscicologia.dominio.usuario.Usuario;
 
 import java.util.UUID;
@@ -8,12 +8,12 @@ import java.util.UUID;
 public class UsuarioBuilder {
     private String username;
     private String password;
-    private UserRole role;
+    private TipoDeUsuario role;
 
     public UsuarioBuilder() {
         this.username = "Dunha";
         this.password = UUID.randomUUID().toString();
-        this.role = UserRole.USER;
+        this.role = TipoDeUsuario.USER;
     }
 
     public UsuarioBuilder comUsername(String username) {
@@ -26,7 +26,7 @@ public class UsuarioBuilder {
         return this;
     }
 
-    public UsuarioBuilder comRole(UserRole role) {
+    public UsuarioBuilder comRole(TipoDeUsuario role) {
         this.role = role;
         return this;
     }

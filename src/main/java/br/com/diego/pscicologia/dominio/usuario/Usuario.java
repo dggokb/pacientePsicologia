@@ -1,6 +1,7 @@
 package br.com.diego.pscicologia.dominio.usuario;
 
 import br.com.diego.pscicologia.comum.Entidade;
+import br.com.diego.pscicologia.comum.ExcecaoDeCampoObrigatorio;
 import com.mongodb.lang.NonNull;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class Usuario extends Entidade implements UserDetails {
@@ -19,17 +19,26 @@ public class Usuario extends Entidade implements UserDetails {
     @NonNull
     @Indexed(unique = true)
     private String password;
-    private UserRole role;
+    private TipoDeUsuario role;
 
-    public Usuario(String username, String password, UserRole role) {
+    public Usuario(String username, String password, TipoDeUsuario role) {
+        validarCamposObrigatorios(username, password, role);
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
+    private void validarCamposObrigatorios(String username, String password, TipoDeUsuario role) {
+        new ExcecaoDeCampoObrigatorio()
+                .quandoNulo(username, "Não é possível criar um usuário sem informar o username.")
+                .quandoNulo(password, "Não é possível criar um usuário sem informar o password.")
+                .quandoNulo(role, "Não é possível criar um usuário sem informar o tipo de usuário.")
+                .entaoDispara();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role.equals(UserRole.ADMIN)){
+        if (this.role.ehAdmin()) {
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         } else {
             return List.of(new SimpleGrantedAuthority("ROLE_USER"));
@@ -46,7 +55,7 @@ public class Usuario extends Entidade implements UserDetails {
         return username;
     }
 
-    public UserRole getRole() {
+    public TipoDeUsuario getRole() {
         return role;
     }
 
