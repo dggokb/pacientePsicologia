@@ -13,9 +13,9 @@ import org.mockito.Mockito;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ConsultaPacienteTest {
+public class ConsultaPacientePorIdTest {
 
-    private ConsultaPaciente consultaPaciente;
+    private ConsultaPacientePorId consultaPacientePorId;
     private PacienteRepositorio pacienteRepositorio;
     private String id;
     private FiltroDeConsultaDePaciente filtro;
@@ -23,7 +23,7 @@ public class ConsultaPacienteTest {
     @BeforeEach
     void setUp() {
         pacienteRepositorio = Mockito.mock(PacienteRepositorio.class);
-        consultaPaciente = new ConsultaPacienteConcreto(pacienteRepositorio);
+        consultaPacientePorId = new ConsultaPacientePorIdConcreto(pacienteRepositorio);
         id = UUID.randomUUID().toString();
         filtro = new FiltroDeConsultaDePaciente().comId(id);
     }
@@ -34,7 +34,7 @@ public class ConsultaPacienteTest {
         Paciente paciente = new PacienteBuilder().comValores(valor).criar();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
 
-        PacienteDTO dtoObtido = consultaPaciente.consultar(filtro);
+        PacienteDTO dtoObtido = consultaPacientePorId.consultar(filtro);
 
         Assertions.assertThat(dtoObtido.id).isEqualTo(paciente.getId());
         Assertions.assertThat(dtoObtido.nome).isEqualTo(paciente.getNome());
@@ -53,7 +53,7 @@ public class ConsultaPacienteTest {
         String mensagemEsperada = "É necessário informar o paciente para consulta.";
         FiltroDeConsultaDePaciente filtroSemId = new FiltroDeConsultaDePaciente();
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPaciente.consultar(filtroSemId));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPacientePorId.consultar(filtroSemId));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
@@ -63,7 +63,7 @@ public class ConsultaPacienteTest {
         String mensagemEsperada = "Não foi possível contrar o paciente.";
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.empty());
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPaciente.consultar(filtro));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> consultaPacientePorId.consultar(filtro));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
