@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class MontadorDePacienteDTO {
 
-    public PacienteDTO montar(Paciente paciente) throws Exception {
+    public PacienteDTO montar(Paciente paciente) {
         validarPaciente(paciente);
 
         PacienteDTO dto = new PacienteDTO();
@@ -23,9 +23,9 @@ public class MontadorDePacienteDTO {
         return dto;
     }
 
-    private static void validarPaciente(Paciente paciente) throws Exception {
+    private static void validarPaciente(Paciente paciente) {
         if (Objects.isNull(paciente)) {
-            throw new Exception("É necessário informar o paciente para montar os dados da consulta.");
+            throw new RuntimeException("É necessário informar o paciente para montar os dados da consulta.");
         }
     }
 
