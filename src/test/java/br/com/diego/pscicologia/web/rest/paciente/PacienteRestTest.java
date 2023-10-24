@@ -1,8 +1,6 @@
 package br.com.diego.pscicologia.web.rest.paciente;
 
 import br.com.diego.pscicologia.comum.SerializadorDeObjetoJson;
-import br.com.diego.pscicologia.porta.adaptador.autenticacao.FiltroDeSeguranca;
-import br.com.diego.pscicologia.servico.autenticacaodeusuario.ValidadorDeToken;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionarPaciente;
 import br.com.diego.pscicologia.servico.paciente.altera.AlteraPaciente;
@@ -22,7 +20,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -36,6 +33,7 @@ import java.util.UUID;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @WebMvcTest(PacienteRest.class)
 @AutoConfigureMockMvc(addFilters = false)
 class PacienteRestTest extends TestBaseApi {
@@ -46,7 +44,7 @@ class PacienteRestTest extends TestBaseApi {
     private PacienteRest pacienteRest;
 
     @MockBean
-    private ConsultaPaciente consultaPaciente;
+    private ConsultaPacientePorId consultaPacientePorId;
 
     @MockBean
     private ConsultaPacientes consultaPacientes;
@@ -68,6 +66,10 @@ class PacienteRestTest extends TestBaseApi {
 
     @MockBean
     private ConsultaValorTotalDeFechamentoDoPaciente consultaValorTotalDeFechamentoDoPaciente;
+
+    @MockBean
+    private ConsultaPaciente consultaPaciente;
+
 
     @Test
     void deveSerPossivelAdicionarUmPaciente() throws Exception {
@@ -94,7 +96,7 @@ class PacienteRestTest extends TestBaseApi {
         PacienteDTO dto = criarPacienteDTO("1");
         ArgumentCaptor<FiltroDeConsultaDePaciente> filtroCapturado = ArgumentCaptor.forClass(FiltroDeConsultaDePaciente.class);
         String retornoEsperadoEmJson = SerializadorDeObjetoJson.serializar(dto);
-        Mockito.when(consultaPaciente.consultar(filtroCapturado.capture())).thenReturn(dto);
+        Mockito.when(consultaPacientePorId.consultar(filtroCapturado.capture())).thenReturn(dto);
 
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .get(PATH + "/" + dto.id)
@@ -219,6 +221,25 @@ class PacienteRestTest extends TestBaseApi {
 
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(codigoDeRetornoEsperado);
         Assertions.assertThat(response.getBody()).isEqualTo(retornoEsperado);
+    }
+
+    @Test
+    void deveSerOPossivelConsultarPacientePorNome() throws Exception {
+        PacienteDTO primeiroDTO = criarPacienteDTO("1");
+        PacienteDTO segundoDTO = criarPacienteDTO("2");
+        List<PacienteDTO> dtos = Arrays.asList(primeiroDTO, segundoDTO);
+        ArgumentCaptor<FiltroDeConsultaDePaciente> filtroCapturado = ArgumentCaptor.forClass(FiltroDeConsultaDePaciente.class);
+        String retornoEsperadoEmJson = SerializadorDeObjetoJson.serializar(dtos);
+        Mockito.when(consultaPaciente.consultar(filtroCapturado.capture())).thenReturn(dtos);
+
+        ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
+                .get(PATH + "/consultar")
+                .param("nome", "Diego")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        retornoEsperado.andExpect(status().isOk());
+        retornoEsperado.andExpect(content().json(retornoEsperadoEmJson));
     }
 
     private AdicionaPacienteHttpDTO criarAdicionaPacienteHttpDTO() {
