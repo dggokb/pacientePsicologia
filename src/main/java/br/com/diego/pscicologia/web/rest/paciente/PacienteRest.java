@@ -78,8 +78,6 @@ public class PacienteRest {
         return ResponseEntity.ok(json);
     }
 
-
-    //testar
     @GetMapping("consultar")
     public ResponseEntity<String> buscarPorFiltro(@RequestParam(required = false) String nome) throws Exception {
         List<PacienteDTO> dtos = consultaPaciente.consultar(new FiltroDeConsultaDePaciente().comNome(nome));
