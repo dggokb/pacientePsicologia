@@ -30,6 +30,7 @@ public class ConfiguracaoDeSeguranca {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/auth/login").permitAll())
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/auth/register").permitAll())
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.GET, "/auth/validar").permitAll())
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers("", "/**").hasRole("ADMIN").anyRequest().authenticated())
                 .addFilterBefore(filtroDeSeguranca, UsernamePasswordAuthenticationFilter.class)
                 .build();

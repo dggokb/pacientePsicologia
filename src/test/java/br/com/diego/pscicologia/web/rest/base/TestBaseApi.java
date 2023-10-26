@@ -1,8 +1,8 @@
 package br.com.diego.pscicologia.web.rest.base;
 
 import br.com.diego.pscicologia.porta.adaptador.autenticacao.FiltroDeSeguranca;
-import br.com.diego.pscicologia.servico.autenticacaodeusuario.AutenticadorDeUsuario;
-import br.com.diego.pscicologia.servico.autenticacaodeusuario.ValidadorDeToken;
+import br.com.diego.pscicologia.servico.autenticacao.AutenticadorDeUsuario;
+import br.com.diego.pscicologia.servico.autenticacao.ValidadorDeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;

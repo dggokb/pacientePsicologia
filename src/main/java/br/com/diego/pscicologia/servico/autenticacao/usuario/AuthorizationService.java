@@ -1,4 +1,4 @@
-package br.com.diego.pscicologia.servico.autenticacaodeusuario.usuario;
+package br.com.diego.pscicologia.servico.autenticacao.usuario;
 
 import br.com.diego.pscicologia.dominio.usuario.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;

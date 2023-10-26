@@ -1,4 +1,4 @@
-package br.com.diego.pscicologia.servico.autenticacaodeusuario;
+package br.com.diego.pscicologia.servico.autenticacao;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -23,8 +23,7 @@ public class ValidadorDeTokenConcreto implements ValidadorDeToken {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException e) {
-            return "";
+            throw new RuntimeException("Usuário inválido");
         }
-
     }
 }

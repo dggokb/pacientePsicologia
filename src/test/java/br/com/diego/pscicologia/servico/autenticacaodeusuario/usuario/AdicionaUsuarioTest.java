@@ -4,6 +4,8 @@ import br.com.diego.pscicologia.builder.UsuarioBuilder;
 import br.com.diego.pscicologia.dominio.usuario.TipoDeUsuario;
 import br.com.diego.pscicologia.dominio.usuario.Usuario;
 import br.com.diego.pscicologia.dominio.usuario.UsuarioRepositorio;
+import br.com.diego.pscicologia.servico.autenticacao.usuario.AdicionaUsuario;
+import br.com.diego.pscicologia.servico.autenticacao.usuario.AdicionaUsuarioConcreto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
