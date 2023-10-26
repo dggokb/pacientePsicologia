@@ -42,7 +42,7 @@ public class ServicoParaCalcularFechamentoDoPaciente {
 
     private void validarValorObtido(Mes mes, Integer ano, Optional<Valor> valorDoMesEAno) {
         if (valorDoMesEAno.isEmpty()) {
-            throw new ExcecaoDeRegraDeNegocio(String.format("Não foi possível encontrar o valor do mês %s do ano %s", mes, ano));
+            throw new ExcecaoDeRegraDeNegocio(String.format("Não foi possível encontrar o valor do mês %s do ano %s", mes.getDescricao(), ano));
         }
     }
 }

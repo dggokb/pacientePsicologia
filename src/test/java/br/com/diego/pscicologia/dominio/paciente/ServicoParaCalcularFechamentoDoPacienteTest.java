@@ -61,7 +61,7 @@ class ServicoParaCalcularFechamentoDoPacienteTest {
     @Test
     void naoDeveSerPossivelCalcularOValorDoFechamentoDoPacienteSeNaoPossuirValorNoMes() {
         Mes outroMesInformado = Mes.AGOSTO;
-        String mensagemEsperada = String.format("Não foi possível encontrar o valor do mês %s do ano %s", outroMesInformado, ano);
+        String mensagemEsperada = String.format("Não foi possível encontrar o valor do mês %s do ano %s", outroMesInformado.getDescricao(), ano);
         Valor valor = new ValorBuilder().comMes(mes).comAno(ano).criar();
         Paciente paciente = new PacienteBuilder().comValores(valor).criar();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
@@ -74,7 +74,7 @@ class ServicoParaCalcularFechamentoDoPacienteTest {
     @Test
     void naoDeveSerPossivelCalcularOValorDoFechamentoDoPacienteSeNaoPossuirValorNoAno() {
         Integer outroAnoInformado = 2022;
-        String mensagemEsperada = String.format("Não foi possível encontrar o valor do mês %s do ano %s", mes, outroAnoInformado);
+        String mensagemEsperada = String.format("Não foi possível encontrar o valor do mês %s do ano %s", mes.getDescricao(), outroAnoInformado);
         Valor valor = new ValorBuilder().comMes(mes).comAno(ano).criar();
         Paciente paciente = new PacienteBuilder().comValores(valor).criar();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
@@ -88,7 +88,7 @@ class ServicoParaCalcularFechamentoDoPacienteTest {
     void naoDeveSerPossivelCalcularOValorDoFechamentoDoPacienteSeNaoPossuirValorNoAnoENoMes() {
         Mes outroMesInformado = Mes.AGOSTO;
         Integer outroAnoInformado = 2022;
-        String mensagemEsperada = String.format("Não foi possível encontrar o valor do mês %s do ano %s", outroMesInformado, outroAnoInformado);
+        String mensagemEsperada = String.format("Não foi possível encontrar o valor do mês %s do ano %s", outroMesInformado.getDescricao(), outroAnoInformado);
         Valor valor = new ValorBuilder().comMes(mes).comAno(ano).criar();
         Paciente paciente = new PacienteBuilder().comValores(valor).criar();
         Mockito.when(pacienteRepositorio.findById(id)).thenReturn(Optional.ofNullable(paciente));
