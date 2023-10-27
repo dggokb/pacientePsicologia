@@ -2,7 +2,7 @@ package br.com.diego.pscicologia;
 
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
 import br.com.diego.pscicologia.dominio.paciente.ServicoParaCalcularFechamentoDoPaciente;
-import br.com.diego.pscicologia.dominio.paciente.ServicoParaObterPacientesPorNome;
+import br.com.diego.pscicologia.dominio.paciente.ServicoParaObterPacientesDeUmUsuarioPorNome;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +15,7 @@ public class ServicoDeDominioInjecaoDeDependencia {
     }
 
     @Bean
-    public ServicoParaObterPacientesPorNome servicoParaObterPaciente(PacienteRepositorio pacienteRepositorio) {
-        return new ServicoParaObterPacientesPorNome(pacienteRepositorio);
+    public ServicoParaObterPacientesDeUmUsuarioPorNome servicoParaObterPaciente(PacienteRepositorio pacienteRepositorio) {
+        return new ServicoParaObterPacientesDeUmUsuarioPorNome(pacienteRepositorio);
     }
 }

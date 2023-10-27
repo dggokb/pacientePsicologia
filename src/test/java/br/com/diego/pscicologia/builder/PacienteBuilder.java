@@ -35,6 +35,11 @@ public class PacienteBuilder {
         return paciente;
     }
 
+    public PacienteBuilder comUsuarioId(String usuarioId) {
+        this.usuarioId = usuarioId;
+        return this;
+    }
+
     public PacienteBuilder comNome(String nome) {
         this.nome = nome;
         return this;

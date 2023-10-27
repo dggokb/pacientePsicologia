@@ -5,10 +5,16 @@ import br.com.diego.pscicologia.comum.FiltroDeConsulta;
 public class FiltroDeConsultaDePaciente implements FiltroDeConsulta {
 
     private String id;
+    private String usuarioId;
     private String nome;
 
     public FiltroDeConsultaDePaciente comId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public FiltroDeConsultaDePaciente comUsuarioId(String usuarioId) {
+        this.usuarioId = usuarioId;
         return this;
     }
 
@@ -19,6 +25,10 @@ public class FiltroDeConsultaDePaciente implements FiltroDeConsulta {
 
     public String getId() {
         return id;
+    }
+
+    public String getUsuarioId() {
+        return usuarioId;
     }
 
     public String getNome() {

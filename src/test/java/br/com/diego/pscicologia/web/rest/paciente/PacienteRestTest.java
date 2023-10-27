@@ -235,6 +235,7 @@ class PacienteRestTest extends TestBaseApi {
         ResultActions retornoEsperado = mvc.perform(MockMvcRequestBuilders
                 .get(PATH + "/consultar")
                 .param("nome", "Diego")
+                .param("usuarioId", UUID.randomUUID().toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 

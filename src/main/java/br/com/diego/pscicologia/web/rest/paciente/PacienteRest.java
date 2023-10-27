@@ -79,8 +79,10 @@ public class PacienteRest {
     }
 
     @GetMapping("consultar")
-    public ResponseEntity<String> buscarPorFiltro(@RequestParam(required = false) String nome) throws Exception {
-        List<PacienteDTO> dtos = consultaPaciente.consultar(new FiltroDeConsultaDePaciente().comNome(nome));
+    public ResponseEntity<String> buscarPorFiltro(@RequestParam(required = false) String nome,
+                                                  @RequestParam String usuarioId) throws Exception {
+        FiltroDeConsultaDePaciente filtroDeConsultaDePaciente = new FiltroDeConsultaDePaciente().comNome(nome).comUsuarioId(usuarioId);
+        List<PacienteDTO> dtos = consultaPaciente.consultar(filtroDeConsultaDePaciente);
         String json = SerializadorDeObjetoJson.serializar(dtos);
 
         return ResponseEntity.ok(json);

@@ -3,7 +3,7 @@ package br.com.diego.pscicologia.servico.paciente.consulta;
 import br.com.diego.pscicologia.builder.PacienteBuilder;
 import br.com.diego.pscicologia.builder.ValorBuilder;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
-import br.com.diego.pscicologia.dominio.paciente.ServicoParaObterPacientesPorNome;
+import br.com.diego.pscicologia.dominio.paciente.ServicoParaObterPacientesDeUmUsuarioPorNome;
 import br.com.diego.pscicologia.dominio.paciente.Valor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,15 +14,15 @@ import java.util.Collections;
 import java.util.List;
 
 class ConsultaPacienteTest {
-    private ServicoParaObterPacientesPorNome servicoParaObterPacientesPorNome;
+    private ServicoParaObterPacientesDeUmUsuarioPorNome servicoParaObterPacientesDeUmUsuarioPorNome;
     private ConsultaPaciente consultaPaciente;
     private String nome;
     private FiltroDeConsultaDePaciente filtro;
 
     @BeforeEach
     void setUp() {
-        servicoParaObterPacientesPorNome = Mockito.mock(ServicoParaObterPacientesPorNome.class);
-        consultaPaciente = new ConsultaPacienteConcreto(servicoParaObterPacientesPorNome);
+        servicoParaObterPacientesDeUmUsuarioPorNome = Mockito.mock(ServicoParaObterPacientesDeUmUsuarioPorNome.class);
+        consultaPaciente = new ConsultaPacienteConcreto(servicoParaObterPacientesDeUmUsuarioPorNome);
         nome = "Esteban Manuel";
         filtro = new FiltroDeConsultaDePaciente().comNome(nome);
     }
@@ -31,7 +31,7 @@ class ConsultaPacienteTest {
     void deveSerPossivelConsultarUmPaciente() throws Exception {
         Valor valor = new ValorBuilder().criar();
         Paciente paciente = new PacienteBuilder().criar();
-        Mockito.when(servicoParaObterPacientesPorNome.obter(nome)).thenReturn(Collections.singletonList(paciente));
+        Mockito.when(servicoParaObterPacientesDeUmUsuarioPorNome.obter(nome, filtro.getUsuarioId())).thenReturn(Collections.singletonList(paciente));
 
         List<PacienteDTO> dtoObtido = consultaPaciente.consultar(filtro);
 
@@ -49,7 +49,7 @@ class ConsultaPacienteTest {
 
     @Test
     void naoDeveSerPossivelConsultarUmPacienteSeNaoForEncontradoOPaciente() throws Exception {
-        Mockito.when(servicoParaObterPacientesPorNome.obter(nome)).thenReturn(Collections.emptyList());
+        Mockito.when(servicoParaObterPacientesDeUmUsuarioPorNome.obter(nome, filtro.getUsuarioId())).thenReturn(Collections.emptyList());
 
         List<PacienteDTO> dtoObtido = consultaPaciente.consultar(filtro);
 
