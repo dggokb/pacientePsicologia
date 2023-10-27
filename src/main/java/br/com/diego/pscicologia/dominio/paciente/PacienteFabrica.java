@@ -18,7 +18,8 @@ public class PacienteFabrica {
         this.pacienteRepositorio = pacienteRepositorio;
     }
 
-    public Paciente fabricar(String nome,
+    public Paciente fabricar(String usuarioId,
+                             String nome,
                              String endereco,
                              Quantidade quantidaDeDiasNoMes,
                              Moeda valorPorSessao,
@@ -26,7 +27,7 @@ public class PacienteFabrica {
                              Integer ano,
                              TipoDePaciente tipoDePaciente) {
 
-        Paciente pacienteObtido = pacienteRepositorio.buscar(nome);
+        Paciente pacienteObtido = pacienteRepositorio.buscar(nome, usuarioId);
         if (Objects.nonNull(pacienteObtido)) {
             if (!verificarSePacienteJahPossuiValorNoMesEAno(mes, ano, pacienteObtido)) {
                 Valor novoValorASerInserido = criarValor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
@@ -40,7 +41,7 @@ public class PacienteFabrica {
         } else {
             Valor novoValorASerInserido = criarValor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
 
-            return new Paciente(nome, endereco, Collections.singletonList(novoValorASerInserido), tipoDePaciente);
+            return new Paciente(usuarioId, nome, endereco, Collections.singletonList(novoValorASerInserido), tipoDePaciente);
         }
     }
 

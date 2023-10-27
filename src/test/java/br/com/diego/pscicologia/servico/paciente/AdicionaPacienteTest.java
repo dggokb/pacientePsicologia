@@ -31,7 +31,7 @@ public class AdicionaPacienteTest {
     void deveSerPossivelAdicionarUmPaciente() throws Exception {
         Paciente paciente = new PacienteBuilder().criar();
         Valor valor = paciente.getValores().get(0);
-        AdicionarPaciente comando = new AdicionarPaciente(paciente.getNome(), paciente.getEndereco(),
+        AdicionarPaciente comando = new AdicionarPaciente(paciente.getUsuarioId(), paciente.getNome(), paciente.getEndereco(),
                 Optional.of(valor.getQuantidadeDeDiasNoMes().quantidade()), valor.getValorPorSessao().valor(),
                 valor.getMes().name(), valor.getAno(), paciente.getTipo().name());
         ArgumentCaptor<Paciente> pacienteCaptor = ArgumentCaptor.forClass(Paciente.class);
@@ -41,6 +41,7 @@ public class AdicionaPacienteTest {
 
         Paciente pacienteCapturado = pacienteCaptor.getValue();
         Mockito.verify(pacienteRepositorio).save(pacienteCaptor.capture());
+        Assertions.assertThat(pacienteCapturado.getUsuarioId()).isEqualTo(paciente.getUsuarioId());
         Assertions.assertThat(pacienteCapturado.getNome()).isEqualTo(paciente.getNome());
         Assertions.assertThat(pacienteCapturado.getEndereco()).isEqualTo(paciente.getEndereco());
         Assertions.assertThat(pacienteCapturado.getDataDeInicio()).isEqualTo(paciente.getDataDeInicio());

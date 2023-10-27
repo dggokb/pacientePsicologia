@@ -17,6 +17,9 @@ public interface PacienteRepositorio extends MongoRepository<Paciente, String> {
     @Query("{nome :?0}")
     Paciente buscar(String nome);
 
+    @Query("{nome :?0, usuarioId: ?1}")
+    Paciente buscar(String nome, String usuarioId);
+
     @Query("{ 'nome' : { $regex: ?0, $options: 'i' } }")
     List<Paciente> buscarTodos(String nome);
 }

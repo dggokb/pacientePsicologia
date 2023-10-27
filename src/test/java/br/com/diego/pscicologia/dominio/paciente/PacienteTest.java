@@ -13,20 +13,23 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public class PacienteTest {
 
     @Test
     void deveSerPossivelCriarUmPaciente() {
+        String usuarioId = UUID.randomUUID().toString();
         String nomeEsperado = "Diego Guedes";
         String enderecoEsperado = "Av das Bananeiras";
         LocalDate dataDeInicioEsperado = LocalDate.now();
         List<Valor> valoresEsperados = Collections.singletonList(new ValorBuilder().criar());
         TipoDePaciente tipoDePacienteDePacienteEsperado = TipoDePaciente.VALOR_POR_SESSAO;
 
-        Paciente paciente = new Paciente(nomeEsperado, enderecoEsperado, valoresEsperados, tipoDePacienteDePacienteEsperado);
+        Paciente paciente = new Paciente(usuarioId, nomeEsperado, enderecoEsperado, valoresEsperados, tipoDePacienteDePacienteEsperado);
 
+        Assertions.assertThat(paciente.getUsuarioId()).isEqualTo(usuarioId);
         Assertions.assertThat(paciente.getNome()).isEqualTo(nomeEsperado);
         Assertions.assertThat(paciente.getEndereco()).isEqualTo(enderecoEsperado);
         Assertions.assertThat(paciente.getDataDeInicio()).isEqualTo(dataDeInicioEsperado);
@@ -37,13 +40,14 @@ public class PacienteTest {
 
     @ParameterizedTest
     @MethodSource("dadosNecessariosParaValidarCriacao")
-    void naoDeveSerPossivelCriarUmPacienteDeValorMensalSemOsDadosNecessarios(String nome,
+    void naoDeveSerPossivelCriarUmPacienteDeValorMensalSemOsDadosNecessarios(String usuarioId,
+                                                                             String nome,
                                                                              String endereco,
                                                                              List<Valor> valores,
                                                                              TipoDePaciente tipoDePaciente,
                                                                              String mensagemEsperada) {
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(nome, endereco, valores, tipoDePaciente));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(usuarioId, nome, endereco, valores, tipoDePaciente));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
@@ -139,6 +143,7 @@ public class PacienteTest {
     }
 
     private static Stream<Arguments> dadosNecessariosParaValidarCriacao() {
+        String usuarioId = UUID.randomUUID().toString();
         String nome = "Teste";
         String endereco = "Endereço teste";
         List<Valor> valores = Collections.singletonList(new ValorBuilder().criar());
@@ -146,10 +151,11 @@ public class PacienteTest {
 
 
         return Stream.of(
-                Arguments.of(null, endereco, valores, tipoDePaciente, "Não é possível criar um paciente sem informar o nome."),
-                Arguments.of(nome, null, valores, tipoDePaciente, "Não é possível criar um paciente sem informar o endereço."),
-                Arguments.of(nome, endereco, Collections.emptyList(), tipoDePaciente, "Não é possível criar um paciente sem informar o valor."),
-                Arguments.of(nome, endereco, valores, null, "Não é possível criar um paciente sem informar o tipo.")
+                Arguments.of(null, nome, endereco, valores, tipoDePaciente, "Não é possível criar um paciente sem informar o usuário."),
+                Arguments.of(usuarioId, null, endereco, valores, tipoDePaciente, "Não é possível criar um paciente sem informar o nome."),
+                Arguments.of(usuarioId, nome, null, valores, tipoDePaciente, "Não é possível criar um paciente sem informar o endereço."),
+                Arguments.of(usuarioId, nome, endereco, Collections.emptyList(), tipoDePaciente, "Não é possível criar um paciente sem informar o valor."),
+                Arguments.of(usuarioId, nome, endereco, valores, null, "Não é possível criar um paciente sem informar o tipo.")
         );
     }
 

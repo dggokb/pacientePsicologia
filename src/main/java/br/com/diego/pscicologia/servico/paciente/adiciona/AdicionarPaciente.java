@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public class AdicionarPaciente implements Comando {
 
+    private String usuarioId;
     private String nome;
     private String endereco;
     private Quantidade quantidadeDeDiasNoMes;
@@ -19,13 +20,15 @@ public class AdicionarPaciente implements Comando {
     private Integer ano;
     private TipoDePaciente tipoDePaciente;
 
-    public AdicionarPaciente(String nome,
+    public AdicionarPaciente(String usuarioId,
+                             String nome,
                              String endereco,
                              Optional<Integer> quantidadeDeDiasNoMes,
                              BigDecimal valorPorSessao,
                              String mes,
                              Integer ano,
                              String tipo) {
+        this.usuarioId = usuarioId;
         this.nome = nome;
         this.endereco = endereco;
         this.quantidadeDeDiasNoMes = quantidadeDeDiasNoMes.map(Quantidade::criar).orElse(null);
@@ -33,6 +36,10 @@ public class AdicionarPaciente implements Comando {
         this.mes = Mes.valueOf(mes);
         this.ano = ano;
         this.tipoDePaciente = TipoDePaciente.valueOf(tipo);
+    }
+
+    public String getUsuarioId() {
+        return usuarioId;
     }
 
     public String getNome() {

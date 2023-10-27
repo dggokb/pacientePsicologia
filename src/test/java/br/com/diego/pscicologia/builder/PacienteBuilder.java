@@ -7,9 +7,11 @@ import br.com.diego.pscicologia.dominio.paciente.Valor;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class PacienteBuilder {
 
+    private String usuarioId;
     private String nome;
     private String endereco;
     private LocalDate dataDeInicio;
@@ -18,6 +20,7 @@ public class PacienteBuilder {
     private TipoDePaciente tipoDePaciente;
 
     public PacienteBuilder() {
+        this.usuarioId = UUID.randomUUID().toString();
         this.nome = "Diego Guedes";
         this.endereco = "Rua Batatinha, Bairro das batatas";
         this.dataDeInicio = LocalDate.now();
@@ -27,7 +30,7 @@ public class PacienteBuilder {
     }
 
     public Paciente criar() {
-        Paciente paciente = new Paciente(nome, endereco, valores, tipoDePaciente);
+        Paciente paciente = new Paciente(usuarioId, nome, endereco, valores, tipoDePaciente);
         inativar(paciente);
         return paciente;
     }

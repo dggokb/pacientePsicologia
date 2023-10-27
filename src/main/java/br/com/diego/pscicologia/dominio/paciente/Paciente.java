@@ -11,6 +11,7 @@ import java.util.List;
 
 public class Paciente extends Entidade {
 
+    private String usuarioId;
     private String nome;
     private String endereco;
     private LocalDate dataDeInicio;
@@ -19,11 +20,13 @@ public class Paciente extends Entidade {
     private TipoDePaciente tipoDePaciente;
 
     @PersistenceCreator
-    public Paciente(String nome,
+    public Paciente(String usuarioId,
+                    String nome,
                     String endereco,
                     List<Valor> valores,
                     TipoDePaciente tipoDePaciente) {
-        validarCamposObrigatorios(nome, endereco, valores, tipoDePaciente);
+        validarCamposObrigatorios(usuarioId, nome, endereco, valores, tipoDePaciente);
+        this.usuarioId = usuarioId;
         this.nome = nome;
         this.endereco = endereco;
         this.dataDeInicio = LocalDate.now();
@@ -37,11 +40,13 @@ public class Paciente extends Entidade {
         this.endereco = endereco;
     }
 
-    private void validarCamposObrigatorios(String nome,
-                                           String endereco,
-                                           List<Valor> valor,
+    private void validarCamposObrigatorios(String usuarioId,
+                                           String nome,
+                                           String endereco, List<Valor> valor,
                                            TipoDePaciente tipoDePaciente) {
         new ExcecaoDeCampoObrigatorio()
+                .quandoNulo(usuarioId, "Não é possível criar um paciente sem informar o usuário.")
+                .quandoNulo(nome, "Não é possível criar um paciente sem informar o nome.")
                 .quandoNulo(nome, "Não é possível criar um paciente sem informar o nome.")
                 .quandoNulo(endereco, "Não é possível criar um paciente sem informar o endereço.")
                 .quandoColecaoVazia(valor, "Não é possível criar um paciente sem informar o valor.")
@@ -78,6 +83,10 @@ public class Paciente extends Entidade {
         new ExcecaoDeCampoObrigatorio()
                 .quandoColecaoVazia(valores, "Não é possível adicionar um valor ao paciente, pois, não foi informado os valores.")
                 .entaoDispara();
+    }
+
+    public String getUsuarioId() {
+        return usuarioId;
     }
 
     public String getNome() {

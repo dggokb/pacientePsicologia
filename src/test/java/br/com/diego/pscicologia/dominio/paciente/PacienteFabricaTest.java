@@ -10,9 +10,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.UUID;
+
 class PacienteFabricaTest {
 
     private PacienteFabrica fabrica;
+    private String usuarioId;
     private String nome;
     private String endereco;
     private Quantidade quantidadeDeDiasNoMes;
@@ -24,6 +27,7 @@ class PacienteFabricaTest {
 
     @BeforeEach
     void setUp() {
+        usuarioId = UUID.randomUUID().toString();
         nome = "Diego Guedes";
         endereco = "Rua Batatinha, Bairro das batatas";
         quantidadeDeDiasNoMes = Quantidade.criar(10);
@@ -37,6 +41,7 @@ class PacienteFabricaTest {
 
     @Test
     void deveSerPossivelFabricarUmPacienteQueNaoFoiCadastradoAinda() {
+        String usuarioId = UUID.randomUUID().toString();
         String nome = "Diego";
         String endereco = "Av lalal lulu";
         Quantidade quantidadeDeDiasNoMes = Quantidade.criar(10);
@@ -44,10 +49,11 @@ class PacienteFabricaTest {
         Mes mes = Mes.ABRIL;
         Integer ano = 2023;
         TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
-        Mockito.when(pacienteRepositorio.buscar(nome)).thenReturn(null);
+        Mockito.when(pacienteRepositorio.buscar(nome, usuarioId)).thenReturn(null);
 
-        Paciente pacienteFabricado = fabrica.fabricar(nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
+        Paciente pacienteFabricado = fabrica.fabricar(usuarioId, nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
 
+        Assertions.assertThat(pacienteFabricado.getUsuarioId()).isEqualTo(usuarioId);
         Assertions.assertThat(pacienteFabricado.getNome()).isEqualTo(nome);
         Assertions.assertThat(pacienteFabricado.getEndereco()).isEqualTo(endereco);
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getValorPorSessao).containsOnly(valorPorSessao);
@@ -63,10 +69,11 @@ class PacienteFabricaTest {
         Integer ano = 2023;
         Valor valor = new ValorBuilder().comMes(Mes.JANEIRO).comAno(ano).criar();
         Paciente paciente = new PacienteBuilder().comValores(valor).criar();
-        Mockito.when(pacienteRepositorio.buscar(nome)).thenReturn(paciente);
+        Mockito.when(pacienteRepositorio.buscar(nome, usuarioId)).thenReturn(paciente);
 
-        Paciente pacienteFabricado = fabrica.fabricar(nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
+        Paciente pacienteFabricado = fabrica.fabricar(usuarioId, nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
 
+        Assertions.assertThat(pacienteFabricado.getUsuarioId()).isEqualTo(usuarioId);
         Assertions.assertThat(pacienteFabricado.getNome()).isEqualTo(nome);
         Assertions.assertThat(pacienteFabricado.getEndereco()).isEqualTo(endereco);
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getValorPorSessao).containsOnly(valorPorSessao, valor.getValorPorSessao());
@@ -83,9 +90,9 @@ class PacienteFabricaTest {
         String mensagemEsperada = String.format("Paciente já possui valores referente ao mês %s e ano %s.", mes, ano);
         Valor valor = new ValorBuilder().comMes(mes).comAno(ano).criar();
         Paciente paciente = new PacienteBuilder().comValores(valor).criar();
-        Mockito.when(pacienteRepositorio.buscar(nome)).thenReturn(paciente);
+        Mockito.when(pacienteRepositorio.buscar(nome, usuarioId)).thenReturn(paciente);
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> fabrica.fabricar(nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> fabrica.fabricar(usuarioId, nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }

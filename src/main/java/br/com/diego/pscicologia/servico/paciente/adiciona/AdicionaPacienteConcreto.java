@@ -1,12 +1,10 @@
 package br.com.diego.pscicologia.servico.paciente.adiciona;
 
-import br.com.diego.pscicologia.comum.Comando;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteFabrica;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AdicionaPacienteConcreto implements AdicionaPaciente {
@@ -20,7 +18,8 @@ public class AdicionaPacienteConcreto implements AdicionaPaciente {
 
     @Override
     public String executar(AdicionarPaciente comando) {
-        Paciente paciente = new PacienteFabrica(pacienteRepositorio).fabricar(comando.getNome(),
+        Paciente paciente = new PacienteFabrica(pacienteRepositorio).fabricar(comando.getUsuarioId(),
+                comando.getNome(),
                 comando.getEndereco(),
                 comando.getQuantidadeDeDiasNoMes(),
                 comando.getValorPorSessao(),
