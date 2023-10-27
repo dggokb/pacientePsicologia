@@ -25,8 +25,7 @@ public class GeradorDeTokenConcreto implements GeradorDeToken {
                     .withSubject(usuario.getUsername())
                     .withExpiresAt(LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00")))
                     .sign(algorithm);
-            UsuarioAutenticadoDTO dto = new UsuarioAutenticadoDTO(usuario.getId(), token);
-            return dto;
+            return new UsuarioAutenticadoDTO(usuario.getId(), token);
         } catch (JWTCreationException e) {
             throw new RuntimeException("Não foi possível gerar o token", e);
         }
