@@ -244,6 +244,7 @@ class PacienteRestTest extends TestBaseApi {
 
     private AdicionaPacienteHttpDTO criarAdicionaPacienteHttpDTO() {
         AdicionaPacienteHttpDTO httpDTO = new AdicionaPacienteHttpDTO();
+        httpDTO.usuarioId = UUID.randomUUID().toString();
         httpDTO.nome = "Teste";
         httpDTO.endereco = "Teste";
         httpDTO.quantidaDeDiasNoMes = 10;

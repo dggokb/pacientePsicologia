@@ -69,11 +69,11 @@ class PacienteFabricaTest {
         Integer ano = 2023;
         Valor valor = new ValorBuilder().comMes(Mes.JANEIRO).comAno(ano).criar();
         Paciente paciente = new PacienteBuilder().comValores(valor).criar();
-        Mockito.when(pacienteRepositorio.buscar(nome, usuarioId)).thenReturn(paciente);
+        Mockito.when(pacienteRepositorio.buscar(nome, paciente.getUsuarioId())).thenReturn(paciente);
 
-        Paciente pacienteFabricado = fabrica.fabricar(usuarioId, nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
+        Paciente pacienteFabricado = fabrica.fabricar(paciente.getUsuarioId(), nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
 
-        Assertions.assertThat(pacienteFabricado.getUsuarioId()).isEqualTo(usuarioId);
+        Assertions.assertThat(pacienteFabricado.getUsuarioId()).isEqualTo(paciente.getUsuarioId());
         Assertions.assertThat(pacienteFabricado.getNome()).isEqualTo(nome);
         Assertions.assertThat(pacienteFabricado.getEndereco()).isEqualTo(endereco);
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getValorPorSessao).containsOnly(valorPorSessao, valor.getValorPorSessao());
