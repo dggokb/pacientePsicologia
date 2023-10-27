@@ -17,14 +17,16 @@ public class GeradorDeTokenConcreto implements GeradorDeToken {
     private String secret;
 
     @Override
-    public String gerar(Usuario usuario) {
+    public UsuarioAutenticadoDTO gerar(Usuario usuario) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
-            return JWT.create().withIssuer("auth-api")
+            String token = JWT.create().withIssuer("auth-api")
                     .withSubject(usuario.getUsername())
                     .withExpiresAt(LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00")))
                     .sign(algorithm);
+            UsuarioAutenticadoDTO dto = new UsuarioAutenticadoDTO(usuario.getId(), token);
+            return dto;
         } catch (JWTCreationException e) {
             throw new RuntimeException("Não foi possível gerar o token", e);
         }

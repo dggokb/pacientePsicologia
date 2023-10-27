@@ -20,7 +20,7 @@ public class AutenticaUsuarioConcreto implements AutenticadorDeUsuario {
     }
 
     @Override
-    public String autenticar(String username, String password) {
+    public UsuarioAutenticadoDTO autenticar(String username, String password) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication auth = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 

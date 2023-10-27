@@ -1,6 +1,7 @@
 package br.com.diego.pscicologia.web.rest.autenticacao;
 
 import br.com.diego.pscicologia.servico.autenticacao.AutenticadorDeUsuario;
+import br.com.diego.pscicologia.servico.autenticacao.UsuarioAutenticadoDTO;
 import br.com.diego.pscicologia.servico.autenticacao.ValidadorDeToken;
 import br.com.diego.pscicologia.servico.autenticacao.usuario.AdicionaUsuario;
 import jakarta.validation.Valid;
@@ -27,10 +28,9 @@ public class AutenticationRest {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationHttpDTO httpDTO) {
-        String tokenAutenticado = autenticaUsuario.autenticar(httpDTO.username(), httpDTO.password());
-        LoginResponseHttpDTO tokenParaRetornar = new LoginResponseHttpDTO(tokenAutenticado);
+        UsuarioAutenticadoDTO usuarioAutenticado = autenticaUsuario.autenticar(httpDTO.username(), httpDTO.password());
 
-        return ResponseEntity.ok(tokenParaRetornar);
+        return ResponseEntity.ok(usuarioAutenticado);
     }
 
     @PostMapping("/register")
