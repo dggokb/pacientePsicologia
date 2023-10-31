@@ -1,5 +1,6 @@
 package br.com.diego.pscicologia.servico.paciente.consulta;
 
+import br.com.diego.pscicologia.comum.DateUtils;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class MontadorDePacienteDTO {
         dto.nome = paciente.getNome();
         dto.endereco = paciente.getEndereco();
         dto.valores = montarValoresDTO(paciente, dto);
-        dto.dataDeInicio = paciente.getDataDeInicio();
+        dto.dataDeInicio = DateUtils.obterDataFormatada(paciente.getDataDeInicio());
         dto.inativo = paciente.getInativo();
         dto.tipo = paciente.obterDescricaoDoTipo();
 

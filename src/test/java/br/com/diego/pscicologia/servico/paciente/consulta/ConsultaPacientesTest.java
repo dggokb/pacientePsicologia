@@ -2,6 +2,7 @@ package br.com.diego.pscicologia.servico.paciente.consulta;
 
 import br.com.diego.pscicologia.builder.PacienteBuilder;
 import br.com.diego.pscicologia.builder.ValorBuilder;
+import br.com.diego.pscicologia.comum.DateUtils;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
 import br.com.diego.pscicologia.dominio.paciente.Valor;
@@ -52,8 +53,8 @@ class ConsultaPacientesTest {
                 .containsOnly(valorDoPrimeiroPaciente.getValorPorSessao().valor(), valorDoSegundoPaciente.getValorPorSessao().valor());
         Assertions.assertThat(dtos).flatExtracting(dto -> dto.valores).extracting(valorDTO -> valorDTO.quantidaDeDiasNoMes)
                 .containsOnly(valorDoPrimeiroPaciente.getQuantidadeDeDiasNoMes().quantidade(), valorDoSegundoPaciente.getQuantidadeDeDiasNoMes().quantidade());
-        Assertions.assertThat(dtos).extracting(dto -> dto.dataDeInicio).containsExactlyInAnyOrder(primeiroPaciente.getDataDeInicio(),
-                segundoPaciente.getDataDeInicio());
+        Assertions.assertThat(dtos).extracting(dto -> dto.dataDeInicio).containsExactlyInAnyOrder(DateUtils.obterDataFormatada(primeiroPaciente.getDataDeInicio()),
+                DateUtils.obterDataFormatada(segundoPaciente.getDataDeInicio()));
         Assertions.assertThat(dtos).extracting(dto -> dto.inativo).containsExactlyInAnyOrder(primeiroPaciente.getInativo(),
                 segundoPaciente.getInativo());
         Assertions.assertThat(dtos).extracting(dto -> dto.tipo).containsExactlyInAnyOrder(primeiroPaciente.obterDescricaoDoTipo(),

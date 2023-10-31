@@ -2,6 +2,7 @@ package br.com.diego.pscicologia.servico.paciente.consulta;
 
 import br.com.diego.pscicologia.builder.PacienteBuilder;
 import br.com.diego.pscicologia.builder.ValorBuilder;
+import br.com.diego.pscicologia.comum.DateUtils;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.ServicoParaObterPacientesDeUmUsuarioPorNome;
 import br.com.diego.pscicologia.dominio.paciente.Valor;
@@ -38,7 +39,7 @@ class ConsultaPacienteTest {
         Assertions.assertThat(dtoObtido).extracting(dto -> dto.id).containsOnly(paciente.getId());
         Assertions.assertThat(dtoObtido).extracting(dto -> dto.nome).containsOnly(paciente.getNome());
         Assertions.assertThat(dtoObtido).extracting(dto -> dto.endereco).containsOnly(paciente.getEndereco());
-        Assertions.assertThat(dtoObtido).extracting(dto -> dto.dataDeInicio).containsOnly(paciente.getDataDeInicio());
+        Assertions.assertThat(dtoObtido).extracting(dto -> dto.dataDeInicio).containsOnly(DateUtils.obterDataFormatada(paciente.getDataDeInicio()));
         Assertions.assertThat(dtoObtido).extracting(dto -> dto.inativo).containsOnly(paciente.getInativo());
         Assertions.assertThat(dtoObtido).extracting(dto -> dto.tipo).containsOnly(paciente.obterDescricaoDoTipo());
         Assertions.assertThat(dtoObtido).flatExtracting(dto -> dto.valores).extracting(valorDTO -> valorDTO.valorPorSessao).containsOnly(valor.getValorPorSessao().valor());

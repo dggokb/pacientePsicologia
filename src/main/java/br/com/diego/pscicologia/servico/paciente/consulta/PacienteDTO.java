@@ -9,7 +9,7 @@ public class PacienteDTO {
     public String nome;
     public String endereco;
     public List<ValorDTO> valores = new ArrayList<>();
-    public LocalDate dataDeInicio;
+    public String dataDeInicio;
     public Boolean inativo;
     public String tipo;
 }
