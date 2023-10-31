@@ -26,10 +26,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -89,6 +87,7 @@ class PacienteRestTest extends TestBaseApi {
         Assertions.assertThat(comandoCapturado.getEndereco()).isEqualTo(httpDTO.endereco);
         Assertions.assertThat(comandoCapturado.getQuantidadeDeDiasNoMes().valor().intValue()).isEqualTo(httpDTO.quantidaDeDiasNoMes);
         Assertions.assertThat(comandoCapturado.getValorPorSessao().valor()).isEqualTo(httpDTO.valorPorSessao);
+        Assertions.assertThat(comandoCapturado.getDatasDasSessoes()).containsOnly(LocalDate.now());
     }
 
     @Test
@@ -253,6 +252,7 @@ class PacienteRestTest extends TestBaseApi {
         httpDTO.mes = "JANEIRO";
         httpDTO.ano = 2023;
         httpDTO.tipo = "VALOR_POR_SESSAO";
+        httpDTO.datasDasSessoes = Collections.singletonList(new Date());
 
         return httpDTO;
     }

@@ -1,13 +1,14 @@
 package br.com.diego.pscicologia.servico.paciente.adiciona;
 
-import br.com.diego.pscicologia.comum.Comando;
-import br.com.diego.pscicologia.comum.Mes;
-import br.com.diego.pscicologia.comum.Moeda;
-import br.com.diego.pscicologia.comum.Quantidade;
+import br.com.diego.pscicologia.comum.*;
 import br.com.diego.pscicologia.dominio.paciente.TipoDePaciente;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class AdicionarPaciente implements Comando {
 
@@ -19,6 +20,7 @@ public class AdicionarPaciente implements Comando {
     private Mes mes;
     private Integer ano;
     private TipoDePaciente tipoDePaciente;
+    private List<LocalDate> datasDasSessoes;
 
     public AdicionarPaciente(String usuarioId,
                              String nome,
@@ -27,7 +29,8 @@ public class AdicionarPaciente implements Comando {
                              BigDecimal valorPorSessao,
                              String mes,
                              Integer ano,
-                             String tipo) {
+                             String tipo,
+                             List<Date> datasDasSessoes) {
         this.usuarioId = usuarioId;
         this.nome = nome;
         this.endereco = endereco;
@@ -36,6 +39,11 @@ public class AdicionarPaciente implements Comando {
         this.mes = Mes.valueOf(mes);
         this.ano = ano;
         this.tipoDePaciente = TipoDePaciente.valueOf(tipo);
+        this.datasDasSessoes = criarDatas(datasDasSessoes);
+    }
+
+    private List<LocalDate> criarDatas(List<Date> datasDasSessoes) {
+        return datasDasSessoes.stream().map(DateUtils::converteDateToLocalDate).collect(Collectors.toList());
     }
 
     public String getUsuarioId() {
@@ -68,5 +76,9 @@ public class AdicionarPaciente implements Comando {
 
     public TipoDePaciente getTipo() {
         return tipoDePaciente;
+    }
+
+    public List<LocalDate> getDatasDasSessoes() {
+        return datasDasSessoes;
     }
 }
