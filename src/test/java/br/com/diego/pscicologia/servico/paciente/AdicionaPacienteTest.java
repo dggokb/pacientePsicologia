@@ -13,6 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public class AdicionaPacienteTest {
@@ -31,9 +34,10 @@ public class AdicionaPacienteTest {
     void deveSerPossivelAdicionarUmPaciente() throws Exception {
         Paciente paciente = new PacienteBuilder().criar();
         Valor valor = paciente.getValores().get(0);
+        List<Date> datasDasSessoes = Collections.singletonList(new Date());
         AdicionarPaciente comando = new AdicionarPaciente(paciente.getUsuarioId(), paciente.getNome(), paciente.getEndereco(),
                 Optional.of(valor.getQuantidadeDeDiasNoMes().quantidade()), valor.getValorPorSessao().valor(),
-                valor.getMes().name(), valor.getAno(), paciente.getTipo().name());
+                valor.getMes().name(), valor.getAno(), paciente.getTipo().name(), datasDasSessoes);
         ArgumentCaptor<Paciente> pacienteCaptor = ArgumentCaptor.forClass(Paciente.class);
         Mockito.when(pacienteRepositorio.save(pacienteCaptor.capture())).thenReturn(paciente);
 
@@ -47,5 +51,6 @@ public class AdicionaPacienteTest {
         Assertions.assertThat(pacienteCapturado.getDataDeInicio()).isEqualTo(paciente.getDataDeInicio());
         Assertions.assertThat(pacienteCapturado.getValores()).usingRecursiveFieldByFieldElementComparator().containsOnly(valor);
         Assertions.assertThat(pacienteCapturado.getTipo()).isEqualTo(paciente.getTipo());
+        Assertions.assertThat(pacienteCapturado.getDatasDasSessoes()).containsOnly(paciente.getDatasDasSessoes().get(0));
     }
 }
