@@ -22,7 +22,6 @@ public class PacienteFabrica {
     public Paciente fabricar(String usuarioId,
                              String nome,
                              String endereco,
-                             Quantidade quantidaDeDiasNoMes,
                              Moeda valorPorSessao,
                              Mes mes,
                              Integer ano,
@@ -32,7 +31,7 @@ public class PacienteFabrica {
         Paciente pacienteObtido = pacienteRepositorio.buscar(nome, usuarioId);
         if (Objects.nonNull(pacienteObtido)) {
             if (!verificarSePacienteJahPossuiValorNoMesEAno(mes, ano, pacienteObtido)) {
-                Valor novoValorASerInserido = criarValor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
+                Valor novoValorASerInserido = criarValor(Quantidade.criar(datasDasSessoes.size()), valorPorSessao, mes, ano, tipoDePaciente);
                 List<Valor> valores = new ArrayList<>(pacienteObtido.getValores());
                 valores.add(novoValorASerInserido);
                 pacienteObtido.alterar(valores);
@@ -42,7 +41,7 @@ public class PacienteFabrica {
                 throw new ExcecaoDeRegraDeNegocio(String.format("Paciente já possui valores referente ao mês %s e ano %s.", mes, ano));
             }
         } else {
-            Valor novoValorASerInserido = criarValor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
+            Valor novoValorASerInserido = criarValor(Quantidade.criar(datasDasSessoes.size()), valorPorSessao, mes, ano, tipoDePaciente);
 
             return new Paciente(usuarioId,
                     nome,

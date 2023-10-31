@@ -36,7 +36,7 @@ public class AdicionaPacienteTest {
         Valor valor = paciente.getValores().get(0);
         List<Date> datasDasSessoes = Collections.singletonList(new Date());
         AdicionarPaciente comando = new AdicionarPaciente(paciente.getUsuarioId(), paciente.getNome(), paciente.getEndereco(),
-                Optional.of(valor.getQuantidadeDeDiasNoMes().quantidade()), valor.getValorPorSessao().valor(),
+                valor.getValorPorSessao().valor(),
                 valor.getMes().name(), valor.getAno(), paciente.getTipo().name(), datasDasSessoes);
         ArgumentCaptor<Paciente> pacienteCaptor = ArgumentCaptor.forClass(Paciente.class);
         Mockito.when(pacienteRepositorio.save(pacienteCaptor.capture())).thenReturn(paciente);

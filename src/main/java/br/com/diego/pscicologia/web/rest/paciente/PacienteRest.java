@@ -130,7 +130,7 @@ public class PacienteRest {
     }
 
     private AdicionarPaciente criarComandoParaAdicionar(AdicionaPacienteHttpDTO httpDTO) {
-        return new AdicionarPaciente(httpDTO.usuarioId, httpDTO.nome, httpDTO.endereco, Optional.ofNullable(httpDTO.quantidaDeDiasNoMes),
+        return new AdicionarPaciente(httpDTO.usuarioId, httpDTO.nome, httpDTO.endereco,
                 httpDTO.valorPorSessao, httpDTO.mes, httpDTO.ano, httpDTO.tipo, httpDTO.datasDasSessoes);
     }
 

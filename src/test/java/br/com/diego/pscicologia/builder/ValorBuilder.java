@@ -16,7 +16,7 @@ public class ValorBuilder {
     private TipoDePaciente tipoDePaciente;
 
     public ValorBuilder() {
-        this.quantidadeDeDiasNoMes = Quantidade.criar(10);
+        this.quantidadeDeDiasNoMes = Quantidade.criar(1);
         this.valorPorSessao = Moeda.criar(10);
         this.mes = Mes.JANEIRO;
         this.ano = LocalDate.now().getYear();

@@ -85,7 +85,6 @@ class PacienteRestTest extends TestBaseApi {
         AdicionarPaciente comandoCapturado = captor.getValue();
         Assertions.assertThat(comandoCapturado.getNome()).isEqualTo(httpDTO.nome);
         Assertions.assertThat(comandoCapturado.getEndereco()).isEqualTo(httpDTO.endereco);
-        Assertions.assertThat(comandoCapturado.getQuantidadeDeDiasNoMes().valor().intValue()).isEqualTo(httpDTO.quantidaDeDiasNoMes);
         Assertions.assertThat(comandoCapturado.getValorPorSessao().valor()).isEqualTo(httpDTO.valorPorSessao);
         Assertions.assertThat(comandoCapturado.getDatasDasSessoes()).containsOnly(LocalDate.now());
     }
@@ -247,7 +246,6 @@ class PacienteRestTest extends TestBaseApi {
         httpDTO.usuarioId = UUID.randomUUID().toString();
         httpDTO.nome = "Teste";
         httpDTO.endereco = "Teste";
-        httpDTO.quantidaDeDiasNoMes = 10;
         httpDTO.valorPorSessao = BigDecimal.TEN;
         httpDTO.mes = "JANEIRO";
         httpDTO.ano = 2023;

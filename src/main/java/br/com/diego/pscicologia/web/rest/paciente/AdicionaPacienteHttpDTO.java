@@ -9,7 +9,6 @@ public class AdicionaPacienteHttpDTO {
     public String usuarioId;
     public String nome;
     public String endereco;
-    public Integer quantidaDeDiasNoMes;
     public BigDecimal valorPorSessao;
     public String mes;
     public Integer ano;

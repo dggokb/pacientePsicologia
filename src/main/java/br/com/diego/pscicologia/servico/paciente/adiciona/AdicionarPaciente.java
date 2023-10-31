@@ -15,7 +15,6 @@ public class AdicionarPaciente implements Comando {
     private String usuarioId;
     private String nome;
     private String endereco;
-    private Quantidade quantidadeDeDiasNoMes;
     private Moeda valorPorSessao;
     private Mes mes;
     private Integer ano;
@@ -25,7 +24,6 @@ public class AdicionarPaciente implements Comando {
     public AdicionarPaciente(String usuarioId,
                              String nome,
                              String endereco,
-                             Optional<Integer> quantidadeDeDiasNoMes,
                              BigDecimal valorPorSessao,
                              String mes,
                              Integer ano,
@@ -34,7 +32,6 @@ public class AdicionarPaciente implements Comando {
         this.usuarioId = usuarioId;
         this.nome = nome;
         this.endereco = endereco;
-        this.quantidadeDeDiasNoMes = quantidadeDeDiasNoMes.map(Quantidade::criar).orElse(null);
         this.valorPorSessao = Moeda.criar(valorPorSessao);
         this.mes = Mes.valueOf(mes);
         this.ano = ano;
@@ -56,10 +53,6 @@ public class AdicionarPaciente implements Comando {
 
     public String getEndereco() {
         return endereco;
-    }
-
-    public Quantidade getQuantidadeDeDiasNoMes() {
-        return quantidadeDeDiasNoMes;
     }
 
     public Moeda getValorPorSessao() {

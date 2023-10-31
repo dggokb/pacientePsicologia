@@ -21,7 +21,6 @@ public class AdicionaPacienteConcreto implements AdicionaPaciente {
         Paciente paciente = new PacienteFabrica(pacienteRepositorio).fabricar(comando.getUsuarioId(),
                 comando.getNome(),
                 comando.getEndereco(),
-                comando.getQuantidadeDeDiasNoMes(),
                 comando.getValorPorSessao(),
                 comando.getMes(),
                 comando.getAno(),
