@@ -53,7 +53,7 @@ class PacienteFabricaTest {
         Mes mes = Mes.ABRIL;
         Integer ano = 2023;
         TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
-        List<LocalDate> datasDasSessoes = this.datasDasSessoes;
+        List<LocalDate> datasDasSessoes = Collections.singletonList(LocalDate.now());
         Quantidade quantidadeDeDiasNoMes = Quantidade.criar(datasDasSessoes.size());
         Mockito.when(pacienteRepositorio.buscar(nome, usuarioId)).thenReturn(null);
 
@@ -89,6 +89,38 @@ class PacienteFabricaTest {
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getAno).containsOnly(ano, valor.getAno());
         Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipoDePaciente);
         Assertions.assertThat(pacienteFabricado.getDatasDasSessoes()).isEqualTo(datasDasSessoes);
+    }
+
+    @Test
+    void deveSerPossivelFabricarUmPacienteSemQuantidadeDeDiasSeForDoTipoValorFixo() {
+        TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_FIXO;
+        Quantidade quantidadeDeDiasNoMes = null;
+        List<LocalDate> datasDasSessoes = Collections.emptyList();
+        Mockito.when(pacienteRepositorio.buscar(nome, usuarioId)).thenReturn(null);
+
+        Paciente pacienteFabricado = fabrica.fabricar(usuarioId, nome, endereco, valorPorSessao, mes, ano, tipoDePaciente, datasDasSessoes);
+
+        Assertions.assertThat(pacienteFabricado.getUsuarioId()).isEqualTo(usuarioId);
+        Assertions.assertThat(pacienteFabricado.getNome()).isEqualTo(nome);
+        Assertions.assertThat(pacienteFabricado.getEndereco()).isEqualTo(endereco);
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getValorPorSessao).containsOnly(valorPorSessao);
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getQuantidadeDeDiasNoMes).containsOnly(quantidadeDeDiasNoMes);
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getMes).containsOnly(mes);
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getAno).containsOnly(ano);
+        Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipoDePaciente);
+        Assertions.assertThat(pacienteFabricado.getDatasDasSessoes()).isEqualTo(datasDasSessoes);
+    }
+
+    @Test
+    void naoDeveSerPossivelFabricarUmPacienteSemQuantidadeDeDiasSeForDoTipoValorPorSessao() {
+        String mensagemEsperada = "Não é possível criar Paciente de valor por sessão sem informar as datas das sessões.";
+        TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
+        List<LocalDate> datasDasSessoes = Collections.emptyList();
+        Mockito.when(pacienteRepositorio.buscar(nome, usuarioId)).thenReturn(null);
+
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> fabrica.fabricar(usuarioId, nome, endereco, valorPorSessao, mes, ano, tipoDePaciente, datasDasSessoes));
+
+        Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
 
     @Test

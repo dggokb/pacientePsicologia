@@ -27,7 +27,7 @@ public class PacienteFabrica {
                              Integer ano,
                              TipoDePaciente tipoDePaciente,
                              List<LocalDate> datasDasSessoes) {
-
+        validarTipoEData(tipoDePaciente, datasDasSessoes);
         Paciente pacienteObtido = pacienteRepositorio.buscar(nome, usuarioId);
         if (Objects.nonNull(pacienteObtido)) {
             if (!verificarSePacienteJahPossuiValorNoMesEAno(mes, ano, pacienteObtido)) {
@@ -49,6 +49,12 @@ public class PacienteFabrica {
                     Collections.singletonList(novoValorASerInserido),
                     tipoDePaciente,
                     datasDasSessoes);
+        }
+    }
+
+    private void validarTipoEData(TipoDePaciente tipoDePaciente, List<LocalDate> datasDasSessoes) {
+        if (tipoDePaciente.ehValorPorSessao() && datasDasSessoes.isEmpty()) {
+            throw new ExcecaoDeRegraDeNegocio("Não é possível criar Paciente de valor por sessão sem informar as datas das sessões.");
         }
     }
 

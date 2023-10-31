@@ -55,7 +55,7 @@ public class Paciente extends Entidade {
                 .quandoNulo(endereco, "Não é possível criar um paciente sem informar o endereço.")
                 .quandoColecaoVazia(valor, "Não é possível criar um paciente sem informar o valor.")
                 .quandoNulo(tipoDePaciente, "Não é possível criar um paciente sem informar o tipo.")
-                .quandoColecaoVazia(datasDasSessoes, "Não é possível criar um paciente sem as datas das sessões do mês.")
+                .quandoNulo(datasDasSessoes, "Não é possível criar um paciente sem as datas das sessões do mês.")
                 .entaoDispara();
     }
 

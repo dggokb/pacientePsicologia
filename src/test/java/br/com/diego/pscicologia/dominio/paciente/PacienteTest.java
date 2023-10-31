@@ -159,7 +159,7 @@ public class PacienteTest {
                 Arguments.of(usuarioId, nome, null, valores, tipoDePaciente, datasDaSessoes, "Não é possível criar um paciente sem informar o endereço."),
                 Arguments.of(usuarioId, nome, endereco, Collections.emptyList(), tipoDePaciente, datasDaSessoes, "Não é possível criar um paciente sem informar o valor."),
                 Arguments.of(usuarioId, nome, endereco, valores, null, datasDaSessoes, "Não é possível criar um paciente sem informar o tipo."),
-                Arguments.of(usuarioId, nome, endereco, valores, null, Collections.emptyList(), "Não é possível criar um paciente sem as datas das sessões do mês.")
+                Arguments.of(usuarioId, nome, endereco, valores, null, null, "Não é possível criar um paciente sem as datas das sessões do mês.")
         );
     }
 
