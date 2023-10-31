@@ -2,6 +2,7 @@ package br.com.diego.pscicologia.servico.paciente.consulta;
 
 import br.com.diego.pscicologia.builder.PacienteBuilder;
 import br.com.diego.pscicologia.builder.ValorBuilder;
+import br.com.diego.pscicologia.comum.DateUtils;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.TipoDePaciente;
 import br.com.diego.pscicologia.dominio.paciente.Valor;
@@ -29,7 +30,7 @@ class MontadorDePacienteDTOTest {
         Assertions.assertThat(dto.id).isEqualTo(paciente.getId());
         Assertions.assertThat(dto.nome).isEqualTo(paciente.getNome());
         Assertions.assertThat(dto.endereco).isEqualTo(paciente.getEndereco());
-        Assertions.assertThat(dto.dataDeInicio).isEqualTo(paciente.getDataDeInicio());
+        Assertions.assertThat(dto.dataDeInicio).isEqualTo(DateUtils.obterDataFormatada(paciente.getDataDeInicio()));
         Assertions.assertThat(dto.inativo).isEqualTo(paciente.getInativo());
         Assertions.assertThat(dto.tipo).isEqualTo(paciente.obterDescricaoDoTipo());
         Assertions.assertThat(dto.valores).extracting(valorDTO -> valorDTO.valorPorSessao).containsOnly(primeiroValor.getValorPorSessao().valor(),
