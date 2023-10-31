@@ -27,7 +27,7 @@ public class Paciente extends Entidade {
                     List<Valor> valores,
                     TipoDePaciente tipoDePaciente,
                     List<LocalDate> datasDasSessoes) {
-        validarCamposObrigatorios(usuarioId, nome, endereco, valores, tipoDePaciente);
+        validarCamposObrigatorios(usuarioId, nome, endereco, valores, tipoDePaciente, datasDasSessoes);
         this.usuarioId = usuarioId;
         this.nome = nome;
         this.endereco = endereco;
@@ -46,7 +46,8 @@ public class Paciente extends Entidade {
     private void validarCamposObrigatorios(String usuarioId,
                                            String nome,
                                            String endereco, List<Valor> valor,
-                                           TipoDePaciente tipoDePaciente) {
+                                           TipoDePaciente tipoDePaciente,
+                                           List<LocalDate> datasDasSessoes) {
         new ExcecaoDeCampoObrigatorio()
                 .quandoNulo(usuarioId, "Não é possível criar um paciente sem informar o usuário.")
                 .quandoNulo(nome, "Não é possível criar um paciente sem informar o nome.")
@@ -54,6 +55,7 @@ public class Paciente extends Entidade {
                 .quandoNulo(endereco, "Não é possível criar um paciente sem informar o endereço.")
                 .quandoColecaoVazia(valor, "Não é possível criar um paciente sem informar o valor.")
                 .quandoNulo(tipoDePaciente, "Não é possível criar um paciente sem informar o tipo.")
+                .quandoColecaoVazia(datasDasSessoes, "Não é possível criar um paciente sem as datas das sessões do mês.")
                 .entaoDispara();
     }
 

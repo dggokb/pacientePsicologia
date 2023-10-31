@@ -26,8 +26,9 @@ public class PacienteTest {
         LocalDate dataDeInicioEsperado = LocalDate.now();
         List<Valor> valoresEsperados = Collections.singletonList(new ValorBuilder().criar());
         TipoDePaciente tipoDePacienteDePacienteEsperado = TipoDePaciente.VALOR_POR_SESSAO;
+        List<LocalDate> datasDasSessoes = Collections.singletonList(LocalDate.now());
 
-        Paciente paciente = new Paciente(usuarioId, nomeEsperado, enderecoEsperado, valoresEsperados, tipoDePacienteDePacienteEsperado);
+        Paciente paciente = new Paciente(usuarioId, nomeEsperado, enderecoEsperado, valoresEsperados, tipoDePacienteDePacienteEsperado, datasDasSessoes);
 
         Assertions.assertThat(paciente.getUsuarioId()).isEqualTo(usuarioId);
         Assertions.assertThat(paciente.getNome()).isEqualTo(nomeEsperado);
@@ -36,6 +37,7 @@ public class PacienteTest {
         Assertions.assertThat(paciente.getValores()).isEqualTo(valoresEsperados);
         Assertions.assertThat(paciente.getTipo()).isEqualTo(tipoDePacienteDePacienteEsperado);
         Assertions.assertThat(paciente.getInativo()).isFalse();
+        Assertions.assertThat(paciente.getDatasDasSessoes()).isEqualTo(datasDasSessoes);
     }
 
     @ParameterizedTest
@@ -45,9 +47,10 @@ public class PacienteTest {
                                                                              String endereco,
                                                                              List<Valor> valores,
                                                                              TipoDePaciente tipoDePaciente,
+                                                                             List<LocalDate> datasDasSessoes,
                                                                              String mensagemEsperada) {
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(usuarioId, nome, endereco, valores, tipoDePaciente));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Paciente(usuarioId, nome, endereco, valores, tipoDePaciente, datasDasSessoes));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
@@ -148,20 +151,19 @@ public class PacienteTest {
         String endereco = "Endereço teste";
         List<Valor> valores = Collections.singletonList(new ValorBuilder().criar());
         TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
-
+        List<LocalDate> datasDaSessoes = Collections.singletonList(LocalDate.now());
 
         return Stream.of(
-                Arguments.of(null, nome, endereco, valores, tipoDePaciente, "Não é possível criar um paciente sem informar o usuário."),
-                Arguments.of(usuarioId, null, endereco, valores, tipoDePaciente, "Não é possível criar um paciente sem informar o nome."),
-                Arguments.of(usuarioId, nome, null, valores, tipoDePaciente, "Não é possível criar um paciente sem informar o endereço."),
-                Arguments.of(usuarioId, nome, endereco, Collections.emptyList(), tipoDePaciente, "Não é possível criar um paciente sem informar o valor."),
-                Arguments.of(usuarioId, nome, endereco, valores, null, "Não é possível criar um paciente sem informar o tipo.")
+                Arguments.of(null, nome, endereco, valores, tipoDePaciente, datasDaSessoes, "Não é possível criar um paciente sem informar o usuário."),
+                Arguments.of(usuarioId, null, endereco, valores, tipoDePaciente, datasDaSessoes, "Não é possível criar um paciente sem informar o nome."),
+                Arguments.of(usuarioId, nome, null, valores, tipoDePaciente, datasDaSessoes, "Não é possível criar um paciente sem informar o endereço."),
+                Arguments.of(usuarioId, nome, endereco, Collections.emptyList(), tipoDePaciente, datasDaSessoes, "Não é possível criar um paciente sem informar o valor."),
+                Arguments.of(usuarioId, nome, endereco, valores, null, datasDaSessoes, "Não é possível criar um paciente sem informar o tipo."),
+                Arguments.of(usuarioId, nome, endereco, valores, null, Collections.emptyList(), "Não é possível criar um paciente sem as datas das sessões do mês.")
         );
     }
 
     private static Stream<Arguments> dadosNecessariosParaValidarAlteracao() {
-        String endereco = "Endereço teste";
-
         return Stream.of(
                 Arguments.of(null, "Não é possível alterar um paciente sem informar o endereço.")
         );
