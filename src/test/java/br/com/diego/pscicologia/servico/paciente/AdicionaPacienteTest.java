@@ -3,6 +3,7 @@ package br.com.diego.pscicologia.servico.paciente;
 import br.com.diego.pscicologia.builder.PacienteBuilder;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
+import br.com.diego.pscicologia.dominio.paciente.TipoDePaciente;
 import br.com.diego.pscicologia.dominio.paciente.Valor;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPaciente;
 import br.com.diego.pscicologia.servico.paciente.adiciona.AdicionaPacienteConcreto;
@@ -32,7 +33,7 @@ public class AdicionaPacienteTest {
 
     @Test
     void deveSerPossivelAdicionarUmPaciente() throws Exception {
-        Paciente paciente = new PacienteBuilder().criar();
+        Paciente paciente = new PacienteBuilder().comTipo(TipoDePaciente.VALOR_FIXO).criar();
         Valor valor = paciente.getValores().get(0);
         List<Date> datasDasSessoes = Collections.singletonList(new Date());
         AdicionarPaciente comando = new AdicionarPaciente(paciente.getUsuarioId(), paciente.getNome(), paciente.getEndereco(),

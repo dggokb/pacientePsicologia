@@ -25,10 +25,10 @@ public class PacienteBuilder {
         this.nome = "Diego Guedes";
         this.endereco = "Rua Batatinha, Bairro das batatas";
         this.dataDeInicio = LocalDate.now();
-        this.valores = Collections.singletonList(new ValorBuilder().criar());
+        this.tipoDePaciente = TipoDePaciente.VALOR_FIXO;
         this.inativo = false;
-        this.tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
         this.datasDasSessoes = Collections.singletonList(LocalDate.now());
+        this.valores = Collections.singletonList(new ValorBuilder().comTipo(tipoDePaciente).criar());
     }
 
     public Paciente criar() {
