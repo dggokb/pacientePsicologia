@@ -18,13 +18,15 @@ public class Paciente extends Entidade {
     private List<Valor> valores;
     private Boolean inativo;
     private TipoDePaciente tipoDePaciente;
+    private List<LocalDate> datasDasSessoes;
 
     @PersistenceCreator
     public Paciente(String usuarioId,
                     String nome,
                     String endereco,
                     List<Valor> valores,
-                    TipoDePaciente tipoDePaciente) {
+                    TipoDePaciente tipoDePaciente,
+                    List<LocalDate> datasDasSessoes) {
         validarCamposObrigatorios(usuarioId, nome, endereco, valores, tipoDePaciente);
         this.usuarioId = usuarioId;
         this.nome = nome;
@@ -33,6 +35,7 @@ public class Paciente extends Entidade {
         this.valores = valores;
         this.inativo = false;
         this.tipoDePaciente = tipoDePaciente;
+        this.datasDasSessoes = datasDasSessoes;
     }
 
     public void alterar(String endereco) {
@@ -111,6 +114,10 @@ public class Paciente extends Entidade {
 
     public List<Valor> getValores() {
         return Collections.unmodifiableList(valores);
+    }
+
+    public List<LocalDate> getDatasDasSessoes() {
+        return datasDasSessoes;
     }
 
     public String obterDescricaoDoTipo() {

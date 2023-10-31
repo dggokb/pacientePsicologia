@@ -10,6 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 class PacienteFabricaTest {
@@ -24,6 +27,7 @@ class PacienteFabricaTest {
     private Mes mes;
     private Integer ano;
     private TipoDePaciente tipoDePaciente;
+    private List<LocalDate> datasDasSessoes;
 
     @BeforeEach
     void setUp() {
@@ -37,10 +41,11 @@ class PacienteFabricaTest {
         tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
         pacienteRepositorio = Mockito.mock(PacienteRepositorio.class);
         fabrica = new PacienteFabrica(pacienteRepositorio);
+        datasDasSessoes = Collections.singletonList(LocalDate.now());
     }
 
     @Test
-    void deveSerPossivelFabricarUmPacienteQueNaoFoiCadastradoAinda() {
+    void deveSerPossivelFabricarUmPacienteQueAindaNaoFoiCadastrado() {
         String usuarioId = UUID.randomUUID().toString();
         String nome = "Diego";
         String endereco = "Av lalal lulu";
@@ -49,9 +54,10 @@ class PacienteFabricaTest {
         Mes mes = Mes.ABRIL;
         Integer ano = 2023;
         TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
+        List<LocalDate> datasDasSessoes = this.datasDasSessoes;
         Mockito.when(pacienteRepositorio.buscar(nome, usuarioId)).thenReturn(null);
 
-        Paciente pacienteFabricado = fabrica.fabricar(usuarioId, nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
+        Paciente pacienteFabricado = fabrica.fabricar(usuarioId, nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente, datasDasSessoes);
 
         Assertions.assertThat(pacienteFabricado.getUsuarioId()).isEqualTo(usuarioId);
         Assertions.assertThat(pacienteFabricado.getNome()).isEqualTo(nome);
@@ -61,6 +67,7 @@ class PacienteFabricaTest {
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getMes).containsOnly(mes);
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getAno).containsOnly(ano);
         Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipoDePaciente);
+        Assertions.assertThat(pacienteFabricado.getDatasDasSessoes()).isEqualTo(datasDasSessoes);
     }
 
     @Test
@@ -71,7 +78,7 @@ class PacienteFabricaTest {
         Paciente paciente = new PacienteBuilder().comValores(valor).criar();
         Mockito.when(pacienteRepositorio.buscar(nome, paciente.getUsuarioId())).thenReturn(paciente);
 
-        Paciente pacienteFabricado = fabrica.fabricar(paciente.getUsuarioId(), nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
+        Paciente pacienteFabricado = fabrica.fabricar(paciente.getUsuarioId(), nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente, datasDasSessoes);
 
         Assertions.assertThat(pacienteFabricado.getUsuarioId()).isEqualTo(paciente.getUsuarioId());
         Assertions.assertThat(pacienteFabricado.getNome()).isEqualTo(nome);
@@ -81,6 +88,7 @@ class PacienteFabricaTest {
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getMes).containsOnly(mes, valor.getMes());
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getAno).containsOnly(ano, valor.getAno());
         Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipoDePaciente);
+        Assertions.assertThat(pacienteFabricado.getDatasDasSessoes()).isEqualTo(datasDasSessoes);
     }
 
     @Test
@@ -92,7 +100,7 @@ class PacienteFabricaTest {
         Paciente paciente = new PacienteBuilder().comValores(valor).criar();
         Mockito.when(pacienteRepositorio.buscar(nome, usuarioId)).thenReturn(paciente);
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> fabrica.fabricar(usuarioId, nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> fabrica.fabricar(usuarioId, nome, endereco, quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente, datasDasSessoes));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
