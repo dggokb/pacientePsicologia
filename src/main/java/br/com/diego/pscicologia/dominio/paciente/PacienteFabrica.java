@@ -60,14 +60,6 @@ public class PacienteFabrica {
     }
 
     private Valor criarValor(List<LocalDate> datasDasSessoes, Moeda valorPorSessao, Mes mes, Integer ano, TipoDePaciente tipoDePaciente) {
-        //TODO: encapsular logica no valor
-        if (tipoDePaciente.ehValorPorSessao()) {
-            String mesObtido = DateUtils.obterMesPorExtenso(datasDasSessoes.get(0)).toUpperCase();
-            int anoObtido = datasDasSessoes.get(0).getYear();
-            return new Valor(Quantidade.criar(datasDasSessoes.size()),
-                    valorPorSessao,
-                    Mes.valueOf(mesObtido), anoObtido, tipoDePaciente);
-        }
         return new Valor(Quantidade.criar(datasDasSessoes.size()), valorPorSessao, mes, ano, tipoDePaciente);
     }
 }

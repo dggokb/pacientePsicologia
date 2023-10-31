@@ -3,7 +3,7 @@ package br.com.diego.pscicologia.comum;
 public enum Mes {
     JANEIRO("Janeiro", 1),
     FEVEREIRO("Fevereiro", 2),
-    MARCO("Março", 3),
+    MARÇO("Março", 3),
     ABRIL("Abril", 4),
     MAIO("Maio", 5),
     JUNHO("Junho", 6),

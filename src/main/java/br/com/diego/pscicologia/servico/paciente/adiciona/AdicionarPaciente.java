@@ -5,9 +5,9 @@ import br.com.diego.pscicologia.dominio.paciente.TipoDePaciente;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AdicionarPaciente implements Comando {
@@ -19,7 +19,7 @@ public class AdicionarPaciente implements Comando {
     private Mes mes;
     private Integer ano;
     private TipoDePaciente tipoDePaciente;
-    private List<LocalDate> datasDasSessoes;
+    private List<LocalDate> datasDasSessoes = new ArrayList<>();
 
     public AdicionarPaciente(String usuarioId,
                              String nome,
@@ -29,18 +29,25 @@ public class AdicionarPaciente implements Comando {
                              Integer ano,
                              String tipo,
                              List<Date> datasDasSessoes) {
+        this.tipoDePaciente = TipoDePaciente.valueOf(tipo);
         this.usuarioId = usuarioId;
         this.nome = nome;
         this.endereco = endereco;
         this.valorPorSessao = Moeda.criar(valorPorSessao);
-        this.mes = Mes.valueOf(mes);
-        this.ano = ano;
-        this.tipoDePaciente = TipoDePaciente.valueOf(tipo);
+        validarTipoEData(this.tipoDePaciente, datasDasSessoes);
         this.datasDasSessoes = criarDatas(datasDasSessoes);
+        this.mes = tipoDePaciente.ehValorPorSessao() ? Mes.valueOf(DateUtils.obterMesPorExtenso(this.datasDasSessoes.get(0)).toUpperCase()) : Mes.valueOf(mes);
+        this.ano = tipoDePaciente.ehValorPorSessao() ? this.datasDasSessoes.get(0).getYear() : ano;
     }
 
     private List<LocalDate> criarDatas(List<Date> datasDasSessoes) {
         return datasDasSessoes.stream().map(DateUtils::converteDateToLocalDate).collect(Collectors.toList());
+    }
+
+    private void validarTipoEData(TipoDePaciente tipoDePaciente, List<Date> datasDasSessoes) {
+        if (tipoDePaciente.ehValorPorSessao() && datasDasSessoes.isEmpty()) {
+            throw new ExcecaoDeRegraDeNegocio("Não é possível criar Paciente de valor por sessão sem informar as datas das sessões.");
+        }
     }
 
     public String getUsuarioId() {
