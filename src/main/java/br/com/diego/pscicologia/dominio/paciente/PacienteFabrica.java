@@ -1,9 +1,6 @@
 package br.com.diego.pscicologia.dominio.paciente;
 
-import br.com.diego.pscicologia.comum.ExcecaoDeRegraDeNegocio;
-import br.com.diego.pscicologia.comum.Mes;
-import br.com.diego.pscicologia.comum.Moeda;
-import br.com.diego.pscicologia.comum.Quantidade;
+import br.com.diego.pscicologia.comum.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,7 +28,7 @@ public class PacienteFabrica {
         Paciente pacienteObtido = pacienteRepositorio.buscar(nome, usuarioId);
         if (Objects.nonNull(pacienteObtido)) {
             if (!verificarSePacienteJahPossuiValorNoMesEAno(mes, ano, pacienteObtido)) {
-                Valor novoValorASerInserido = criarValor(Quantidade.criar(datasDasSessoes.size()), valorPorSessao, mes, ano, tipoDePaciente);
+                Valor novoValorASerInserido = criarValor(datasDasSessoes, valorPorSessao, mes, ano, tipoDePaciente);
                 List<Valor> valores = new ArrayList<>(pacienteObtido.getValores());
                 valores.add(novoValorASerInserido);
                 pacienteObtido.alterar(valores);
@@ -41,7 +38,7 @@ public class PacienteFabrica {
                 throw new ExcecaoDeRegraDeNegocio(String.format("Paciente já possui valores referente ao mês %s e ano %s.", mes, ano));
             }
         } else {
-            Valor novoValorASerInserido = criarValor(Quantidade.criar(datasDasSessoes.size()), valorPorSessao, mes, ano, tipoDePaciente);
+            Valor novoValorASerInserido = criarValor(datasDasSessoes, valorPorSessao, mes, ano, tipoDePaciente);
 
             return new Paciente(usuarioId,
                     nome,
@@ -62,7 +59,15 @@ public class PacienteFabrica {
         return pacienteObtido.getValores().stream().anyMatch(valor -> valor.ehDoMesmo(mes, ano));
     }
 
-    private Valor criarValor(Quantidade quantidaDeDiasNoMes, Moeda valorPorSessao, Mes mes, Integer ano, TipoDePaciente tipoDePaciente) {
-        return new Valor(quantidaDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
+    private Valor criarValor(List<LocalDate> datasDasSessoes, Moeda valorPorSessao, Mes mes, Integer ano, TipoDePaciente tipoDePaciente) {
+        //TODO: encapsular logica no valor
+        if (tipoDePaciente.ehValorPorSessao()) {
+            String mesObtido = DateUtils.obterMesPorExtenso(datasDasSessoes.get(0)).toUpperCase();
+            int anoObtido = datasDasSessoes.get(0).getYear();
+            return new Valor(Quantidade.criar(datasDasSessoes.size()),
+                    valorPorSessao,
+                    Mes.valueOf(mesObtido), anoObtido, tipoDePaciente);
+        }
+        return new Valor(Quantidade.criar(datasDasSessoes.size()), valorPorSessao, mes, ano, tipoDePaciente);
     }
 }
