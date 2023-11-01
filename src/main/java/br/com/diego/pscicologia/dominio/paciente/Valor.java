@@ -3,6 +3,7 @@ package br.com.diego.pscicologia.dominio.paciente;
 import br.com.diego.pscicologia.comum.*;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,7 +26,7 @@ public class Valor {
         this.mes = mes;
         this.ano = ano;
         this.tipoDePaciente = tipoDePaciente;
-        this.datasDasSessoes = datasDasSessoes;
+        this.datasDasSessoes = tipoDePaciente.ehValorPorSessao() ? datasDasSessoes : Collections.emptyList();
     }
 
     private void validarQuantidadeDeDiasNoMes(boolean naoPossuiQuantidadeDeDiasNoMes, TipoDePaciente tipoDePaciente) {

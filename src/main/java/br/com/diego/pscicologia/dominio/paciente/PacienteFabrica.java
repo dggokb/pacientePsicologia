@@ -44,8 +44,7 @@ public class PacienteFabrica {
                     nome,
                     endereco,
                     Collections.singletonList(novoValorASerInserido),
-                    tipoDePaciente,
-                    datasDasSessoes);
+                    tipoDePaciente);
         }
     }
 
@@ -60,6 +59,6 @@ public class PacienteFabrica {
     }
 
     private Valor criarValor(List<LocalDate> datasDasSessoes, Moeda valorPorSessao, Mes mes, Integer ano, TipoDePaciente tipoDePaciente) {
-        return new Valor(Quantidade.criar(datasDasSessoes.size()), valorPorSessao, mes, ano, tipoDePaciente);
+        return new Valor(valorPorSessao, mes, ano, tipoDePaciente, datasDasSessoes);
     }
 }
