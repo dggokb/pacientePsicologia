@@ -10,6 +10,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 class MontadorDePacienteDTOTest {
 
     private MontadorDePacienteDTO montadorDTO;
@@ -22,8 +25,10 @@ class MontadorDePacienteDTOTest {
     @Test
     void deveSerPossivelMontarUmPacienteDTOLevenadoEmConsideracaoOTipoParaDevolverQuantidadeDeDiasNoMes() throws Exception {
         Valor primeiroValor = new ValorBuilder().criar();
-        Valor segundoValor = new ValorBuilder().comTipo(TipoDePaciente.VALOR_FIXO).comQuantidadeDeDiasNoMes(null).criar();
+        Valor segundoValor = new ValorBuilder().comTipo(TipoDePaciente.VALOR_FIXO).criar();
         Paciente paciente = new PacienteBuilder().comValores(primeiroValor, segundoValor).criar();
+        List<String> primeiroValorEsperado = primeiroValor.getDatasDasSessoes().stream().map(DateUtils::obterDataFormatada).collect(Collectors.toList());
+        List<String> segundoValorEsperado = segundoValor.getDatasDasSessoes().stream().map(DateUtils::obterDataFormatada).collect(Collectors.toList());
 
         PacienteDTO dto = montadorDTO.montar(paciente);
 
@@ -41,6 +46,8 @@ class MontadorDePacienteDTOTest {
                 segundoValor.getMes().getDescricao());
         Assertions.assertThat(dto.valores).extracting(valorDTO -> valorDTO.ano).containsOnly(primeiroValor.getAno(),
                 segundoValor.getAno());
+        Assertions.assertThat(dto.valores).extracting(valorDTO -> valorDTO.datasDasSessoes).containsOnly(primeiroValorEsperado,
+                segundoValorEsperado);
     }
 
     @Test
