@@ -2,7 +2,7 @@ package br.com.diego.pscicologia.servico.paciente.altera;
 
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
-import br.com.diego.pscicologia.dominio.paciente.ServicoParaCriarNovoValorDoPacienteReferenteAoMesEAno;
+import br.com.diego.pscicologia.dominio.paciente.ServicoParaAlterarValorDoPacienteReferenteAoMesEAno;
 import br.com.diego.pscicologia.dominio.paciente.Valor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +14,13 @@ import java.util.Optional;
 public class AlteraPacienteConcreto implements AlteraPaciente {
 
     private final PacienteRepositorio pacienteRepositorio;
-    private final ServicoParaCriarNovoValorDoPacienteReferenteAoMesEAno servicoParaCriarNovoValorDoPacienteReferenteAoMesEAno;
+    private final ServicoParaAlterarValorDoPacienteReferenteAoMesEAno servicoParaAlterarValorDoPacienteReferenteAoMesEAno;
 
     @Autowired
     public AlteraPacienteConcreto(PacienteRepositorio pacienteRepositorio,
-                                  ServicoParaCriarNovoValorDoPacienteReferenteAoMesEAno servicoParaCriarNovoValorDoPacienteReferenteAoMesEAno) {
+                                  ServicoParaAlterarValorDoPacienteReferenteAoMesEAno servicoParaAlterarValorDoPacienteReferenteAoMesEAno) {
         this.pacienteRepositorio = pacienteRepositorio;
-        this.servicoParaCriarNovoValorDoPacienteReferenteAoMesEAno = servicoParaCriarNovoValorDoPacienteReferenteAoMesEAno;
+        this.servicoParaAlterarValorDoPacienteReferenteAoMesEAno = servicoParaAlterarValorDoPacienteReferenteAoMesEAno;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class AlteraPacienteConcreto implements AlteraPaciente {
     }
 
     private List<Valor> criarNovosValores(AlterarPaciente comando, Optional<Paciente> pacienteObtido) {
-        return servicoParaCriarNovoValorDoPacienteReferenteAoMesEAno.alterar(pacienteObtido.get().getValores(),
+        return servicoParaAlterarValorDoPacienteReferenteAoMesEAno.alterar(pacienteObtido.get().getValores(),
                 comando.getValorPorSessao(),
                 comando.getMes(),
                 comando.getAno(),

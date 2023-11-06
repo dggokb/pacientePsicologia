@@ -3,7 +3,7 @@ package br.com.diego.pscicologia.servico.paciente.altera;
 import br.com.diego.pscicologia.builder.PacienteBuilder;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.PacienteRepositorio;
-import br.com.diego.pscicologia.dominio.paciente.ServicoParaCriarNovoValorDoPacienteReferenteAoMesEAno;
+import br.com.diego.pscicologia.dominio.paciente.ServicoParaAlterarValorDoPacienteReferenteAoMesEAno;
 import br.com.diego.pscicologia.dominio.paciente.TipoDePaciente;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,13 +25,13 @@ class AlteraPacienteTest {
     private Integer ano;
     private String tipo;
     private List<Date> datasDasSessoes = new ArrayList<>();
-    private ServicoParaCriarNovoValorDoPacienteReferenteAoMesEAno servicoParaCriarNovoValorDoPacienteReferenteAoMesEAno;
+    private ServicoParaAlterarValorDoPacienteReferenteAoMesEAno servicoParaAlterarValorDoPacienteReferenteAoMesEAno;
 
     @BeforeEach
     void setUp() {
         pacienteRepositorio = Mockito.mock(PacienteRepositorio.class);
-        servicoParaCriarNovoValorDoPacienteReferenteAoMesEAno = new ServicoParaCriarNovoValorDoPacienteReferenteAoMesEAno();
-        alteraPaciente = new AlteraPacienteConcreto(pacienteRepositorio, servicoParaCriarNovoValorDoPacienteReferenteAoMesEAno);
+        servicoParaAlterarValorDoPacienteReferenteAoMesEAno = new ServicoParaAlterarValorDoPacienteReferenteAoMesEAno();
+        alteraPaciente = new AlteraPacienteConcreto(pacienteRepositorio, servicoParaAlterarValorDoPacienteReferenteAoMesEAno);
         id = UUID.randomUUID().toString();
         nome = "Diego";
         endereco = "Novo endereço do paciente";
