@@ -54,21 +54,28 @@ public class PacienteTest {
 
     @Test
     void deveSerPossivelAlterarOsDadosDeUmPaciente() {
-        Paciente paciente = new PacienteBuilder().criar();
+        Valor valor = new ValorBuilder().criar();
+        Paciente paciente = new PacienteBuilder().comValores(valor).criar();
         String novoEnderecoEsperado = "Novo endereço.";
 
-        paciente.alterar(novoEnderecoEsperado);
+        paciente.alterar(paciente.getNome(),
+                novoEnderecoEsperado,
+                paciente.getTipo(),
+                paciente.getValores());
 
         Assertions.assertThat(paciente.getEndereco()).isEqualTo(novoEnderecoEsperado);
     }
 
     @ParameterizedTest
     @MethodSource("dadosNecessariosParaValidarAlteracao")
-    void naoDeveSerPossivelAlterarUmPacienteSemOsDadosNecessarios(String endereco,
+    void naoDeveSerPossivelAlterarUmPacienteSemOsDadosNecessarios(String nome,
+                                                                  String endereco,
+                                                                  TipoDePaciente tipoDePaciente,
+                                                                  List<Valor> valores,
                                                                   String mensagemEsperada) {
         Paciente paciente = new PacienteBuilder().criar();
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> paciente.alterar(endereco));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> paciente.alterar(nome, endereco, tipoDePaciente, valores));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
@@ -155,12 +162,19 @@ public class PacienteTest {
                 Arguments.of(usuarioId, nome, null, valores, tipoDePaciente, "Não é possível criar um paciente sem informar o endereço."),
                 Arguments.of(usuarioId, nome, endereco, Collections.emptyList(), tipoDePaciente, "Não é possível criar um paciente sem informar o valor."),
                 Arguments.of(usuarioId, nome, endereco, valores, null, "Não é possível criar um paciente sem informar o tipo.")
-                );
+        );
     }
 
     private static Stream<Arguments> dadosNecessariosParaValidarAlteracao() {
+        String nome = "Teste";
+        String endereco = "AV. Teste";
+        TipoDePaciente tipo = TipoDePaciente.VALOR_POR_SESSAO;
+        List<Valor> valores = Collections.singletonList(new ValorBuilder().criar());
         return Stream.of(
-                Arguments.of(null, "Não é possível alterar um paciente sem informar o endereço.")
+                Arguments.of(null, endereco, tipo, valores, "Não é possível alterar um paciente sem informar o nome."),
+                Arguments.of(nome, null, tipo, valores, "Não é possível alterar um paciente sem informar o endereço."),
+                Arguments.of(nome, endereco, null, valores, "Não é possível alterar um paciente sem informar o tipo."),
+                Arguments.of(nome, endereco, tipo, Collections.emptyList(), "Não é possível alterar um paciente sem informar os valores das sessões.")
         );
     }
 }

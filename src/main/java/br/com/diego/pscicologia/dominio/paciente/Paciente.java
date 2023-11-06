@@ -35,9 +35,15 @@ public class Paciente extends Entidade {
         this.tipoDePaciente = tipoDePaciente;
     }
 
-    public void alterar(String endereco) {
-        validarCamposObrigatorios(endereco);
+    public void alterar(String nome,
+                        String endereco,
+                        TipoDePaciente tipoDePaciente,
+                        List<Valor> valores) {
+        validarCamposObrigatorios(nome, endereco, tipoDePaciente, valores);
+        this.nome = nome;
         this.endereco = endereco;
+        this.tipoDePaciente = tipoDePaciente;
+        this.valores = valores;
     }
 
     private void validarCamposObrigatorios(String usuarioId,
@@ -54,9 +60,15 @@ public class Paciente extends Entidade {
                 .entaoDispara();
     }
 
-    private void validarCamposObrigatorios(String endereco) {
+    private void validarCamposObrigatorios(String nome,
+                                           String endereco,
+                                           TipoDePaciente tipoDePaciente,
+                                           List<Valor> valores) {
         new ExcecaoDeCampoObrigatorio()
+                .quandoNulo(nome, "Não é possível alterar um paciente sem informar o nome.")
                 .quandoNulo(endereco, "Não é possível alterar um paciente sem informar o endereço.")
+                .quandoNulo(tipoDePaciente, "Não é possível alterar um paciente sem informar o tipo.")
+                .quandoColecaoVazia(valores, "Não é possível alterar um paciente sem informar os valores das sessões.")
                 .entaoDispara();
     }
 
