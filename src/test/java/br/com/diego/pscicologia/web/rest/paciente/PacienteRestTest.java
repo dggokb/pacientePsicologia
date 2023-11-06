@@ -265,8 +265,13 @@ class PacienteRestTest extends TestBaseApi {
     private AlteraPacienteHttpDTO criarAlteraPacienteHttpDTO() {
         AlteraPacienteHttpDTO httpDTO = new AlteraPacienteHttpDTO();
         httpDTO.id = UUID.randomUUID().toString();
+        httpDTO.nome = "Teste";
         httpDTO.endereco = "Teste";
         httpDTO.valorPorSessao = BigDecimal.TEN;
+        httpDTO.mes = "JANEIRO";
+        httpDTO.ano = 2023;
+        httpDTO.tipo = "VALOR_FIXO";
+        httpDTO.datasDasSessoes = Collections.singletonList(new Date());;
 
         return httpDTO;
     }
