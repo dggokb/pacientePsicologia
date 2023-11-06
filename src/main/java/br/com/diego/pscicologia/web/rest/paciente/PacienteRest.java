@@ -135,6 +135,13 @@ public class PacienteRest {
     }
 
     private AlterarPaciente criarComandoParaAlterar(AlteraPacienteHttpDTO httpDTO) {
-        return new AlterarPaciente(httpDTO.id, httpDTO.endereco);
+        return new AlterarPaciente(httpDTO.id,
+                httpDTO.nome,
+                httpDTO.endereco,
+                httpDTO.valorPorSessao,
+                httpDTO.mes,
+                httpDTO.ano,
+                httpDTO.tipo,
+                httpDTO.datasDasSessoes);
     }
 }
