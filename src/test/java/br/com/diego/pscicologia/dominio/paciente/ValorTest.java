@@ -13,6 +13,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Stream;
 
 class ValorTest {
@@ -20,38 +23,38 @@ class ValorTest {
     private Moeda valorPorSessao;
     private Mes mes;
     private Integer ano;
-    private Quantidade quantidadeDeDiasNoMes;
+    private List<LocalDate> datasDasSessoes;
 
     @BeforeEach
     void setUp() {
-        quantidadeDeDiasNoMes = Quantidade.criar(10);
         valorPorSessao = Moeda.ZERO;
         mes = Mes.ABRIL;
         ano = LocalDate.now().getYear();
+        datasDasSessoes = Arrays.asList(LocalDate.now(), LocalDate.now().plusDays(1));
     }
 
     @Test
     void deveSerPossivelCriarUmValorComQuantidadeDeDiasNoMesSeOTipoForValorPorSessao() {
-        Quantidade quantidadeDeDiasNoMesEsperada = Quantidade.criar(10);
         Moeda valorPorSessaoEsperado = Moeda.ZERO;
         Mes mesEsperado = Mes.ABRIL;
         Integer anoEsperado = LocalDate.now().getYear();
         TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
+        List<LocalDate> datasDasSessoes = Arrays.asList(LocalDate.now(), LocalDate.now().plusDays(1));
 
-        Valor valor = new Valor(quantidadeDeDiasNoMesEsperada, valorPorSessaoEsperado, mesEsperado, anoEsperado, tipoDePaciente);
+        Valor valor = new Valor(valorPorSessaoEsperado, mesEsperado, anoEsperado, tipoDePaciente, datasDasSessoes);
 
-        Assertions.assertThat(valor.getQuantidadeDeDiasNoMes()).isEqualTo(quantidadeDeDiasNoMesEsperada);
+        Assertions.assertThat(valor.getQuantidadeDeDiasNoMes().quantidade()).isEqualTo(datasDasSessoes.size());
         Assertions.assertThat(valor.getValorPorSessao()).isEqualTo(valorPorSessaoEsperado);
         Assertions.assertThat(valor.getMes()).isEqualTo(mesEsperado);
         Assertions.assertThat(valor.getAno()).isEqualTo(anoEsperado);
+        Assertions.assertThat(valor.getDatasDasSessoes()).containsOnly(datasDasSessoes.get(0), datasDasSessoes.get(1));
     }
 
     @Test
-    void deveSerPossivelCriarValorSemInformarAQuantidadeDeDiasDoMesSeOTipoForValorFixo() {
-        Quantidade quantidadeDeDiasNoMes = null;
+    void deveSerPossivelCriarValorSemAQuantidadeDeDiasDoMesSeOTipoForValorFixo() {
         TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_FIXO;
 
-        Valor valor = new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
+        Valor valor = new Valor(valorPorSessao, mes, ano, tipoDePaciente, datasDasSessoes);
 
         Assertions.assertThat(valor.getQuantidadeDeDiasNoMes()).isNull();
         Assertions.assertThat(valor.getValorPorSessao()).isEqualTo(valorPorSessao);
@@ -65,9 +68,10 @@ class ValorTest {
                                                          Mes mes,
                                                          Integer ano,
                                                          TipoDePaciente tipoDePaciente,
+                                                         List<LocalDate> datasDasSessoes,
                                                          String mensagemEsperada) {
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Valor(valorPorSessao, mes, ano, tipoDePaciente, datasDasSessoes));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
@@ -75,10 +79,10 @@ class ValorTest {
     @Test
     void naoDeveSerPossivelCriarValorSemInformarAQuantidadeDeDiasDoMesSeOTipoForValorPorSessao() {
         String mensagemEsperada = "Não pode ser inserido um valor sem quantidade de dias no mês quando for valor por sessão.";
-        Quantidade quantidadeDeDiasNoMes = null;
+        List<LocalDate> datasDasSessoes = Collections.emptyList();
         TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
 
-        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente));
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> new Valor(valorPorSessao, mes, ano, tipoDePaciente, datasDasSessoes));
 
         Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperada);
     }
@@ -98,11 +102,21 @@ class ValorTest {
     }
 
     @Test
-    void deveSerPossivelCriarUmValorComQuantidadePorDiasNuloSeForDoTipoFixoMesmoInformandoQuantidadeDeDiasPorSessao() {
-        Quantidade quantidadeDeDiasNoMes = Quantidade.criar(10);
+    void deveSerPossivelCriarUmValorSemDatasDasSessoesSeForDoTipoFixo() {
+        List<LocalDate> datasDasSessoes = Collections.emptyList();
         TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_FIXO;
 
-        Valor valor = new Valor(quantidadeDeDiasNoMes, valorPorSessao, mes, ano, tipoDePaciente);
+        Valor valor = new Valor(valorPorSessao, mes, ano, tipoDePaciente, datasDasSessoes);
+
+        Assertions.assertThat(valor.getQuantidadeDeDiasNoMes()).isNull();
+    }
+
+    @Test
+    void deveSerPossivelCriarUmValorSemDatasDasSessoesSeForDoTipoFixoMesmoSeForInformadoAsDatas() {
+        List<LocalDate> datasDasSessoes = List.of(LocalDate.now());
+        TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_FIXO;
+
+        Valor valor = new Valor(valorPorSessao, mes, ano, tipoDePaciente, datasDasSessoes);
 
         Assertions.assertThat(valor.getQuantidadeDeDiasNoMes()).isNull();
     }
@@ -131,12 +145,13 @@ class ValorTest {
         Mes mes = Mes.ABRIL;
         Integer ano = LocalDate.now().getYear();
         TipoDePaciente tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
+        List<LocalDate> datasDasSessoes = Arrays.asList(LocalDate.now(), LocalDate.now().plusDays(1));
 
         return Stream.of(
-                Arguments.of(null, mes, ano, tipoDePaciente, "Não é possível criar um valor sem informar o valor por sessão."),
-                Arguments.of(valorPorSessao, null, ano, tipoDePaciente, "Não é possível criar um valor sem informar o mês."),
-                Arguments.of(valorPorSessao, mes, null, tipoDePaciente, "Não é possível criar um valor sem informar o ano."),
-                Arguments.of(valorPorSessao, mes, ano, null, "Não é possível criar um valor sem informar o tipo.")
+                Arguments.of(null, mes, ano, tipoDePaciente, datasDasSessoes, "Não é possível criar um valor sem informar o valor por sessão."),
+                Arguments.of(valorPorSessao, null, ano, tipoDePaciente, datasDasSessoes, "Não é possível criar um valor sem informar o mês."),
+                Arguments.of(valorPorSessao, mes, null, tipoDePaciente, datasDasSessoes, "Não é possível criar um valor sem informar o ano."),
+                Arguments.of(valorPorSessao, mes, ano, null, datasDasSessoes, "Não é possível criar um valor sem informar o tipo.")
         );
     }
 }

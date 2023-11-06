@@ -24,7 +24,7 @@ public class MontadorDePacienteDTO {
         return dto;
     }
 
-    private static void validarPaciente(Paciente paciente) {
+    private void validarPaciente(Paciente paciente) {
         if (Objects.isNull(paciente)) {
             throw new RuntimeException("É necessário informar o paciente para montar os dados da consulta.");
         }
@@ -39,6 +39,7 @@ public class MontadorDePacienteDTO {
             }
             valorDTO.mes = valor.getMes().getDescricao();
             valorDTO.ano = valor.getAno();
+            valorDTO.datasDasSessoes = valor.getDatasDasSessoes().stream().map(DateUtils::obterDataFormatada).collect(Collectors.toList());
 
             return valorDTO;
         }).collect(Collectors.toList());

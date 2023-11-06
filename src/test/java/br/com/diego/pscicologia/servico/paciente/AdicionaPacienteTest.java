@@ -52,6 +52,5 @@ public class AdicionaPacienteTest {
         Assertions.assertThat(pacienteCapturado.getDataDeInicio()).isEqualTo(paciente.getDataDeInicio());
         Assertions.assertThat(pacienteCapturado.getValores()).usingRecursiveFieldByFieldElementComparator().containsOnly(valor);
         Assertions.assertThat(pacienteCapturado.getTipo()).isEqualTo(paciente.getTipo());
-        Assertions.assertThat(pacienteCapturado.getDatasDasSessoes()).containsOnly(paciente.getDatasDasSessoes().get(0));
     }
 }

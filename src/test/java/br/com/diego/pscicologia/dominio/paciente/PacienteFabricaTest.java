@@ -37,7 +37,7 @@ class PacienteFabricaTest {
         valorPorSessao = Moeda.criar(100);
         mes = Mes.ABRIL;
         ano = 2023;
-        tipoDePaciente = TipoDePaciente.VALOR_POR_SESSAO;
+        tipoDePaciente = TipoDePaciente.VALOR_FIXO;
         pacienteRepositorio = Mockito.mock(PacienteRepositorio.class);
         fabrica = new PacienteFabrica(pacienteRepositorio);
         datasDasSessoes = Collections.singletonList(LocalDate.now());
@@ -64,10 +64,10 @@ class PacienteFabricaTest {
         Assertions.assertThat(pacienteFabricado.getEndereco()).isEqualTo(endereco);
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getValorPorSessao).containsOnly(valorPorSessao);
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getQuantidadeDeDiasNoMes).containsOnly(quantidadeDeDiasNoMes);
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getDatasDasSessoes).containsOnly(datasDasSessoes);
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getMes).containsOnly(mes);
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getAno).containsOnly(ano);
         Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipoDePaciente);
-        Assertions.assertThat(pacienteFabricado.getDatasDasSessoes()).isEqualTo(datasDasSessoes);
     }
 
     @Test
@@ -84,11 +84,11 @@ class PacienteFabricaTest {
         Assertions.assertThat(pacienteFabricado.getNome()).isEqualTo(nome);
         Assertions.assertThat(pacienteFabricado.getEndereco()).isEqualTo(endereco);
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getValorPorSessao).containsOnly(valorPorSessao, valor.getValorPorSessao());
-        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getQuantidadeDeDiasNoMes).containsOnly(quantidadeDeDiasNoMes, valor.getQuantidadeDeDiasNoMes());
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getQuantidadeDeDiasNoMes).containsOnly(null, valor.getQuantidadeDeDiasNoMes());
+        Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getDatasDasSessoes).containsOnly(Collections.emptyList(), valor.getDatasDasSessoes());
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getMes).containsOnly(mes, valor.getMes());
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getAno).containsOnly(ano, valor.getAno());
         Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipoDePaciente);
-        Assertions.assertThat(pacienteFabricado.getDatasDasSessoes()).isEqualTo(datasDasSessoes);
     }
 
     @Test
@@ -108,7 +108,6 @@ class PacienteFabricaTest {
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getMes).containsOnly(mes);
         Assertions.assertThat(pacienteFabricado.getValores()).extracting(Valor::getAno).containsOnly(ano);
         Assertions.assertThat(pacienteFabricado.getTipo()).isEqualTo(tipoDePaciente);
-        Assertions.assertThat(pacienteFabricado.getDatasDasSessoes()).isEqualTo(datasDasSessoes);
     }
 
     @Test

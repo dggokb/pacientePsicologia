@@ -18,7 +18,6 @@ public class PacienteBuilder {
     private List<Valor> valores;
     private Boolean inativo;
     private TipoDePaciente tipoDePaciente;
-    private List<LocalDate> datasDasSessoes;
 
     public PacienteBuilder() {
         this.usuarioId = UUID.randomUUID().toString();
@@ -27,12 +26,11 @@ public class PacienteBuilder {
         this.dataDeInicio = LocalDate.now();
         this.tipoDePaciente = TipoDePaciente.VALOR_FIXO;
         this.inativo = false;
-        this.datasDasSessoes = Collections.singletonList(LocalDate.now());
         this.valores = Collections.singletonList(new ValorBuilder().comTipo(tipoDePaciente).criar());
     }
 
     public Paciente criar() {
-        Paciente paciente = new Paciente(usuarioId, nome, endereco, valores, tipoDePaciente, datasDasSessoes);
+        Paciente paciente = new Paciente(usuarioId, nome, endereco, valores, tipoDePaciente);
         inativar(paciente);
         return paciente;
     }

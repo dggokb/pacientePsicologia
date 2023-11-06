@@ -18,16 +18,14 @@ public class Paciente extends Entidade {
     private List<Valor> valores;
     private Boolean inativo;
     private TipoDePaciente tipoDePaciente;
-    private List<LocalDate> datasDasSessoes;
 
     @PersistenceCreator
     public Paciente(String usuarioId,
                     String nome,
                     String endereco,
                     List<Valor> valores,
-                    TipoDePaciente tipoDePaciente,
-                    List<LocalDate> datasDasSessoes) {
-        validarCamposObrigatorios(usuarioId, nome, endereco, valores, tipoDePaciente, datasDasSessoes);
+                    TipoDePaciente tipoDePaciente) {
+        validarCamposObrigatorios(usuarioId, nome, endereco, valores, tipoDePaciente);
         this.usuarioId = usuarioId;
         this.nome = nome;
         this.endereco = endereco;
@@ -35,7 +33,6 @@ public class Paciente extends Entidade {
         this.valores = valores;
         this.inativo = false;
         this.tipoDePaciente = tipoDePaciente;
-        this.datasDasSessoes = datasDasSessoes;
     }
 
     public void alterar(String endereco) {
@@ -46,8 +43,7 @@ public class Paciente extends Entidade {
     private void validarCamposObrigatorios(String usuarioId,
                                            String nome,
                                            String endereco, List<Valor> valor,
-                                           TipoDePaciente tipoDePaciente,
-                                           List<LocalDate> datasDasSessoes) {
+                                           TipoDePaciente tipoDePaciente) {
         new ExcecaoDeCampoObrigatorio()
                 .quandoNulo(usuarioId, "Não é possível criar um paciente sem informar o usuário.")
                 .quandoNulo(nome, "Não é possível criar um paciente sem informar o nome.")
@@ -55,7 +51,6 @@ public class Paciente extends Entidade {
                 .quandoNulo(endereco, "Não é possível criar um paciente sem informar o endereço.")
                 .quandoColecaoVazia(valor, "Não é possível criar um paciente sem informar o valor.")
                 .quandoNulo(tipoDePaciente, "Não é possível criar um paciente sem informar o tipo.")
-                .quandoNulo(datasDasSessoes, "Não é possível criar um paciente sem as datas das sessões do mês.")
                 .entaoDispara();
     }
 
@@ -116,10 +111,6 @@ public class Paciente extends Entidade {
 
     public List<Valor> getValores() {
         return Collections.unmodifiableList(valores);
-    }
-
-    public List<LocalDate> getDatasDasSessoes() {
-        return datasDasSessoes;
     }
 
     public String obterDescricaoDoTipo() {

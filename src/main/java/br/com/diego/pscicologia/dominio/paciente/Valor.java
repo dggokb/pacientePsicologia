@@ -2,6 +2,9 @@ package br.com.diego.pscicologia.dominio.paciente;
 
 import br.com.diego.pscicologia.comum.*;
 
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -12,20 +15,22 @@ public class Valor {
     private Mes mes;
     private Integer ano;
     private TipoDePaciente tipoDePaciente;
+    List<LocalDate> datasDasSessoes;
 
 
-    public Valor(Quantidade quantidadeDeDiasNoMes, Moeda valorPorSessao, Mes mes, Integer ano, TipoDePaciente tipoDePaciente) {
+    public Valor(Moeda valorPorSessao, Mes mes, Integer ano, TipoDePaciente tipoDePaciente, List<LocalDate> datasDasSessoes) {
         validarCamposObrigatorios(valorPorSessao, mes, ano, tipoDePaciente);
-        validarQuantidadeDeDiasNoMes(quantidadeDeDiasNoMes, tipoDePaciente);
-        this.quantidadeDeDiasNoMes = !tipoDePaciente.ehValorFixo() ? quantidadeDeDiasNoMes : null;
+        validarQuantidadeDeDiasNoMes((Objects.isNull(datasDasSessoes) || datasDasSessoes.isEmpty()), tipoDePaciente);
+        this.quantidadeDeDiasNoMes = tipoDePaciente.ehValorPorSessao() ? Quantidade.criar(datasDasSessoes.size()) : null;
         this.valorPorSessao = valorPorSessao;
         this.mes = mes;
         this.ano = ano;
         this.tipoDePaciente = tipoDePaciente;
+        this.datasDasSessoes = tipoDePaciente.ehValorPorSessao() ? datasDasSessoes : Collections.emptyList();
     }
 
-    private void validarQuantidadeDeDiasNoMes(Quantidade quantidadeDeDiasNoMes, TipoDePaciente tipoDePaciente) {
-        if (tipoDePaciente.ehValorPorSessao() && Objects.isNull(quantidadeDeDiasNoMes)) {
+    private void validarQuantidadeDeDiasNoMes(boolean naoPossuiQuantidadeDeDiasNoMes, TipoDePaciente tipoDePaciente) {
+        if (tipoDePaciente.ehValorPorSessao() && naoPossuiQuantidadeDeDiasNoMes) {
             throw new ExcecaoDeRegraDeNegocio("Não pode ser inserido um valor sem quantidade de dias no mês quando for valor por sessão.");
         }
     }
@@ -55,6 +60,10 @@ public class Valor {
         return ano;
     }
 
+    public List<LocalDate> getDatasDasSessoes() {
+        return datasDasSessoes;
+    }
+
     public boolean ehDoMesmo(Mes mes, Integer ano) {
         return ehDoMesmo(ano) && ehDoMesmo(mes);
     }
@@ -69,7 +78,7 @@ public class Valor {
     }
 
     public Moeda obterValorTotal() {
-        if(tipoDePaciente.ehValorFixo()){
+        if (tipoDePaciente.ehValorFixo()) {
             return getValorPorSessao();
         }
         return getValorPorSessao().multiplicar(getQuantidadeDeDiasNoMes());
