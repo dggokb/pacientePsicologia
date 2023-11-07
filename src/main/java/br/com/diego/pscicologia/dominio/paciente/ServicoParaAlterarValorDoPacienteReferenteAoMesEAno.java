@@ -1,6 +1,7 @@
 package br.com.diego.pscicologia.dominio.paciente;
 
 import br.com.diego.pscicologia.comum.ExcecaoDeCampoObrigatorio;
+import br.com.diego.pscicologia.comum.ExcecaoDeRegraDeNegocio;
 import br.com.diego.pscicologia.comum.Mes;
 import br.com.diego.pscicologia.comum.Moeda;
 
@@ -20,13 +21,18 @@ public class ServicoParaAlterarValorDoPacienteReferenteAoMesEAno {
         validarCamposObrigatorios(valoresAtuais, novoValorPorSessao, mes, ano, tipoDePaciente);
         List<Valor> valoresAlterados = new ArrayList<>(valoresAtuais);
         boolean valorRemovido = valoresAlterados.removeIf(valor -> valor.ehDoMesmo(mes, ano));
-        if (valorRemovido) {
-            Valor novoValorDoMes = new Valor(novoValorPorSessao, mes, ano, tipoDePaciente, novasDatasDasSessoes);
-            valoresAlterados.add(novoValorDoMes);
-            valoresAtuais = valoresAlterados;
-        }
+        validarValorRemovido(mes, ano, valorRemovido);
+        Valor novoValorDoMes = new Valor(novoValorPorSessao, mes, ano, tipoDePaciente, novasDatasDasSessoes);
+        valoresAlterados.add(novoValorDoMes);
+        valoresAtuais = valoresAlterados;
 
         return valoresAtuais;
+    }
+
+    private static void validarValorRemovido(Mes mes, Integer ano, boolean valorRemovido) {
+        if (!valorRemovido) {
+            throw  new ExcecaoDeRegraDeNegocio(String.format("Não foi possível encontrar o valor do mês %s e ano %s para alterar", mes, ano));
+        }
     }
 
     private void validarCamposObrigatorios(List<Valor> valoresAtuais,

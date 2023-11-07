@@ -67,17 +67,11 @@ class ServicoParaAlterarValorDoPacienteReferenteAoMesEAnoTest {
         List<Valor> valoresAtuais = Arrays.asList(valorAntigoDeOutroMesEAno, valorAntigoDeOutroMes, valorAntigoDeOutroAno);
         Moeda novoValorPorSessao = Moeda.criar(999);
         List<LocalDate> novasDatasDasSessoes = Arrays.asList(LocalDate.now(), LocalDate.now().plusDays(1));
+        String mensagemEsperda = String.format("Não foi possível encontrar o valor do mês %s e ano %s para alterar", janeiro, ano);
 
-        List<Valor> novosValores = servico.alterar(valoresAtuais, novoValorPorSessao, janeiro, ano, tipo, novasDatasDasSessoes);
+        Throwable excecaoLancada = Assertions.catchThrowable(() -> servico.alterar(valoresAtuais, novoValorPorSessao, janeiro, ano, tipo, novasDatasDasSessoes));
 
-        Assertions.assertThat(novosValores).extracting(Valor::getValorPorSessao).containsOnly(valorAntigoDeOutroMes.getValorPorSessao(),
-                valorAntigoDeOutroAno.getValorPorSessao(), valorAntigoDeOutroMesEAno.getValorPorSessao());
-        Assertions.assertThat(novosValores).extracting(Valor::getMes).containsOnly(valorAntigoDeOutroMes.getMes(), valorAntigoDeOutroAno.getMes(),
-                valorAntigoDeOutroMesEAno.getMes());
-        Assertions.assertThat(novosValores).extracting(Valor::getAno).containsOnly(valorAntigoDeOutroMes.getAno(),
-                valorAntigoDeOutroAno.getAno(), valorAntigoDeOutroMesEAno.getAno());
-        Assertions.assertThat(novosValores).extracting(Valor::getDatasDasSessoes).containsOnly(valorAntigoDeOutroMes.getDatasDasSessoes(),
-                valorAntigoDeOutroAno.getDatasDasSessoes(), valorAntigoDeOutroMesEAno.getDatasDasSessoes());
+        Assertions.assertThat(excecaoLancada).hasMessageContaining(mensagemEsperda);
     }
 
     @ParameterizedTest
@@ -108,6 +102,6 @@ class ServicoParaAlterarValorDoPacienteReferenteAoMesEAnoTest {
                 Arguments.of(valoresAtuais, novoValorPorSessao, null, ano, tipoDePaciente, "Não é possível alterar um valor sem informar o mês."),
                 Arguments.of(valoresAtuais, novoValorPorSessao, mes, null, tipoDePaciente, "Não é possível alterar um valor sem informar o ano."),
                 Arguments.of(valoresAtuais, novoValorPorSessao, mes, ano, null, "Não é possível alterar um valor sem informar o tipo.")
-                );
+        );
     }
 }

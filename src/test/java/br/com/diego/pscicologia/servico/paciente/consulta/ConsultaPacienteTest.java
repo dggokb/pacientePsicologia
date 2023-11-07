@@ -5,6 +5,7 @@ import br.com.diego.pscicologia.builder.ValorBuilder;
 import br.com.diego.pscicologia.comum.DateUtils;
 import br.com.diego.pscicologia.dominio.paciente.Paciente;
 import br.com.diego.pscicologia.dominio.paciente.ServicoParaObterPacientesDeUmUsuarioPorNome;
+import br.com.diego.pscicologia.dominio.paciente.TipoDePaciente;
 import br.com.diego.pscicologia.dominio.paciente.Valor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,8 +31,8 @@ class ConsultaPacienteTest {
 
     @Test
     void deveSerPossivelConsultarUmPaciente() throws Exception {
-        Valor valor = new ValorBuilder().criar();
-        Paciente paciente = new PacienteBuilder().criar();
+        Valor valor = new ValorBuilder().comTipo(TipoDePaciente.VALOR_POR_SESSAO).criar();
+        Paciente paciente = new PacienteBuilder().comValores(valor).comTipo(TipoDePaciente.VALOR_POR_SESSAO).criar();
         Mockito.when(servicoParaObterPacientesDeUmUsuarioPorNome.obter(nome, filtro.getUsuarioId())).thenReturn(Collections.singletonList(paciente));
 
         List<PacienteDTO> dtoObtido = consultaPaciente.consultar(filtro);
