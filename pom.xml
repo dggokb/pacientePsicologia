@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.diego</groupId>
-	<artifactId>pscicologia</artifactId>
+	<artifactId>psicologia</artifactId>
 	<version>0.3.0</version>
 	<packaging>war</packaging>
-	<name>pscicologia</name>
+	<name>psicologia</name>
 	<description>Gerenciamento de pacientes</description>
 	<properties>
 		<java.version>17</java.version>
